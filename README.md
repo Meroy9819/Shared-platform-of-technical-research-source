@@ -1,1 +1,1 @@
-# Shared platform of technical reserach source
+# Shared platform of technical research source
