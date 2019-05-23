@@ -1,22 +1,22 @@
 from rest_framework import serializers
-from User.models import normal_user, expert, administrator,model_buyresources
+from User.models import NormalUser, ExpertUser, Administrator,BuyResources,LikeResources
 
 class NormalUserSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = normal_user
+		model = NormalUser
 		fields = '__all__'
 
 class ExpertSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = expert
+		model = ExpertUser
 		fields = '__all__'
 
 class AdministratorSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = administrator
+		model = Administrator
 		fields = '__all__'
 
 class ModelBuyResourcesSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = model_buyresources
+		model = BuyResources
 		fields = '__all__'

@@ -4,11 +4,17 @@ from django.db import models
 #from label.models import label
 import django.utils.timezone as timezone
 from django import forms
+from TechResource.models import SciAchi
 
-class normal_user(models.Model):
+class NormalUser(models.Model):
 	gender = (
 		('male', '男'),
 		('female', '女'),
+	)
+	kind=(
+		('专家用户','专家用户'),
+		('普通用户','普通用户'),
+		('管理员','管理员'),
 	)
 	#用户编号
 	user_id = models.AutoField(
@@ -30,7 +36,8 @@ class normal_user(models.Model):
 	#用户类型
 	type = models.CharField(
 		max_length = 16,
-		null = True,
+		choices=kind,
+		default='普通用户',
 		)
 	#用户头像
 	image = models.ImageField(
@@ -65,16 +72,34 @@ class normal_user(models.Model):
 #		blank=True,
 #		)
 
-class expert(models.Model):
-	expert = models.OneToOneField(
-		'normal_user', 
-		on_delete = models.CASCADE,
-		default = "",
-		)
+class ExpertUser(models.Model):
+	expert_id = models.AutoField(
+		primary_key=True,
+	)
+	#联系电话
 	contact = models.CharField(
 		max_length = 128,
 		null = True,
 		)
+	institution=models.CharField(
+		max_length=128,
+		null=True,
+	)
+	reference_number=models.IntegerField(
+		null=True,
+	)
+	paper_number=models.IntegerField(
+		null=True,
+	)
+	H_index=models.IntegerField(
+		null=True,
+	)
+	G_index=models.IntegerField(
+		null=True,
+	)
+	field=models.IntegerField(
+		null=True,
+	)
 #	ownlabels=models.ManyToManyField(
 #		label,
 #		blank=True,
@@ -82,15 +107,25 @@ class expert(models.Model):
 #	from TechResource.models import Resource
 #	ownresources=models.ManyToManyField(Resource,blank=True)
 
-class administrator(models.Model):
+class Administrator(models.Model):
 	administrator = models.OneToOneField(
-		'normal_user',
+		'NormalUser',
 		on_delete = models.CASCADE,
 		default = "",
 		)
 
-class model_buyresources(models.Model):
-	normal_user=models.ForeignKey(normal_user, on_delete=models.CASCADE)
-#	resource=models.ForeignKey(Tech.Resource, on_delete=models.CASCADE)
+class BuyResources(models.Model):
+	transaction_id=models.AutoField(
+		primary_key=True,
+	)
+	buyer_id=models.ForeignKey(NormalUser, on_delete=models.CASCADE)
+	buy_resource_id=models.ForeignKey(SciAchi,on_delete=models.CASCADE)
 	time=models.DateTimeField(default = timezone.now)
-		
+
+class LikeResources(models.Model):
+	like_id=models.AutoField(
+		primary_key=True,
+	)
+	liker_id=models.ForeignKey(NormalUser, on_delete=models.CASCADE)
+	like_resource_id = models.ForeignKey(SciAchi, on_delete=models.CASCADE)
+

@@ -14,8 +14,6 @@ urlpatterns = [
     path(r'resource/',Tech_views.SciAchiViewSet.list_all),
     re_path(r'resource/(?P<resource_id>\d{1,2})/',Tech_views.SciAchiViewSet.list_one),
 
-    path(r'add/', school_views.add),
-
 #    path(r'login/', user_views.NormalUserViewSet.login),
  #   path(r'register/', user_views.NormalUserViewSet.register),
   #  path(r'logout/', user_views.NormalUserViewSet.logout),

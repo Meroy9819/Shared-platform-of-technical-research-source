@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'codePlat.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'miaomiao',
+        'NAME': 'miaomiao1',
         'USER': 'root',
         'PASSWORD': '130220',
         'HOST': '127.0.0.1',

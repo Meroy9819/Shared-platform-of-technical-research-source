@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.shortcuts import render, redirect
 from . import models
-from User.models import normal_user, expert, administrator
+from User.models import NormalUser, ExpertUser, Administrator
 from User.forms import UserForm
 #from institutions.models import Institution
 #from label.models import label
@@ -16,25 +16,26 @@ from TechResource.models import SciAchi
 from User.serializers import NormalUserSerializer, ExpertSerializer, AdministratorSerializer
 #from institutions.serializers import InstitutionSerializer
 #from institutions.serializers import InstitutionSerializer
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from . import models
 from .forms import UserForm, RegisterForm
 import hashlib
+import json
 class NormalUserViewSet(viewsets.ModelViewSet):
-    queryset = normal_user.objects.all()
+    queryset = NormalUser.objects.all()
     serializer_class = NormalUserSerializer
 
-    def hash_code(s, salt='codeplat_login'):
+    def hash_code(self,s, salt='codeplat_login'):
         h = hashlib.sha256()
         s += salt
         h.update(s.encode())  # update方法只接收bytes类型
         return h.hexdigest()
 
-    def index(request):
+    def index(self,request):
         pass
         return render(request, 'login/index.html')
 
-    def login(request):
+    def login(self,request):
         if request.session.get('is_login', None):
             return redirect("/index/")
         if request.method == "POST":
@@ -45,7 +46,7 @@ class NormalUserViewSet(viewsets.ModelViewSet):
                 password = login_form.cleaned_data['password']
                 try:
                     user = models.User.objects.get(name=username)
-                    if user.password == hash_code(password):  # 哈希值和数据库内的值进行比对
+                    if user.password == self.hash_code(self,password):  # 哈希值和数据库内的值进行比对
                         request.session['is_login'] = True
                         request.session['user_id'] = user.id
                         request.session['user_name'] = user.name
@@ -59,7 +60,7 @@ class NormalUserViewSet(viewsets.ModelViewSet):
         login_form = UserForm()
         return render(request, 'login/login.html', locals())
 
-    def register(request):
+    def register(self,request):
         if request.session.get('is_login', None):
             # 登录状态不允许注册。你可以修改这条原则！
             return redirect("/index/")
@@ -89,7 +90,7 @@ class NormalUserViewSet(viewsets.ModelViewSet):
 
                     new_user = models.User.objects.create()
                     new_user.name = username
-                    new_user.password = hash_code(password1)  # 使用加密密码
+                    new_user.password = self.hash_code(self.password1)  # 使用加密密码
                     new_user.email = email
                     new_user.sex = sex
                     new_user.save()
@@ -112,14 +113,14 @@ class NormalUserViewSet(viewsets.ModelViewSet):
 
     @action(methods = ["POST"], detail = False)
     def Search(self, request):
-        user = normal_user.objects.get(name = request.data.get("name"))
+        user = NormalUser.objects.get(name = request.data.get("name"))
         '''
-        normal_user_serializer = NormalUserSerializer(user)
+        NormalUser_serializer = NormalUserSerializer(user)
         resource_serializer = ResourceSerializer(user.expert.ownresources.all(), many = True)
         institution_serializer = InstitutionSerializer(user.expert.institution_set.all(), many = True)
         
         result = []
-        result.append(normal_user_serializer.data)
+        result.append(NormalUser_serializer.data)
         result += resource_serializer.data
         result += institution_serializer.data
         '''
@@ -136,11 +137,11 @@ class NormalUserViewSet(viewsets.ModelViewSet):
         name = request.query_params.get('name', None)
         pk = request.query_params.get('pk', None)
         if name is not None: 
-            queryset = normal_user.objects.filter(name__contains = name)
+            queryset = NormalUser.objects.filter(name__contains = name)
         elif pk is not None:
-            queryset = normal_user.objects.filter(user_id = pk)
+            queryset = NormalUser.objects.filter(user_id = pk)
         else:
-            queryset = normal_user.objects.all()
+            queryset = NormalUser.objects.all()
         return queryset
 
 
@@ -151,10 +152,10 @@ class NormalUserViewSet(viewsets.ModelViewSet):
         #username = "123"
         passwd = request.POST.get("passwd")
         '''
-        queryset = normal_user.objects.get(name = username)
+        queryset = NormalUser.objects.get(name = username)
         '''
         try:
-            queryset = normal_user.objects.get(name = username)
+            queryset = NormalUser.objects.get(name = username)
         except:
             return Response("user doest exist", status = status.HTTP_406_NOT_ACCEPTABLE)
         if queryset.passwd == passwd:
@@ -178,11 +179,11 @@ class NormalUserViewSet(viewsets.ModelViewSet):
     def user_update(self,request):
         user_pk = request.data.get('pk', None)
         
-        queryset = normal_user.objects.filter( user_id = user_pk )
+        queryset = NormalUser.objects.filter( user_id = user_pk )
         if queryset.exists():
             image = request.POST.get('image')
             introduction = request.POST.get('introduction')
-            thisUser = normal_user(user_id = user_pk, image = image, introduction = introduction)
+            thisUser = NormalUser(user_id = user_pk, image = image, introduction = introduction)
             thisUser.save()
             serializer = NormalUserSerializer(queryset, many = True)
             return Response(serializer.data, status = status.HTTP_200_OK)
@@ -192,11 +193,11 @@ class NormalUserViewSet(viewsets.ModelViewSet):
     def Access(self,request):
         user_name = request.query_params.get('user_name', None)
         resource_name = request.query_params.get('resource_name', None)
-        user=normal_user.objects.get(name=user_name)
+        user=NormalUser.objects.get(name=user_name)
         buyresources_set=user.buyresources.all()
         expert=user.expert
         ownresources_set=expert.ownresources.all()
-        myresource=Resource.objects.get(name=resource_name)
+        myresource=SciAchi.objects.get(name=resource_name)
         if myresource in buyresources_set or myresource in ownresources_set:
             return Response('True',status = status.HTTP_200_OK)
         return Response('False',status = status.HTTP_400_BAD_REQUEST)
@@ -204,13 +205,13 @@ class NormalUserViewSet(viewsets.ModelViewSet):
 '''    @action(methods = ['GET'], detail = False)
     def Trade(self,request):
         user_name = request.query_params.get('user_name', None)
-        user=normal_user.objects.get(name=user_name)
+        user=NormalUser.objects.get(name=user_name)
         userid = user.user_id
         TradeRecord = user.buyresources.all()
         serializers=ResourceSerializer(TradeRecord, many = True)
         temp = serializers.data
         for tm in temp:
-            m1 = model_buyresources.objects.get(normal_user_id=userid,
+            m1 = model_buyresources.objects.get(NormalUser_id=userid,
                 resource_id = tm['resource_id'])
             tm['time']=m1.time
 
@@ -224,18 +225,24 @@ class NormalUserViewSet(viewsets.ModelViewSet):
         myresource=Resourceesource.objects.get(resource_id=resource_id)
         mypaper=myresource.paper
         value=mypaper.value
-        user=normal_user.objects.get(user_id=user_id)
-        buy1=model_buyresources(normal_user=user,resource=myresource)
+        user=NormalUser.objects.get(user_id=user_id)
+        buy1=model_buyresources(NormalUser=user,resource=myresource)
         return Response(status = status.HTTP_200_OK)
 '''
 class ExpertViewSet(viewsets.ModelViewSet):
-    queryset = expert.objects.all()
+    queryset = ExpertUser.objects.all()
     serializer_class = ExpertSerializer
-    
+
+    #显示某个专家
+    def list_one_expert(self,request,expert_id):
+        data = get_object_or_404(SciAchi, expert_id=expert_id)
+        return render(request, 'techDetail.html', {'data': json.dumps(data)})
+
+
     def list(self,request):
         user_name = request.query_params.get('name', None)
         try:
-            queryset_normaluser = normal_user.objects.filter(name__regex = r'(\S* +%s +\S*)|(\S* +%s$)|(%s +\S*)|(^%s$)'%(user_name,user_name,user_name,user_name))
+            queryset_normaluser = NormalUser.objects.filter(name__regex = r'(\S* +%s +\S*)|(\S* +%s$)|(%s +\S*)|(^%s$)'%(user_name,user_name,user_name,user_name))
         except:
             return Response("user is not exists", status = status.HTTP_400_BAD_REQUEST)
         else:
@@ -253,24 +260,24 @@ class ExpertViewSet(viewsets.ModelViewSet):
                 result.pop("expert")
                 return Response(result, status = status.HTTP_200_OK)
             '''
-            normal_user_serializer = NormalUserSerializer(queryset_normaluser, many=True)
+            NormalUser_serializer = NormalUserSerializer(queryset_normaluser, many=True)
             
             expert_list = []
             for expert_ in queryset_normaluser: 
                 expert_serializer = ExpertSerializer(expert_)
                 expert_list += expert_serializer.data
             result = []
-            result += normal_user_serializer.data
+            result += NormalUser_serializer.data
             result += expert_list
             
             return Response(result, status=status.HTTP_200_OK)
     
     def create(self, request):
-        normal_user_serializer = NormalUserSerializer(data = request.data)
+        NormalUser_serializer = NormalUserSerializer(data = request.data)
         expert_serializer = ExpertSerializer(data = request.data)
-        if normal_user_serializer.is_valid():
+        if NormalUser_serializer.is_valid():
             if expert_serializer.is_valid():
-                thisUser = normal_user(
+                thisUser = NormalUser(
                     name = request.data.get("name"), 
                     passwd = request.data.get("passwd"), 
                     point = request.data.get("point"),
@@ -279,22 +286,22 @@ class ExpertViewSet(viewsets.ModelViewSet):
                     introduction = request.data.get("introduction")
                     )
                 thisUser.save()
-                expert(
+                ExpertUser(
                     expert = thisUser,
                     contact = request.data.get("contact")
                     ).save()
                 return Response(thisUser.user_id, status = status.HTTP_201_CREATED)
-            return Response(normal_user.objects.get(name = request.data.get("name")).user_id, status = status.HTTP_400_BAD_REQUEST)
-        return Response(normal_user.objects.get(name = request.data.get("name")).user_id, status = status.HTTP_400_BAD_REQUEST)
+            return Response(NormalUser.objects.get(name = request.data.get("name")).user_id, status = status.HTTP_400_BAD_REQUEST)
+        return Response(NormalUser.objects.get(name = request.data.get("name")).user_id, status = status.HTTP_400_BAD_REQUEST)
 
     @action(methods = ['GET'], detail = False)
     def Access(self,request):
         user_name = request.query_params.get('user_name', None)
         resource_name = request.query_params.get('resource_name', None)
-        user=normal_user.objects.get(name=user_name)
+        user=NormalUser.objects.get(name=user_name)
         expert=user.expert
         resources_set=expert.ownresources.all()
-        resource=Resource.objects.get(name=resource_name)
+        resource=SciAchi.objects.get(name=resource_name)
         if resource in resources_set:
             return Response('True',status = status.HTTP_200_OK)
         return Response('False',status = status.HTTP_status.HTTP_400_BAD_REQUEST)
@@ -304,7 +311,7 @@ class ExpertViewSet(viewsets.ModelViewSet):
         try:
             name = request.query_params.get('name', None)
             co_workers = []
-            my_expert= normal_user.objects.get(name = name).expert
+            my_expert= NormalUser.objects.get(name = name).expert
             queryset_resource = my_expert.ownresources.all()
             for my_resource in queryset_resource:
                 co_set = my_resource.expert_set.all()
@@ -318,8 +325,8 @@ class ExpertViewSet(viewsets.ModelViewSet):
 
     def CreateByApplysheet(applysheet):
         try:
-            thisUser = normal_user.objects.get(user_id = applysheet.user.user_id)
-            expert(
+            thisUser = NormalUser.objects.get(user_id = applysheet.user.user_id)
+            ExpertUser(
                 expert = thisUser,
                 contact = applysheet.contact,
             ).save()
@@ -334,7 +341,7 @@ class ExpertViewSet(viewsets.ModelViewSet):
         user_id = request.data.get("user_id")
         resource_id = request.data.get("resource_id")
 
-        normalUser = normal_user.objects.get(user_id = user_id)
+        normalUser = NormalUser.objects.get(user_id = user_id)
         normalUser.expert.ownresources.add(SciAchi.objects.get(resource_id = resource_id))
 
         return Response(status=status.HTTP_200_OK)
@@ -343,13 +350,13 @@ class ExpertViewSet(viewsets.ModelViewSet):
     def Detail(self,request):
         myid = request.query_params.get('expert_id', None)
         try:
-            queryset_normaluser = normal_user.objects.get(user_id = myid)
+            queryset_normaluser = NormalUser.objects.get(user_id = myid)
         except:
             return Response("user is not exists", status = status.HTTP_400_BAD_REQUEST)
         else:
             expertid = queryset_normaluser.user_id
             try:
-                queryset_expert = expert.objects.get(expert_id = expertid)
+                queryset_expert = ExpertUser.objects.get(expert_id = expertid)
             except:
                 return Response("user does not exists", status = status.HTTP_400_BAD_REQUEST)
             else:
@@ -365,7 +372,7 @@ class ExpertViewSet(viewsets.ModelViewSet):
         user_id = request.data.get("user_id")
         label_id = request.data.get("label_id")
 
-        normalUser = normal_user.objects.get(user_id = user_id)
+        normalUser = NormalUser.objects.get(user_id = user_id)
         normalUser.expert.ownlabels.add(label.objects.get(label_id = label_id))
 
         return Response(status=status.HTTP_200_OK)
@@ -375,21 +382,21 @@ class ExpertViewSet(viewsets.ModelViewSet):
         user_id = request.data.get("user_id")
         institution_id = request.data.get("institution_id")
 
-        normalUser = normal_user.objects.get(user_id = user_id)
-        Institution.objects.get(institution_id = institution_id).ownexperts.add(normal_user.objects.get(user_id = user_id).expert)
+        normalUser = NormalUser.objects.get(user_id = user_id)
+        Institution.objects.get(institution_id = institution_id).ownexperts.add(NormalUser.objects.get(user_id = user_id).expert)
 
         return Response(status=status.HTTP_200_OK)
 '''
 class AdministratorViewSet(viewsets.ModelViewSet):
-    queryset = administrator.objects.all()
+    queryset = Administrator.objects.all()
     serializer_class = AdministratorSerializer
     
     def create(self, request):
-        normal_user_serializer = NormalUserSerializer(data = request.data)
+        NormalUser_serializer = NormalUserSerializer(data = request.data)
         administrator_serializer = AdministratorSerializer(data = request.data)
-        if normal_user_serializer.is_valid():
+        if NormalUser_serializer.is_valid():
             if administrator_serializer.is_valid():
-                thisNormal_user = normal_user(
+                thisNormalUser = NormalUser(
                     name = request.data.get("name"), 
                     passwd = request.data.get("passwd"), 
                     point = request.data.get("point"),
@@ -397,10 +404,10 @@ class AdministratorViewSet(viewsets.ModelViewSet):
                     type = "administrator",
                     introduction = request.data.get("introduction")
                     )
-                thisNormal_user.save()
-                administrator(
-                    administrator = thisNormal_user
+                thisNormalUser.save()
+                Administrator(
+                    administrator = thisNormalUser
                     ).save()
                 return Response(administrator_serializer.data, status = status.HTTP_201_CREATED)
             return Response(administrator_serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-        return Response(normal_user_serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+        return Response(NormalUser_serializer.errors, status = status.HTTP_400_BAD_REQUEST)

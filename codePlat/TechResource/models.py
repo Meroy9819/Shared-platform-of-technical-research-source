@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from User.models import expert
 #from label.models import label
 # Create your models here.
 class SciAchi(models.Model):
@@ -47,6 +46,11 @@ class SciAchi(models.Model):
     #发表年份
     publishYear=models.IntegerField(
         null=True,
+    )
+
+    #被收藏数
+    like_number=models.IntegerField(
+        default=0,
     )
 
     class Meta:
