@@ -10,7 +10,7 @@ from User.serializers import NormalUserSerializer
 from User.serializers import ExpertSerializer
 from collections import OrderedDict
 from django.shortcuts import render, get_object_or_404,render_to_response
-
+import json
 
 
 
@@ -23,10 +23,10 @@ class SciAchiViewSet(viewsets.ModelViewSet):
         #  queryset = [12, 23, 4, 5]
         # return render(request, 'testResource.html', {'data': queryset})
         data = SciAchi.objects.all()
-        return render(request, 'techResource.html', {'data': data})
-    def list_one(request,resource_id):
+        return render(request, 'techResource.html', {'data': json.dumps(data)})
+    def list_one(self,request,resource_id):
         data=get_object_or_404(SciAchi,resource_id=resource_id)
-        return render(request, 'techDetail.html', {'data': data})
+        return render(request, 'techDetail.html', {'data': json.dumps(data)})
 
 
 

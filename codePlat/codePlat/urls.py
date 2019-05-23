@@ -10,17 +10,15 @@ from school import views as school_views
 urlpatterns = [
     url(r'^$',view.hello),
     path('admin/', admin.site.urls),
-    path('add/', learn_views.add, name='add'),
-    path('index1/', learn_views.index1),
     path(r'index/', user_views.NormalUserViewSet.index),
-    path(r'login/', user_views.NormalUserViewSet.login),
-    path(r'register/', user_views.NormalUserViewSet.register),
-    path(r'logout/', user_views.NormalUserViewSet.logout),
-    path(r'base/',user_views.NormalUserViewSet.base),
-    path(r'title/',school_views.schools),
-    re_path(r'school/(?P<id>\d{1,2})',school_views.school),
     path(r'resource/',Tech_views.SciAchiViewSet.list_all),
     re_path(r'resource/(?P<resource_id>\d{1,2})/',Tech_views.SciAchiViewSet.list_one),
+
+    path(r'add/', school_views.add),
+
+#    path(r'login/', user_views.NormalUserViewSet.login),
+ #   path(r'register/', user_views.NormalUserViewSet.register),
+  #  path(r'logout/', user_views.NormalUserViewSet.logout),
 
    # url(r'captcha', include('captcha.urls'))
  #   path('resource/', include('Resource.urls')),
