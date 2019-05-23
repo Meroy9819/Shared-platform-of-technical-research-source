@@ -7,11 +7,15 @@
 </head>
 <body>
     <table>
+        <th>编号</th>
+        <th>学校名称</th>
+        <th>学校地址</th>
 
         {% for i in data %}
             <tr>
-            <td>{{ i.name }}</td>
-                <td><a href="/resource/{{ i.resource_id }}">{{ i.name }}</a></td>
+            <td>{{ i.id }}</td>
+                <td><a href="/school/{{ i.id }}">{{ i.name }}</a></td>
+            <td>{{ i.address }}</td>
             </tr>
         {% endfor %}
 

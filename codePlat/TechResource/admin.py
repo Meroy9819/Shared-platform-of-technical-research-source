@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Resource,Inst,SciAchi
-admin.site.register(Resource)
-admin.site.register(Inst)
+from .models import SciAchi
+
 admin.site.register(SciAchi)
+

@@ -10,12 +10,10 @@ from django.shortcuts import render, redirect
 from . import models
 from User.models import normal_user, expert, administrator
 from User.forms import UserForm
-from TechResource.models import Resource
 #from institutions.models import Institution
 #from label.models import label
-
+from TechResource.models import SciAchi
 from User.serializers import NormalUserSerializer, ExpertSerializer, AdministratorSerializer
-from TechResource.serializers import ResourceSerializer
 #from institutions.serializers import InstitutionSerializer
 #from institutions.serializers import InstitutionSerializer
 from django.shortcuts import render, redirect
@@ -337,7 +335,7 @@ class ExpertViewSet(viewsets.ModelViewSet):
         resource_id = request.data.get("resource_id")
 
         normalUser = normal_user.objects.get(user_id = user_id)
-        normalUser.expert.ownresources.add(resource.objects.get(resource_id = resource_id))
+        normalUser.expert.ownresources.add(SciAchi.objects.get(resource_id = resource_id))
 
         return Response(status=status.HTTP_200_OK)
 
