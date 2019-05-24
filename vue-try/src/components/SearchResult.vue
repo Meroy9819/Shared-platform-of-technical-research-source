@@ -2,6 +2,20 @@
     <el-container>
         
         <v-header></v-header>
+        <el-row>
+            <el-col>
+                <el-form :inline="true" :model="formInline" class="demo-form-inline">
+                <el-form-item label="审批人">
+                    <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+                </el-form-item>
+                
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">查询</el-button>
+                </el-form-item>
+                </el-form>
+            </el-col>
+        </el-row>
+        
         <el-container class="main-con">
             <el-main width="60%">
               <el-row :gutter="20">
@@ -115,6 +129,10 @@ import Header from '@/components/Header'
 export default {
     data() {
       return {
+        //搜索框
+        formInline: {
+          user: ''
+        },
         // 成果信息
         aulist: [
         { index:'1',name: 'author1' },
@@ -142,6 +160,9 @@ export default {
         'v-header':Header
     },
     methods: {
+        onSubmit() {
+        console.log('submit!');
+      },
       //点击收藏按钮触发：
       star(){
         console.log("点击收藏");

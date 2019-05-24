@@ -6,6 +6,7 @@ import Register from '@/components/Register'
 import Navbar from '@/components/Navbar'
 import Paperview from '@/components/Paperview'
 import Header from '@/components/Header'
+import SearchResult from '@/components/SearchResult'
 
 
 Vue.use(Router);
@@ -25,8 +26,8 @@ export default new Router({
 
     {
       path: '/',
-      name: 'Paperview',
-      component: Paperview
+      name: 'SearchResult',
+      component: SearchResult
     }
   ]
 })
