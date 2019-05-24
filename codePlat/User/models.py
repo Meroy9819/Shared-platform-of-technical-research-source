@@ -60,7 +60,7 @@ class NormalUser(models.Model):
 	c_time = models.DateTimeField(auto_now_add=True)
 	#用户手机号
 	phonenumber=models.CharField(
-		length=11,
+		max_length=11,
 		default="00000000000",
 	)
 	def __str__(self):

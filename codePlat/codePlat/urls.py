@@ -11,8 +11,8 @@ urlpatterns = [
     url(r'^$',view.hello),
     path('admin/', admin.site.urls),
     path(r'index/', user_views.index),
-    path(r'resource/',Tech_views.SciAchiViewSet.list_all),
-    re_path(r'resource/(?P<resource_id>\d{1,2})/',Tech_views.SciAchiViewSet.list_one),
+    path(r'resource/',Tech_views.list_all),
+    re_path(r'resource/(?P<resource_id>\d{1,2})/',Tech_views.list_one),
 
 
    path(r'login/', user_views.login),
