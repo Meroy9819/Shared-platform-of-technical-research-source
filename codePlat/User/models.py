@@ -63,6 +63,7 @@ class NormalUser(models.Model):
 		max_length=11,
 		default="00000000000",
 	)
+	has_confirmed = models.BooleanField(default=False)
 	def __str__(self):
 		return self.name
 
@@ -132,6 +133,7 @@ class LikeResources(models.Model):
 	)
 	liker_user=models.ForeignKey(NormalUser, on_delete=models.CASCADE)
 	like_resource_id = models.ForeignKey(SciAchi, on_delete=models.CASCADE)
+	objects = models.Manager()
 
 class ConfirmString(models.Model):
     code = models.CharField(max_length=256)

@@ -1,11 +1,4 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import status
 from User.models import NormalUser, ExpertUser, Administrator, ConfirmString
-from TechResource.models import SciAchi
-from User.serializers import NormalUserSerializer, ExpertSerializer, AdministratorSerializer
 from django.shortcuts import render, redirect,get_object_or_404,HttpResponse
 from . import models
 from .forms import UserForm, RegisterForm
@@ -14,17 +7,24 @@ import json
 import codePlat
 import datetime
 from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponseRedirect
+from .models import LikeResources
+from User.models import NormalUser
+from rest_framework import status
 
+#加密密码
 def hash_code(s, salt='codeplat_login'):
     h = hashlib.sha256()
     s += salt
     h.update(s.encode())  # update方法只接收bytes类型
     return h.hexdigest()
 
+#主页
 def index(request):
     pass
     return render(request, 'login/index.html')
 
+#用户登录
 def login(request):
     if request.session.get('is_login', None):
         return redirect("/index/")
@@ -35,7 +35,7 @@ def login(request):
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
             try:
-                user = models.User.objects.get(name=username)
+                user = models.NormalUser.objects.get(name=username)
                 if not user.has_confirmed:
                     message = "该用户还未通过邮件确认！"
                     return render(request, 'login/login.html', locals())
@@ -53,6 +53,7 @@ def login(request):
     login_form = UserForm
     return render(request, 'login/login.html', locals())
 
+#用户注册
 def register(request):
     if request.session.get('is_login', None):
         # 登录状态不允许注册。你可以修改这条原则！
@@ -98,6 +99,7 @@ def register(request):
     register_form = RegisterForm
     return render(request, 'login/register.html', locals())
 
+#用户注册验证
 def make_confirm_string(NormalUser):
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     code = hash_code(NormalUser.name, now)
@@ -105,6 +107,7 @@ def make_confirm_string(NormalUser):
     return code
 
 
+#发送验证邮件
 def send_email(email, code):
     subject = '来自最棒的妙妙的测试邮件'
     from_email='miaoran9819@163.com'
@@ -118,6 +121,7 @@ def send_email(email, code):
     msg.send()
     return HttpResponse("<h1>邮件发送成功!</h1>")
 
+#用户注册条件判断
 def user_confirm(request):
     code = request.GET.get('code', None)
     message = ''
@@ -139,6 +143,7 @@ def user_confirm(request):
         message = '感谢确认，请使用账户登录！'
         return render(request, 'login/confirm.html', locals())
 
+#用户登出
 def logout(request):
     if not request.session.get('is_login', None):
         return redirect('/index/')
@@ -146,6 +151,30 @@ def logout(request):
 
     return redirect('/index/')
 
+#显示主页，用于测试
 def base(request):
     pass
     return render(request,'login/base.html')
+
+#用户收藏资源
+def like_resource(request,resource_id):
+    #判断用户是否登录
+    username = request.session.get('username', '')
+    if not username:
+        return HttpResponseRedirect('/login/')
+    #判断是否收藏
+    try:
+        now_user=NormalUser.objects.get(name=username)
+    except:
+        return HttpResponse("不存在当前用户", status=status.HTTP_406_NOT_ACCEPTABLE)
+    try:
+        queryset=LikeResources.objects.get(liker_user=now_user,like_resource_id=resource_id)
+        return HttpResponse("你已经收藏过该资源")
+    except:
+        #往数据库存储收藏信息
+        thislikeinfor = LikeResources(
+            liker_user=now_user,
+            like_resource_id=resource_id
+        )
+        thislikeinfor.save()
+
