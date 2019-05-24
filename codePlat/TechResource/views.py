@@ -9,7 +9,7 @@ from TechResource.serializers import SciAchiSerializer
 from User.serializers import NormalUserSerializer
 from User.serializers import ExpertSerializer
 from collections import OrderedDict
-from django.shortcuts import render, get_object_or_404,render_to_response
+from django.shortcuts import render, get_object_or_404,render_to_response,HttpResponse
 import json
 
 
@@ -18,18 +18,33 @@ class SciAchiViewSet(viewsets.ModelViewSet):
     queryset = SciAchi.objects.all()
     serializer_class = SciAchiSerializer
 
+    def ajax_submit(request):
+        ret = {'status': True, 'error': ""}
+        print(request.POST)
+        j_ret = json.dumps(ret)
+        return HttpResponse(j_ret)
+
     def list_all(request):
-        # queryset = SciAchi.objects.all()
-        #  queryset = [12, 23, 4, 5]
-        # return render(request, 'testResource.html', {'data': queryset})
         data = SciAchi.objects.all()
         return render(request, 'techResource.html', {'data': json.dumps(data)})
     def list_one(self,request,resource_id):
         data=get_object_or_404(SciAchi,resource_id=resource_id)
         return render(request, 'techDetail.html', {'data': json.dumps(data)})
 
+    def test(request):
+        return render(request, 'ajax.html')
 
-
+    def ajax(request):
+        if request.method == "POST":
+            name = request.POST.get('name')
+            print("ok")
+            status = 1
+            result = "sucuss"
+            return HttpResponse(json.dumps({
+                "status": status,
+                "result": result,
+                "name": name
+            }))
 
     def create(self, request):
         sciAchi_serializer = SciAchiSerializer(data=request.data)

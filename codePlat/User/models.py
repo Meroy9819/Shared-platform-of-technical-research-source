@@ -35,7 +35,7 @@ class NormalUser(models.Model):
 		)
 	#用户类型
 	type = models.CharField(
-		max_length = 16,
+		max_length = 32,
 		choices=kind,
 		default='普通用户',
 		)
@@ -58,7 +58,11 @@ class NormalUser(models.Model):
 		max_length=32, choices=gender, default='女'
 	)
 	c_time = models.DateTimeField(auto_now_add=True)
-
+	#用户手机号
+	phonenumber=models.CharField(
+		length=11,
+		default="00000000000",
+	)
 	def __str__(self):
 		return self.name
 
@@ -126,6 +130,18 @@ class LikeResources(models.Model):
 	like_id=models.AutoField(
 		primary_key=True,
 	)
-	liker_id=models.ForeignKey(NormalUser, on_delete=models.CASCADE)
+	liker_user=models.ForeignKey(NormalUser, on_delete=models.CASCADE)
 	like_resource_id = models.ForeignKey(SciAchi, on_delete=models.CASCADE)
 
+class ConfirmString(models.Model):
+    code = models.CharField(max_length=256)
+    user = models.OneToOneField('NormalUser',on_delete=models.CASCADE)
+    c_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.name + ":   " + self.code
+
+    class Meta:
+        ordering = ["-c_time"]
+        verbose_name = "确认码"
+        verbose_name_plural = "确认码"

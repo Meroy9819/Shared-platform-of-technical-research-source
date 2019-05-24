@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'User',
     'learn',
     'captcha',
-    'school',
+    'Comment',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +133,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+EMAIL_USE_SSL = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'miaoran9819@163.com'
+EMAIL_HOST_PASSWORD = 'flzx3qc'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+CONFIRM_DAYS = 7
