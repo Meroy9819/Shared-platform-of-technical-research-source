@@ -26,8 +26,8 @@ export default new Router({
 
     {
       path: '/',
-      name: 'SearchResult',
-      component: SearchResult
+      name: 'Paperview',
+      component: Paperview
     }
   ]
 })

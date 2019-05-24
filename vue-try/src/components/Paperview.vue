@@ -6,13 +6,13 @@
             <el-main width="60%">
               <el-row :gutter="20">
                 <el-col :span="12">
-                   <el-link href="https://element.eleme.io" target="_blank"><h2>多层弹性半空间中的地震波(一)</h2></el-link>
+                   <el-link href="https://element.eleme.io" target="_blank"><h2>{{title}}</h2></el-link>
                 </el-col>
                 <el-col :span="3" class="bt">
-                    <el-button type="primary" icon="el-icon-star-on" @click="star">收藏</el-button>
+                    <el-button type="warning" icon="el-icon-star-on" @click="star">收藏</el-button>
                 </el-col>
                 <el-col :span="3"  :offset="1" class="bt">
-                    <el-button type="primary" icon="el-icon-warning" @click="wrong">报错</el-button>
+                    <el-button type="danger" icon="el-icon-warning" @click="wrong">报错</el-button>
                 </el-col>
                 <el-col :span="3" :offset="1" class="bt">
                     <el-popover
@@ -116,6 +116,7 @@ export default {
     data() {
       return {
         // 成果信息
+        title:"多层弹性半空间中的地震波(一)",
         aulist: [
         { index:'1',name: 'author1' },
         { index:'2',name: 'author2' },
@@ -130,7 +131,7 @@ export default {
         refcnt:"99",
         readcnt:"999",
 
-        // 评论列表
+        // 评论列表A
         commlist:[],
 
         //用户名
@@ -173,7 +174,7 @@ export default {
       //点击报错按钮触发
       wrong(){
         this.$prompt('请输入报错内容', '报错', {
-          confirmButtonText: '确定',
+          confirmButtonText: '提交反馈',
           cancelButtonText: '取消',
           inputErrorMessage: 'Invalid'
         }).then(({ value }) => {
