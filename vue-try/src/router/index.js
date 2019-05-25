@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar'
 import Paperview from '@/components/Paperview'
 import Header from '@/components/Header'
 import SearchResult from '@/components/SearchResult'
-
+import indexx from '@/components/indexx'
 
 Vue.use(Router);
 
@@ -23,11 +23,20 @@ export default new Router({
     //   name: 'Register',
     //   component: Register
     // }
-
     {
       path: '/',
+      name: 'indexx',
+      component: indexx
+    },
+    {
+      path: '/pv',
       name: 'Paperview',
       component: Paperview
-    }
+    },
+    {
+      path: '/sr',
+      name: 'SearchResult',
+      component: SearchResult
+    },
   ]
 })

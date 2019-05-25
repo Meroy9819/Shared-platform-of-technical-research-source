@@ -9,13 +9,18 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Paperview from '@/components/Paperview'
 import Header from '@/components/Header'
+import SearchResult from '@/components/SearchResult'
+import indexx from '@/components/indexx'
+
 export default {
   name: 'App',
   components:{
     Login,
     Register,
     Paperview,
-    Header
+    Header,
+    SearchResult,
+    indexx
   }
 }
 </script>

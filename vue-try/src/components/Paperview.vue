@@ -1,5 +1,5 @@
 <template>
-    <el-container>
+    <el-container class="tot">
         
         <v-header></v-header>
         <el-container class="main-con">
@@ -128,8 +128,8 @@ export default {
         { index:'2',text: 'tag2' },
         { index:'3',text: 'tag3' },
       ],
-        refcnt:"99",
-        readcnt:"999",
+        refcnt:99,
+        readcnt:999,
 
         // 评论列表A
         commlist:[],
@@ -196,9 +196,12 @@ export default {
 </script>
 
 <style scoped>
+.tot{
+    height:100%;
+}
 
 .main-con{
-  height:600px;
+  /* height:600px; */
   width:80%;
   margin:0 auto;
 }

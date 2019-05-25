@@ -1,41 +1,44 @@
 <template>
-    <el-container>
+    <el-container class="tot">
         
         <v-header></v-header>
-         <el-container class="main-con1">
-            <el-main width="60%">
+         <el-container class="main-con1" >
+            <el-main>
+                <el-row><el-col :span="24"><div class="grid-content"></div></el-col></el-row>
               <el-row :gutter="20">
-                <el-col :span="10">
+                <el-col :span="10" :offset="5" >
                     <el-input placeholder="请输入检索内容" prefix-icon="el-icon-search" v-model="input2"></el-input>
                 </el-col>
                 <el-col :span="1">
                     <el-button type="primary" @click="search" icon="el-icon-search"></el-button>
                 </el-col>
                 <el-col :span="2" :offset="1">
-                    <el-button disabled="true" type="primary" @click="advsearch" icon="el-icon-s-fold">高级检索</el-button>
+                    <el-button disabled type="primary" @click="advsearch" icon="el-icon-s-fold">高级检索</el-button>
                 </el-col>
               </el-row>
+               <el-row><el-col :span="24"><div class="grid-content"></div></el-col></el-row>
               <el-divider></el-divider>
             </el-main>
          </el-container>
          
         <el-container class="main-con2">
-            <el-main width="60%">
-              <el-row  class="papercard" v-for="paper in paperlist.slice((currentPage-1)*pagesize,currentPage*pagesize)" :key="paper.index">
-              <el-card class="box-card" shadow="always">
+            <el-main>
+             <el-carousel type="card" :interval="400" class="flip" >
+                <el-carousel-item v-for="paper in toplist" :key="paper.index">
+                <el-card class="box-card" shadow="hover">
               <el-row >
-                <el-col :span="16" class="grid-content bg-purple-light">
-                   <el-link href="https://element.eleme.io" target="_blank"><h2>{{paper.title}}</h2></el-link>
+                <el-col :span="22" class="grid-content bg-purple-light">
+                   <el-link href="https://element.eleme.io" target="_blank"><h3>{{paper.title}}</h3></el-link>
                 </el-col>
-                <el-col :span="1" class="grid-content bg-purple-light" :offset="7">
+                <el-col :span="1" class="grid-content bg-purple-light" :offset="1">
                     <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
                 </el-col>
               </el-row>
               
 
                 <el-row>
-                    <el-col :span="3" class="grid-content bg-purple-light">作者：</el-col>
-                    <el-col :span="21">
+                    <el-col :span="6" class="grid-content bg-purple-light">作者：</el-col>
+                    <el-col :span="18">
                       <div class="grid-content bg-purple-light">
                               <el-link href="https://element.eleme.io" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
                                 {{ au.name }}
@@ -46,8 +49,8 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="3" class="grid-content bg-purple-light">关键词:</el-col>
-                    <el-col :span="21">
+                    <el-col :span="6" class="grid-content bg-purple-light">关键词:</el-col>
+                    <el-col :span="18">
                       <div class="grid-content bg-purple-light">
                         <el-tag v-for="tag in paper.taglist" :key="tag.index" class="tagg">
                            {{ tag.text }}
@@ -56,31 +59,23 @@
                       </el-col>
                 </el-row>
                  <el-row>
-                    <el-col :span="3" class="grid-content bg-purple-light"><i class="el-icon-link"> 被引量:</i></el-col>
-                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.refcnt }}</div></el-col>
+                    <el-col :span="6" class="grid-content bg-purple-light"><i class="el-icon-link"> 被引量:</i></el-col>
+                    <el-col :span="4"><div class="grid-content bg-purple-light">{{ paper.refcnt }}</div></el-col>
                     
                     <el-tooltip placement="bottom">
                       <div slot="content">我们如何定义“阅读量”？<br/><br/>一次“阅读”行为是……</div>
-                      <el-col :span="3" :offset="1" class="grid-content bg-purple-light"><i class="el-icon-view"> 阅读量:</i></el-col>
+                      <el-col :span="6" :offset="1" class="grid-content bg-purple-light"><i class="el-icon-view"> 阅读量:</i></el-col>
                     </el-tooltip>
                     
-                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.readcnt }}</div></el-col>
+                    <el-col :span="4"><div class="grid-content bg-purple-light">{{ paper.readcnt }}</div></el-col>
                 </el-row>
                 </el-card>
-                <el-divider></el-divider>
-              </el-row>
 
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="total"
-                :page-size="pagesize"
-                :hide-on-single-page=true
-                @current-change="current_change">
-              </el-pagination>
+                </el-carousel-item>
+            </el-carousel>
             </el-main>
 
-            <el-aside width="25%">
+            <!-- <el-aside width="25%"> -->
                 
             </el-aside>
         </el-container>
@@ -96,13 +91,9 @@ import Header from '@/components/Header'
 export default {
     data() {
       return {
-        //分页
-        total:2, //总条目数
-        pagesize:10, //每页条目数
-        currentPage:1, //当前所在页
 
-        // 成果信息
-        paperlist:[{
+        //
+        toplist:[{
         index:'1',
         title:"多层弹性半空间中的地震波(一)",
         aulist: [
@@ -134,11 +125,25 @@ export default {
       ],
         refcnt:66,
         readcnt:666,
+      },
+
+      {
+        index:'3',
+        title:"Hello World",
+        aulist: [
+        { index:'1',name: 'author1' },
+        { index:'2',name: 'author2' },
+        { index:'3',name: 'author3' },
+      ],
+        taglist: [
+        { index:'1',text: 'tag1' },
+        { index:'2',text: 'tag2' },
+        { index:'3',text: 'tag3' },
+      ],
+        refcnt:11,
+        readcnt:111,
       }
       ],
-        // 评论列表
-        commlist:[],
-
         //用户名
         username:"uname",
         //检索内容
@@ -150,10 +155,6 @@ export default {
         'v-header':Header
     },
     methods: {
-      //换页
-      current_change:function(currentPage){
-        this.currentPage = currentPage;
-      },
       //点击收藏按钮触发：
       star(){
         console.log("点击收藏");
@@ -176,15 +177,45 @@ export default {
 </script>
 
 <style scoped>
+.flip{
+  background: #FCFCFC;
+  height: auto;
+}
+/* .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 150px;
+    margin: 0;
+  } */
 
+  .el-carousel__item:nth-child(2n) {
+     background-color: #99a9bf;
+     height: auto;
+  }
+  
+  .el-carousel__item:nth-child(2n+1) {
+     background-color: #d3dce6;
+     height: auto;
+  }
+
+.box-card {
+    width: 100%;
+    height: auto;
+  }
 .main-con1{
   width:80%;
+  /* height:300px; */
   margin:0 auto;
+}
+
+.tot{
+    height:100%;
 }
 
 .main-con2{
   /* height:600px; */
-  width:80%;
+  width:60%;
   margin:0 auto;
 }
 
@@ -237,7 +268,7 @@ export default {
 
   .el-col {
     border-radius: 4px;
-    line-height:30px;
+    /* line-height:30px; */
     
   }
 
@@ -263,12 +294,6 @@ export default {
   /* .bt{
     margin-right: 20px;
   } */
-
-  /* 评论row */
-.comm{
-  margin-bottom: 5px;
-  text-align: left;
-}
 
 .papercard{
   margin-bottom: 0px;
