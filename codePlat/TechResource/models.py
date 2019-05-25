@@ -53,6 +53,12 @@ class SciAchi(models.Model):
         default=0,
     )
 
+    #作者
+    author=models.CharField(
+        max_length=50,
+        null=True,
+    )
+
     class Meta:
         verbose_name="科技成果"
         verbose_name_plural="科技成果"

@@ -1,12 +1,6 @@
 #blog/forms.py
 from django import forms
 
-from .models import Comment
-
-class CommentsForm(forms.ModelForm):
-
-    class Meta:
-
-        model=Comment
-
-        fields=('CommentTitle','CommentContent')
+class CommentForm(forms.Form):
+    CommentTitle = forms.CharField(label="评论标题",max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    CommentContent = forms.CharField(label="评论内容", max_length=5000, widget=forms.TextInput(attrs={'class': 'form-control'}))

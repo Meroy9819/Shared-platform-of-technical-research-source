@@ -61,7 +61,7 @@ class NormalUser(models.Model):
 	#用户手机号
 	phonenumber=models.CharField(
 		max_length=11,
-		default="00000000000",
+		default='00000000',
 	)
 	has_confirmed = models.BooleanField(default=False)
 	def __str__(self):
@@ -135,6 +135,14 @@ class LikeResources(models.Model):
 	like_resource_id = models.ForeignKey(SciAchi, on_delete=models.CASCADE)
 	objects = models.Manager()
 
+	def __str__(self):
+		return self.liker_user.name + ":   " + self.like_resource_id.name
+
+	class Meta:
+		verbose_name = "收藏"
+		verbose_name_plural = "收藏"
+
+
 class ConfirmString(models.Model):
     code = models.CharField(max_length=256)
     user = models.OneToOneField('NormalUser',on_delete=models.CASCADE)
@@ -147,3 +155,16 @@ class ConfirmString(models.Model):
         ordering = ["-c_time"]
         verbose_name = "确认码"
         verbose_name_plural = "确认码"
+
+class report:
+	report_id=models.AutoField(
+		primary_key=True,
+	)
+	report_user=models.ForeignKey(NormalUser,on_delete=True)
+	report_resource_id=models.ForeignKey(SciAchi,on_delete=True)
+
+	def __str__(self):
+		return self.report_user.name + ":   " + self.report_resource_id.name
+	class Meta:
+		verbose_name = "举报信息"
+		verbose_name_plural = "举报信息"

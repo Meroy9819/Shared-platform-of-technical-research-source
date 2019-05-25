@@ -8,7 +8,7 @@ import codePlat
 import datetime
 from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
-from .models import LikeResources
+from .models import LikeResources,report
 from User.models import NormalUser
 from rest_framework import status
 
@@ -67,7 +67,7 @@ def register(request):
             password2 = register_form.cleaned_data['password2']
             email = register_form.cleaned_data['email']
             sex = register_form.cleaned_data['sex']
-            phonenumber=register_form.changed_data['phonenumber']
+            phonenumber=register_form.cleaned_data['phonenumber']
             if password1 != password2:  # 判断两次密码是否相同
                 message = "两次输入的密码不同！"
                 return render(request, 'login/register.html', locals())
@@ -80,8 +80,6 @@ def register(request):
                 if same_email_user:  # 邮箱地址唯一
                     message = '该邮箱地址已被注册，请使用别的邮箱！'
                     return render(request, 'login/register.html', locals())
-
-                    # 当一切都OK的情况下，创建新用户
 
                 new_user = models.NormalUser()
                 new_user.name = username
@@ -166,10 +164,12 @@ def like_resource(request,resource_id):
     try:
         now_user=NormalUser.objects.get(name=username)
     except:
-        return HttpResponse("不存在当前用户", status=status.HTTP_406_NOT_ACCEPTABLE)
+        message = '不存在当前用户'
+        return render(request, 'shoucang.html', locals())
     try:
         queryset=LikeResources.objects.get(liker_user=now_user,like_resource_id=resource_id)
-        return HttpResponse("你已经收藏过该资源")
+        message = '你已经收藏过该资源'
+        return render(request, 'shoucang.html', locals())
     except:
         #往数据库存储收藏信息
         thislikeinfor = LikeResources(
@@ -177,4 +177,31 @@ def like_resource(request,resource_id):
             like_resource_id=resource_id
         )
         thislikeinfor.save()
+        message = '收藏成功'
+        return render(request, 'shoucang.html', locals())
+
+#用户举报信息
+def report_resource(request,resource_id):
+    #判断用户是否登录
+    username = request.session.get('username', '')
+    if not username:
+        return HttpResponseRedirect('/login/')
+    try:
+        now_user=NormalUser.objects.get(name=username)
+    except:
+        message = '不存在当前用户'
+        return render(request, 'shoucang.html', locals())
+    try:
+        queryset=LikeResources.objects.get(liker_user=now_user,like_resource_id=resource_id)
+        message = '你已经举报过该资源'
+        return render(request, 'shoucang.html', locals())
+    except:
+        #往数据库存储收藏信息
+        thisreportinfor = report(
+            report_user=now_user,
+            report_resource_id=resource_id
+        )
+        thisreportinfor.save()
+        message = '举报成功'
+        return render(request, 'shoucang.html', locals())
 
