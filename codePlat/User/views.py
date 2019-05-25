@@ -8,10 +8,15 @@ import codePlat
 import datetime
 from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
-from .models import LikeResources,report
+from Like.models import LikeResources
+from Report.models import report
 from User.models import NormalUser
 from rest_framework import status
-
+from django.http import HttpResponse
+from django.forms.models import model_to_dict
+from Like.models import LikeResources
+from BuyResource.models import BuyResources
+from Report.models import report
 #加密密码
 def hash_code(s, salt='codeplat_login'):
     h = hashlib.sha256()
@@ -204,4 +209,52 @@ def report_resource(request,resource_id):
         thisreportinfor.save()
         message = '举报成功'
         return render(request, 'shoucang.html', locals())
+
+#普通用户主页展示信息
+def show_user(request):
+    #如果尚未登录，则跳转到登录页
+    if request.session.get('is_login', None)!=True:
+        return redirect("/login/login.html")
+    #取出当前用户对象
+    #json化所有用户信息
+    json_list = []
+    user_name=request.session.get['username','']
+    data=get_object_or_404(NormalUser,name=user_name)
+    json_dict = model_to_dict(data)
+    json_list.append(json_dict)
+    #用户对应的评论信息
+    comment_user=get_object_or_404(NormalUser,name=user_name)
+    all_comment=comment_user.Comment_set().all()
+    for item in all_comment:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    #用户的收藏列表
+    liker_user=get_object_or_404(NormalUser,name=user_name)
+    all_likes=liker_user.LikeResource_set().all()
+    for item in all_likes:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    #用户的购买列表
+    buy_user=get_object_or_404(NormalUser,name=user_name)
+    all_buy=buy_user.BuyResource_set().all()
+    for item in all_buy:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    #用户的举报列表
+    report_user=get_object_or_404(NormalUser,name=user_name)
+    all_report=report_user.report_set().all()
+    for item in all_report:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    return HttpResponse(json.dumps(json_list), content_type='application/json')
+
+
+#专家主页展示
+def show_expert(request,expert_id):
+    json_list=[]
+    #专家的所有个人信息
+    expert=get_object_or_404(ExpertUser,expert_id=expert_id)
+    json_dict = model_to_dict(expert)
+    json_list.append(json_dict)
+    return HttpResponse(json.dumps(json_list), content_type='application/json')
 

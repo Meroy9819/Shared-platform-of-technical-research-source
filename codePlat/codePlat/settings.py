@@ -45,11 +45,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'Like',
+    'BuyResource',
+    'Report',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -62,7 +66,7 @@ ROOT_URLCONF = 'codePlat.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR+"/templates",],
+        'DIRS': [BASE_DIR+"/templates",BASE_DIR+"/frontend/dist/"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,7 +88,7 @@ WSGI_APPLICATION = 'codePlat.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'miaomiao1',
+        'NAME': 'haha',
         'USER': 'root',
         'PASSWORD': '130220',
         'HOST': '127.0.0.1',
@@ -132,6 +136,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+os.path.join(BASE_DIR, "frontend/dist/static"),
 ]
 
 EMAIL_USE_SSL = True

@@ -5,6 +5,8 @@ from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from TechResource.models import SciAchi
 from .forms import CommentForm
 from User.models import NormalUser
+
+#创建评论
 def create_comment(request,resource_id):
     #判断是否是登录状态
     #if request.session.get('is_login', None):

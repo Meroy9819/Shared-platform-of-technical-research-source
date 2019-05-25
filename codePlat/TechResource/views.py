@@ -11,6 +11,8 @@ from User.serializers import ExpertSerializer
 from collections import OrderedDict
 from django.shortcuts import render, get_object_or_404,render_to_response,HttpResponse
 import json
+from django.http import HttpResponse
+from django.forms.models import model_to_dict
 
 def ajax_submit(request):
     ret = {'status': True, 'error': ""}
@@ -18,12 +20,35 @@ def ajax_submit(request):
     j_ret = json.dumps(ret)
     return HttpResponse(j_ret)
 
+#展示所有在数据库中的论文
 def list_all(request):
+    json_list=[]
     data = SciAchi.objects.all()
-    return render(request, 'techResource.html', {'data': json.dumps(data)})
+    for item in data:
+        json_dict=model_to_dict(item)
+        json_list.append(json_dict)
+    #HttpResponse.setHeader("Access-Control-Allow-Origin", "*");
+    return HttpResponse(json.dumps(json_list),content_type='application/json')
+
+    # temp=list(data)
+    # return render(request, 'techResource.html', {'data': json.dumps(temp)})
+
+#展示一个指定了resource_id的论文
+#包括论文数据和评论数据
 def list_one(self,request,resource_id):
+    #科技资源数据
+    json_list = []
     data=get_object_or_404(SciAchi,resource_id=resource_id)
-    return render(request, 'techDetail.html', {'data': json.dumps(data)})
+    for item in data:
+        json_dict=model_to_dict(item)
+        json_list.append(json_dict)
+    #评论数据
+    paper = SciAchi.objects.get(resource_id=resource_id)
+    all_comment=paper.Comment_set().all()
+    for item in all_comment:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    return HttpResponse(json.dumps(json_list), content_type='application/json')
 
 def test(request):
     return render(request, 'ajax.html')

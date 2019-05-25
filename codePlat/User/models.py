@@ -1,6 +1,5 @@
 # coding=utf-8
 from django.db import models
-#import TechResource.models as Tech
 #from label.models import label
 import django.utils.timezone as timezone
 from django import forms
@@ -10,11 +9,6 @@ class NormalUser(models.Model):
 	gender = (
 		('male', '男'),
 		('female', '女'),
-	)
-	kind=(
-		('专家用户','专家用户'),
-		('普通用户','普通用户'),
-		('管理员','管理员'),
 	)
 	#用户编号
 	user_id = models.AutoField(
@@ -34,11 +28,10 @@ class NormalUser(models.Model):
 		null = True,
 		)
 	#用户类型
-	type = models.CharField(
-		max_length = 32,
-		choices=kind,
-		default='普通用户',
-		)
+	#1 普通用户
+	#2 该用户有专家主页
+	#3 管理员
+	type = models.IntegerField(max_length=3,default=1)
 	#用户头像
 	image = models.ImageField(
 		null = True,
@@ -63,6 +56,12 @@ class NormalUser(models.Model):
 		max_length=11,
 		default='00000000',
 	)
+	corresponding_expert_id=models.IntegerField(
+		default=-1
+	)
+	corrsponding_admin_id=models.IntegerField(
+		default=-1
+	)
 	has_confirmed = models.BooleanField(default=False)
 	def __str__(self):
 		return self.name
@@ -78,69 +77,63 @@ class NormalUser(models.Model):
 #		)
 
 class ExpertUser(models.Model):
+	#专家编号
 	expert_id = models.AutoField(
 		primary_key=True,
 	)
-	#联系电话
-	contact = models.CharField(
-		max_length = 128,
-		null = True,
-		)
+	#如有，对应的用户编号
+	corresponding_user_id=models.IntegerField(
+		default=-1
+	)
+	#所在机构
 	institution=models.CharField(
 		max_length=128,
 		null=True,
 	)
+	#被引用数
 	reference_number=models.IntegerField(
 		null=True,
 	)
+	#论文发表数量
 	paper_number=models.IntegerField(
 		null=True,
 	)
+	#H指数
 	H_index=models.IntegerField(
 		null=True,
 	)
+	#G指数
 	G_index=models.IntegerField(
 		null=True,
 	)
+	#领域
 	field=models.IntegerField(
 		null=True,
 	)
-#	ownlabels=models.ManyToManyField(
-#		label,
-#		blank=True,
-#		)
-#	from TechResource.models import Resource
-#	ownresources=models.ManyToManyField(Resource,blank=True)
+	class Meta:
+		ordering = ["expert_id"]
+		verbose_name = "专家"
+		verbose_name_plural = "专家"
 
 class Administrator(models.Model):
-	administrator = models.OneToOneField(
-		'NormalUser',
-		on_delete = models.CASCADE,
-		default = "",
-		)
-
-class BuyResources(models.Model):
-	transaction_id=models.AutoField(
+	#管理员编号
+	admin_id=models.AutoField(
 		primary_key=True,
 	)
-	buyer_id=models.ForeignKey(NormalUser, on_delete=models.CASCADE)
-	buy_resource_id=models.ForeignKey(SciAchi,on_delete=models.CASCADE)
-	time=models.DateTimeField(default = timezone.now)
-
-class LikeResources(models.Model):
-	like_id=models.AutoField(
-		primary_key=True,
+	#管理员名字
+	admin_name=models.CharField(
+		max_length=30,
+		default="No yet"
 	)
-	liker_user=models.ForeignKey(NormalUser, on_delete=models.CASCADE)
-	like_resource_id = models.ForeignKey(SciAchi, on_delete=models.CASCADE)
-	objects = models.Manager()
-
-	def __str__(self):
-		return self.liker_user.name + ":   " + self.like_resource_id.name
+	#管理员密码
+	admin_password=models.CharField(
+		max_length=100,
+	)
 
 	class Meta:
-		verbose_name = "收藏"
-		verbose_name_plural = "收藏"
+		ordering = ["admin_id"]
+		verbose_name = "管理员"
+		verbose_name_plural = "管理员"
 
 
 class ConfirmString(models.Model):
@@ -156,15 +149,3 @@ class ConfirmString(models.Model):
         verbose_name = "确认码"
         verbose_name_plural = "确认码"
 
-class report:
-	report_id=models.AutoField(
-		primary_key=True,
-	)
-	report_user=models.ForeignKey(NormalUser,on_delete=True)
-	report_resource_id=models.ForeignKey(SciAchi,on_delete=True)
-
-	def __str__(self):
-		return self.report_user.name + ":   " + self.report_resource_id.name
-	class Meta:
-		verbose_name = "举报信息"
-		verbose_name_plural = "举报信息"
