@@ -6,6 +6,7 @@ import django.utils.timezone as timezone
 from django import forms
 from TechResource.models import SciAchi
 
+
 class NormalUser(models.Model):
 	gender = (
 		('male', '男'),

@@ -1,4 +1,4 @@
-# frontend
+# vue-try
 
 > A Vue.js project
 

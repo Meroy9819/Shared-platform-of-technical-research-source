@@ -12,6 +12,7 @@ from collections import OrderedDict
 from django.shortcuts import render, get_object_or_404,render_to_response,HttpResponse
 import json
 
+
 def ajax_submit(request):
     ret = {'status': True, 'error': ""}
     print(request.POST)
@@ -19,12 +20,27 @@ def ajax_submit(request):
     return HttpResponse(j_ret)
 
 def list_all(request):
+    json_list=[]
     data = SciAchi.objects.all()
-    return render(request, 'techResource.html', {'data': json.dumps(data)})
-def list_one(self,request,resource_id):
-    data=get_object_or_404(SciAchi,resource_id=resource_id)
-    return render(request, 'techDetail.html', {'data': json.dumps(data)})
+    from django.forms.models import model_to_dict
+    for item in data:
+        json_dict=model_to_dict(item)
+        json_list.append(json_dict)
+    from django.http import HttpResponse
+    return HttpResponse(json.dumps(json_list),content_type='application/json')
 
+    # temp=list(data)
+    # return render(request, 'techResource.html', {'data': json.dumps(temp)})
+
+def list_one(self,request,resource_id):
+   # data=get_object_or_404(SciAchi,resource_id=resource_id)
+    data=[1,2,3,4]
+    temp=list(data)
+    return render(request, 'techDetail.html', {'data': json.dumps(temp)})
+
+def testVue(request):
+    data = SciAchi.objects.all()
+    return render(request, 'index.html', {'data': data})
 def test(request):
     return render(request, 'ajax.html')
 

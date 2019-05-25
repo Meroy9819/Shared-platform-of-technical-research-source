@@ -1,8 +1,8 @@
 {
-  "name": "frontend",
+  "name": "vue-try",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "miaoran",
+  "author": "",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -10,6 +10,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "element-ui": "^2.8.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
@@ -30,7 +32,10 @@
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0",
     "node-notifier": "^5.1.2",
+    "node-sass": "^4.12.0",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
     "portfinder": "^1.0.13",
