@@ -12,7 +12,7 @@
                     <el-button type="primary" @click="search" icon="el-icon-search"></el-button>
                 </el-col>
                 <el-col :span="2" :offset="1">
-                    <el-button disabled="true" type="primary" @click="advsearch" icon="el-icon-s-fold">高级检索</el-button>
+                    <el-button disabled type="primary" @click="advsearch" icon="el-icon-s-fold">高级检索</el-button>
                 </el-col>
               </el-row>
               <el-divider></el-divider>
@@ -21,63 +21,117 @@
          
         <el-container class="main-con2">
             <el-main width="60%">
-              <el-row  class="papercard" v-for="paper in paperlist.slice((currentPage-1)*pagesize,currentPage*pagesize)" :key="paper.index">
-              <el-card class="box-card" shadow="always">
-              <el-row >
-                <el-col :span="16" class="grid-content bg-purple-light">
-                   <el-link href="https://element.eleme.io" target="_blank"><h2>{{paper.title}}</h2></el-link>
-                </el-col>
-                <el-col :span="1" class="grid-content bg-purple-light" :offset="7">
-                    <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
-                </el-col>
-              </el-row>
+              <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+                <el-tab-pane label="论文" name="first">
+                    <el-row  class="papercard" v-for="paper in paperlist.slice((currentPage-1)*pagesize,currentPage*pagesize)" :key="paper.index">
+                      <el-card class="box-card" shadow="always">
+                      <el-row >
+                        <el-col :span="16" class="grid-content bg-purple-light">
+                          <el-link href="https://element.eleme.io" target="_blank"><h2>{{paper.title}}</h2></el-link>
+                        </el-col>
+                        <el-col :span="1" class="grid-content bg-purple-light" :offset="7">
+                            <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
+                        </el-col>
+                      </el-row>
+                      
+
+                        <el-row>
+                            <el-col :span="3" class="grid-content bg-purple-light">作者：</el-col>
+                            <el-col :span="21">
+                              <div class="grid-content bg-purple-light">
+                                      <el-link href="https://element.eleme.io" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
+                                        {{ au.name }}
+                                        <el-divider direction="vertical"></el-divider>
+                                      </el-link>
+                                      
+                              </div>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="3" class="grid-content bg-purple-light">关键词:</el-col>
+                            <el-col :span="21">
+                              <div class="grid-content bg-purple-light">
+                                <el-tag v-for="tag in paper.taglist" :key="tag.index" class="tagg">
+                                  {{ tag.text }}
+                                </el-tag>
+                              </div>
+                              </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="3" class="grid-content bg-purple-light"><i class="el-icon-link"> 被引量:</i></el-col>
+                            <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.refcnt }}</div></el-col>
+                            
+                            <el-tooltip placement="bottom">
+                              <div slot="content">我们如何定义“阅读量”？<br/><br/>一次“阅读”行为是……</div>
+                              <el-col :span="3" :offset="1" class="grid-content bg-purple-light"><i class="el-icon-view"> 阅读量:</i></el-col>
+                            </el-tooltip>
+                            
+                            <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.readcnt }}</div></el-col>
+                        </el-row>
+                        </el-card>
+                        <el-divider></el-divider>
+                      </el-row>
+
+                      <el-pagination
+                        background
+                        layout="prev, pager, next"
+                        :total="total"
+                        :page-size="pagesize"
+                        :hide-on-single-page=true
+                        @current-change="current_change">
+                      </el-pagination>
+                </el-tab-pane>
+
+                <el-tab-pane label="专家" name="second">
+                  <el-row  class="papercard" v-for="exp in explist.slice((currentPage-1)*pagesize,currentPage*pagesize)" :key="exp.index">
+                      <el-card class="box-card" shadow="always">
+                      <el-row >
+                        <el-col :span="3" class="grid-content bg-purple-light">
+                        <img
+                        style="width: 50px; height: 50px"
+                        src="../assets/timg.jpg"
+                        ></img>
+                        </el-col>
+                        <el-col :span="13" class="grid-content bg-purple-light">
+                          <el-link href="https://element.eleme.io" target="_blank"><h2>{{exp.name}}</h2></el-link>
+                        </el-col>
+                        <el-col :span="1" class="grid-content bg-purple-light" :offset="7">
+                            <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
+                        </el-col>
+                      </el-row>
+                      
+
+                        <el-row>
+                            <el-col :span="3" class="grid-content bg-purple-light">#h-index:</i></el-col>
+                            <el-col :span="2"><div class="grid-content bg-purple-light">{{ exp.hindex }} <el-divider direction="vertical"></el-divider></div></el-col>
+                            
+                            <el-col :span="3" class="grid-content bg-purple-light">#g-index:</i></el-col>
+                            <el-col :span="2"><div class="grid-content bg-purple-light">{{ exp.gindex }} <el-divider direction="vertical"></el-divider></div></el-col>
+                            
+                            <el-col :span="3" class="grid-content bg-purple-light">论文数:</el-col>
+                            <el-col :span="2"><div class="grid-content bg-purple-light">{{ exp.papercnt }}</div></el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="3" class="grid-content bg-purple-light">机构:</el-col>
+                            <el-col :span="21"><div class="grid-content bg-purple-light">{{ exp.inst }}</div></el-col>
+                        </el-row>
+                        
+                        </el-card>
+                        <el-divider></el-divider>
+                      </el-row>
+
+                      <el-pagination
+                        background
+                        layout="prev, pager, next"
+                        :total="total"
+                        :page-size="pagesize"
+                        :hide-on-single-page=true
+                        @current-change="current_change">
+                      </el-pagination>
+                </el-tab-pane>
+              </el-tabs>
+
               
-
-                <el-row>
-                    <el-col :span="3" class="grid-content bg-purple-light">作者：</el-col>
-                    <el-col :span="21">
-                      <div class="grid-content bg-purple-light">
-                              <el-link href="https://element.eleme.io" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
-                                {{ au.name }}
-                                 <el-divider direction="vertical"></el-divider>
-                              </el-link>
-                              
-                      </div>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="3" class="grid-content bg-purple-light">关键词:</el-col>
-                    <el-col :span="21">
-                      <div class="grid-content bg-purple-light">
-                        <el-tag v-for="tag in paper.taglist" :key="tag.index" class="tagg">
-                           {{ tag.text }}
-                        </el-tag>
-                      </div>
-                      </el-col>
-                </el-row>
-                 <el-row>
-                    <el-col :span="3" class="grid-content bg-purple-light"><i class="el-icon-link"> 被引量:</i></el-col>
-                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.refcnt }}</div></el-col>
-                    
-                    <el-tooltip placement="bottom">
-                      <div slot="content">我们如何定义“阅读量”？<br/><br/>一次“阅读”行为是……</div>
-                      <el-col :span="3" :offset="1" class="grid-content bg-purple-light"><i class="el-icon-view"> 阅读量:</i></el-col>
-                    </el-tooltip>
-                    
-                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.readcnt }}</div></el-col>
-                </el-row>
-                </el-card>
-                <el-divider></el-divider>
-              </el-row>
-
-              <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="total"
-                :page-size="pagesize"
-                :hide-on-single-page=true
-                @current-change="current_change">
-              </el-pagination>
             </el-main>
 
             <el-aside width="25%">
@@ -96,6 +150,8 @@ import Header from '@/components/Header'
 export default {
     data() {
       return {
+        //tab
+        activeName: 'first',
         //分页
         total:2, //总条目数
         pagesize:10, //每页条目数
@@ -136,8 +192,24 @@ export default {
         readcnt:666,
       }
       ],
-        // 评论列表
-        commlist:[],
+        //专家信息
+        explist:[{
+          index:'1',
+          name:"Douglas K. Rex",
+          papercnt:99,
+          inst:"IU Health University Hospital",
+          hindex:99,
+          gindex:99,
+        },
+        {
+          index:'1',
+          name:"aaa",
+          papercnt:66,
+          inst:"bbb",
+          hindex:66,
+          gindex:66,
+        }
+        ],
 
         //用户名
         username:"uname",
@@ -150,6 +222,11 @@ export default {
         'v-header':Header
     },
     methods: {
+      //切换tab
+      handleClick(tab, event) {
+        // console.log(tab, event);
+        console.log(this.activeName);
+      },
       //换页
       current_change:function(currentPage){
         this.currentPage = currentPage;
