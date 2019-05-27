@@ -1,4 +1,4 @@
-# vue-try
+﻿# vue-try
 
 > A Vue.js project
 
@@ -24,4 +24,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 indexx 首页  
 Paperview 资源主页  
 SearchResult 检索结果页  
-test 上传资源按钮
+test 上传资源模块

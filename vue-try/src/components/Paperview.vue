@@ -32,7 +32,7 @@
               <el-card class="box-card" shadow="hover">
 
                 <el-row>
-                    <el-col :span="3" class="grid-content bg-purple-light">作者：</el-col>
+                    <el-col :span="3" class="grid-content bg-purple-light greyfont">作者：</el-col>
                     <el-col :span="21">
                       <div class="grid-content bg-purple-light">
                               <el-link href="https://element.eleme.io" target="_blank"  v-for="au in aulist" :key="au.index" class="aulink">
@@ -44,7 +44,7 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="3" class="grid-content bg-purple-light">摘要:</el-col>
+                    <el-col :span="3" class="grid-content bg-purple-light greyfont">摘要:</el-col>
                     <el-col :span="21">
                       <div class="grid-content bg-purple-light">
                         {{abs}}
@@ -52,7 +52,7 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="3" class="grid-content bg-purple-light">关键词:</el-col>
+                    <el-col :span="3" class="grid-content bg-purple-light greyfont">关键词:</el-col>
                     <el-col :span="21">
                       <div class="grid-content bg-purple-light">
                         <el-tag v-for="tag in taglist" :key="tag.index" class="tagg">
@@ -62,15 +62,15 @@
                       </el-col>
                 </el-row>
                  <el-row>
-                   <el-col :span="3" class="grid-content bg-purple-light">发表年份:</el-col>
+                   <el-col :span="3" class="grid-content bg-purple-light greyfont">发表年份:</el-col>
                     <el-col :span="3"><div class="grid-content bg-purple-light">{{ pubyear }}</div></el-col>
 
-                    <el-col :span="3" :offset="1" class="grid-content bg-purple-light"><i class="el-icon-link"> 被引量:</i></el-col>
+                    <el-col :span="3" :offset="1" class="grid-content bg-purple-light greyfont"><i class="el-icon-link"> 被引量:</i></el-col>
                     <el-col :span="3"><div class="grid-content bg-purple-light">{{ refcnt }}</div></el-col>
                     
                     <el-tooltip placement="bottom">
                       <div slot="content">我们如何定义“阅读量”？<br/><br/>一次“阅读”行为是……</div>
-                      <el-col :span="3" :offset="1" class="grid-content bg-purple-light"><i class="el-icon-view"> 阅读量:</i></el-col>
+                      <el-col :span="3" :offset="1" class="grid-content bg-purple-light greyfont"><i class="el-icon-view"> 阅读量:</i></el-col>
                     </el-tooltip>
                     
                     <el-col :span="3"><div class="grid-content bg-purple-light">{{ readcnt }}</div></el-col>
@@ -85,20 +85,25 @@
                         <span>评论区</span>
                         <el-button style="float: right; padding: 3px 0" type="text" @click="addcomm" icon="el-icon-edit">添加评论</el-button>
                     </div>
-                    <div v-for="item in commlist" :key="item" class="text item">
+                    <div v-for="item in commlist" :key="item.index" class="text item">
                       <el-row class="comm">
                         <el-col :span="8" class="grid-content bg-purple-light">
                         <img
-                        style="width: 50px; height: 50px"
+                        style="width: 50px; height: 50px; border-radius: 25px"
                         src="../assets/timg.jpg"
                         ></img>
                         </el-col>
+
                         <el-col :span="16" class="grid-content bg-purple-light">
-                        <el-link href="https://element.eleme.io" target="_blank">{{ username }}</el-link>
+                        <!-- <el-row><el-col :span="24"><div class="grid-content3"></div></el-col></el-row> -->
+                        <el-link href="https://element.eleme.io" target="_blank" ><h3 class="bluefont">{{ item.username }}</h3></el-link>
                         </el-col>
                       </el-row>
                       <el-row class="comm">
-                        <el-col :span="24" class="grid-content bg-purple-light">{{ item }}</el-col>
+                        <el-col :span="24" class="grid-content bg-purple-light "><div>{{ item.content }}</div></el-col>
+                      </el-row>
+                      <el-row class="comm">
+                        <el-col :span="24" class="grid-content bg-purple-light greyfont" align="right">{{ item.commdate }}</el-col>
                       </el-row>
                         <el-divider></el-divider>
                       
@@ -139,7 +144,7 @@ export default {
         commlist:[],
 
         //用户名
-        username:"uname",
+        uname:"uname1",
       }
       
     },
@@ -155,6 +160,22 @@ export default {
           type: 'success'
         });
       },
+      //获取当前日期
+      getDate(){
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+      },
       //点击添加评论触发
       addcomm() {
         this.$prompt('请输入评论内容', '添加评论', {
@@ -162,14 +183,21 @@ export default {
           cancelButtonText: '取消',
           inputPattern:/^.{2,233}$/,
           inputErrorMessage: '请发送2到233字的评论',
-          inputType:'textarea'
+          inputType:'textarea',
+          maxlength:"10"
         }).then(({ value }) => {
           this.$message({
             type: 'success',
             message: '评论成功'
           });
           console.log(value); //value为评论内容
-          this.commlist.push(value);
+          var dd = this.$options.methods.getDate(); //当前日期
+          var u = this.uname; //当前用户名
+          this.commlist.push({
+            username: u,
+            content: value,
+            commdate: dd
+            });
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -274,6 +302,9 @@ export default {
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
+  }
+  .grid-content3 {
+    min-height: 5px;
   }
   .row-bg {
     padding: 10px 0;

@@ -155,8 +155,8 @@ export default {
         //提交表单
         onSubmit() {
             this.dialogFormVisible = false;
-            // console.log(this.form.pubyear);
-            console.log(this.form);
+            // console.log(this.form);
+            console.log(Date.toLocaleDateString());
         },
     }
 }
