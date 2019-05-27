@@ -160,7 +160,9 @@ export default {
         this.$prompt('请输入评论内容', '添加评论', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          inputErrorMessage: 'Invalid'
+          inputPattern:/^.{2,233}$/,
+          inputErrorMessage: '请发送2到233字的评论',
+          inputType:'textarea'
         }).then(({ value }) => {
           this.$message({
             type: 'success',
@@ -180,7 +182,9 @@ export default {
         this.$prompt('请输入报错内容', '报错', {
           confirmButtonText: '提交反馈',
           cancelButtonText: '取消',
-          inputErrorMessage: 'Invalid'
+          inputPattern:/^.{2,233}$/,
+          inputErrorMessage: '请发送2到233字的报错内容',
+          inputType:'textarea'
         }).then(({ value }) => {
           this.$message({
             type: 'success',

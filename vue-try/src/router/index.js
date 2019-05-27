@@ -7,6 +7,7 @@ import Paperview from '@/components/Paperview'
 import Header from '@/components/Header'
 import SearchResult from '@/components/SearchResult'
 import indexx from '@/components/indexx'
+import test from '@/components/test'
 
 Vue.use(Router);
 
@@ -36,6 +37,11 @@ export default new Router({
       path: '/sr',
       name: 'SearchResult',
       component: SearchResult
+    },
+    {
+      path: '/t',
+      name: 'test',
+      component: test
     },
   ]
 })
