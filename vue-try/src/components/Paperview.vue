@@ -62,7 +62,10 @@
                       </el-col>
                 </el-row>
                  <el-row>
-                    <el-col :span="3" class="grid-content bg-purple-light"><i class="el-icon-link"> 被引量:</i></el-col>
+                   <el-col :span="3" class="grid-content bg-purple-light">发表年份:</el-col>
+                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ pubyear }}</div></el-col>
+
+                    <el-col :span="3" :offset="1" class="grid-content bg-purple-light"><i class="el-icon-link"> 被引量:</i></el-col>
                     <el-col :span="3"><div class="grid-content bg-purple-light">{{ refcnt }}</div></el-col>
                     
                     <el-tooltip placement="bottom">
@@ -128,6 +131,7 @@ export default {
         { index:'2',text: 'tag2' },
         { index:'3',text: 'tag3' },
       ],
+        pubyear:1999,
         refcnt:99,
         readcnt:999,
 
@@ -300,7 +304,7 @@ export default {
   }
 
   .aulink {
-    color:#0080FF;
+    color:#409EFF;
   }
   .tagg {
     margin-right: 20px;

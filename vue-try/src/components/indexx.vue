@@ -4,7 +4,7 @@
         <v-header></v-header>
          <el-container class="main-con1" >
             <el-main>
-                <el-row><el-col :span="24"><div class="grid-content"></div></el-col></el-row>
+              <el-row><el-col :span="24"><div class="grid-content"></div></el-col></el-row>
               <el-row :gutter="20">
                 <el-col :span="10" :offset="5" >
                     <el-input placeholder="请输入检索内容" prefix-icon="el-icon-search" v-model="input2"></el-input>
@@ -24,10 +24,10 @@
         <el-container class="main-con2">
             <el-main>
              <el-carousel type="card" :interval="400" class="flip" >
-                <el-carousel-item v-for="paper in toplist" :key="paper.index">
-                <el-card class="box-card" shadow="hover">
+                <el-carousel-item v-for="paper in topPaperList" :key="paper.index">
+                <el-card class="box-card" shadow="always">
               <el-row >
-                <el-col :span="22" class="grid-content bg-purple-light">
+                <el-col :span="21" class="grid-content bg-purple-light">
                    <el-link href="https://element.eleme.io" target="_blank"><h3>{{paper.title}}</h3></el-link>
                 </el-col>
                 <el-col :span="1" class="grid-content bg-purple-light" :offset="1">
@@ -37,7 +37,7 @@
               
 
                 <el-row>
-                    <el-col :span="6" class="grid-content bg-purple-light">作者：</el-col>
+                    <el-col :span="6" class="grid-content bg-purple-light greyfont">作者：</el-col>
                     <el-col :span="18">
                       <div class="grid-content bg-purple-light">
                               <el-link href="https://element.eleme.io" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
@@ -49,7 +49,7 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="6" class="grid-content bg-purple-light">关键词:</el-col>
+                    <el-col :span="6" class="grid-content bg-purple-light greyfont">关键词:</el-col>
                     <el-col :span="18">
                       <div class="grid-content bg-purple-light">
                         <el-tag v-for="tag in paper.taglist" :key="tag.index" class="tagg">
@@ -59,12 +59,12 @@
                       </el-col>
                 </el-row>
                  <el-row>
-                    <el-col :span="6" class="grid-content bg-purple-light"><i class="el-icon-link"> 被引量:</i></el-col>
+                    <el-col :span="6" class="grid-content bg-purple-light greyfont"><i class="el-icon-link"> 被引量:</i></el-col>
                     <el-col :span="4"><div class="grid-content bg-purple-light">{{ paper.refcnt }}</div></el-col>
                     
                     <el-tooltip placement="bottom">
                       <div slot="content">我们如何定义“阅读量”？<br/><br/>一次“阅读”行为是……</div>
-                      <el-col :span="6" :offset="1" class="grid-content bg-purple-light"><i class="el-icon-view"> 阅读量:</i></el-col>
+                      <el-col :span="6" :offset="1" class="grid-content bg-purple-light greyfont"><i class="el-icon-view"> 阅读量:</i></el-col>
                     </el-tooltip>
                     
                     <el-col :span="4"><div class="grid-content bg-purple-light">{{ paper.readcnt }}</div></el-col>
@@ -73,11 +73,54 @@
 
                 </el-carousel-item>
             </el-carousel>
+
+            <el-divider></el-divider>
+
+            <el-carousel type="card" :interval="400" class="flip" >
+                <el-carousel-item v-for="exp in topExpList" :key="exp.index">
+                <el-card class="box-card" shadow="always">
+                    <el-row >
+                      <el-col :span="6" class="grid-content bg-purple-light">
+                        <img
+                        style="width: 80px; height: 80px; border-radius: 40px"
+                        src="../assets/exp.jpg"
+                        ></img>
+                      </el-col>
+                      <el-col :span="15" class="grid-content bg-purple-light">
+                        <el-row><el-col :span="24"><div class="grid-content3"></div></el-col></el-row>
+                        <el-link href="https://element.eleme.io" target="_blank"><h3>{{exp.name}}</h3></el-link>
+                      </el-col>
+                      <el-col :span="1" class="grid-content bg-purple-light" :offset="1">
+                          <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
+                      </el-col>
+                    </el-row>
+                  
+                    <el-row>
+                        <el-col :span="6" class="grid-content bg-purple-light"><i class="el-icon-s-cooperation"> 机构:</i></el-col>
+                        <el-col :span="18"><div class="grid-content bg-purple-light">{{ exp.inst }}</div></el-col>
+                    </el-row>
+
+                    <el-row style="font-size:14px">
+                        <el-col :span="5" class="grid-content bg-purple-light redfont"  >#h-index:</el-col>
+                        <el-col :span="3"><div class="grid-content bg-purple-light">&nbsp;{{ exp.hindex }} </div></el-col>
+                        
+                        <el-col :span="5" class="grid-content bg-purple-light redfont">#g-index: </el-col>
+                        <el-col :span="3"><div class="grid-content bg-purple-light">&nbsp;{{ exp.gindex }}</div></el-col>
+                        
+                        <el-col :span="5" class="grid-content bg-purple-light redfont">论文数: </el-col>
+                        <el-col :span="3"><div class="grid-content bg-purple-light">{{ exp.papercnt }}</div></el-col>
+                    </el-row>
+
+                </el-card>
+
+                </el-carousel-item>
+            </el-carousel>
+
             </el-main>
 
             <!-- <el-aside width="25%"> -->
                 
-            </el-aside>
+            <!-- </el-aside> -->
         </el-container>
 
         <el-footer>Footer</el-footer>
@@ -93,7 +136,7 @@ export default {
       return {
 
         //
-        toplist:[{
+        topPaperList:[{
         index:'1',
         title:"多层弹性半空间中的地震波(一)",
         aulist: [
@@ -144,6 +187,33 @@ export default {
         readcnt:111,
       }
       ],
+        //top专家信息
+        topExpList:[{
+          index:'1',
+          name:"Douglas K. Rex",
+          papercnt:99,
+          inst:"IU Health University Hospital",
+          hindex:99,
+          gindex:99,
+        },
+        {
+          index:'2',
+          name:"aaa",
+          papercnt:66,
+          inst:"bbb",
+          hindex:66,
+          gindex:66,
+        },
+        {
+          index:'3',
+          name:"ccc",
+          papercnt:111,
+          inst:"ddd",
+          hindex:11,
+          gindex:11,
+        }
+        ],
+
         //用户名
         username:"uname",
         //检索内容
@@ -167,6 +237,7 @@ export default {
       //检索
       search() {
         console.log("检索:"+this.input2);
+        this.$router.push({ path:'/sr'  }); //跳转至searchresult
       },
       //高级检索（待定）
       advsearch() {
@@ -271,13 +342,19 @@ export default {
     /* line-height:30px; */
     
   }
-
+  
+  .bg-purple {
+    background: #6C6C6C	 ;
+  }
   .bg-purple-light {
     background: #FCFCFC;
   }
   .grid-content {
     border-radius: 4px;
-    min-height: 36px;
+    min-height: 30px;
+  }
+  .grid-content3 {
+    min-height: 5px;
   }
   .row-bg {
     padding: 10px 0;
@@ -286,7 +363,7 @@ export default {
 
 
   .aulink {
-    color:#0080FF;
+    color:#409EFF;
   }
   .tagg {
     margin-right: 20px;

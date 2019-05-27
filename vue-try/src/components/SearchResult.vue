@@ -27,7 +27,7 @@
                       <el-card class="box-card" shadow="always">
                       <el-row >
                         <el-col :span="16" class="grid-content bg-purple-light">
-                          <el-link href="https://element.eleme.io" target="_blank"><h2>{{paper.title}}</h2></el-link>
+                          <el-link @click="topv" target="_blank"><h2>{{paper.title}}</h2></el-link>
                         </el-col>
                         <el-col :span="1" class="grid-content bg-purple-light" :offset="7">
                             <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
@@ -36,7 +36,7 @@
                       
 
                         <el-row>
-                            <el-col :span="3" class="grid-content bg-purple-light">作者：</el-col>
+                            <el-col :span="3" class="grid-content bg-purple-light greyfont">作者：</el-col>
                             <el-col :span="21">
                               <div class="grid-content bg-purple-light">
                                       <el-link href="https://element.eleme.io" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
@@ -48,7 +48,7 @@
                             </el-col>
                         </el-row>
                         <el-row>
-                            <el-col :span="3" class="grid-content bg-purple-light">关键词:</el-col>
+                            <el-col :span="3" class="grid-content bg-purple-light greyfont">关键词:</el-col>
                             <el-col :span="21">
                               <div class="grid-content bg-purple-light">
                                 <el-tag v-for="tag in paper.taglist" :key="tag.index" class="tagg">
@@ -58,12 +58,15 @@
                               </el-col>
                         </el-row>
                         <el-row>
-                            <el-col :span="3" class="grid-content bg-purple-light"><i class="el-icon-link"> 被引量:</i></el-col>
+                            <el-col :span="3" class="grid-content bg-purple-light greyfont">发表年份:</el-col>
+                            <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.pubyear }}</div></el-col>
+
+                            <el-col :span="3" class="grid-content bg-purple-light greyfont"><i class="el-icon-link"> 被引量:</i></el-col>
                             <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.refcnt }}</div></el-col>
                             
                             <el-tooltip placement="bottom">
                               <div slot="content">我们如何定义“阅读量”？<br/><br/>一次“阅读”行为是……</div>
-                              <el-col :span="3" :offset="1" class="grid-content bg-purple-light"><i class="el-icon-view"> 阅读量:</i></el-col>
+                              <el-col :span="3" :offset="1" class="grid-content bg-purple-light greyfont"><i class="el-icon-view"> 阅读量:</i></el-col>
                             </el-tooltip>
                             
                             <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.readcnt }}</div></el-col>
@@ -85,40 +88,46 @@
                 <el-tab-pane label="专家" name="second">
                   <el-row  class="papercard" v-for="exp in explist.slice((currentPage-1)*pagesize,currentPage*pagesize)" :key="exp.index">
                       <el-card class="box-card" shadow="always">
-                      <el-row >
-                        <el-col :span="3" class="grid-content bg-purple-light">
-                        <img
-                        style="width: 50px; height: 50px"
-                        src="../assets/timg.jpg"
-                        ></img>
+                      <el-row>
+                        <el-col :span="4" class="grid-content bg-purple-light">
+                          <el-row><el-col :span="24"><div class="grid-content2"></div></el-col></el-row>
+                          <img
+                          style="width: 100px; height: 100px; border-radius: 50px"
+                          src="../assets/exp.jpg"
+                          ></img>
                         </el-col>
-                        <el-col :span="13" class="grid-content bg-purple-light">
-                          <el-link href="https://element.eleme.io" target="_blank"><h2>{{exp.name}}</h2></el-link>
-                        </el-col>
-                        <el-col :span="1" class="grid-content bg-purple-light" :offset="7">
-                            <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
-                        </el-col>
-                      </el-row>
-                      
-
-                        <el-row>
-                            <el-col :span="3" class="grid-content bg-purple-light">#h-index:</i></el-col>
-                            <el-col :span="2"><div class="grid-content bg-purple-light">{{ exp.hindex }} <el-divider direction="vertical"></el-divider></div></el-col>
-                            
-                            <el-col :span="3" class="grid-content bg-purple-light">#g-index:</i></el-col>
-                            <el-col :span="2"><div class="grid-content bg-purple-light">{{ exp.gindex }} <el-divider direction="vertical"></el-divider></div></el-col>
-                            
-                            <el-col :span="3" class="grid-content bg-purple-light">论文数:</el-col>
-                            <el-col :span="2"><div class="grid-content bg-purple-light">{{ exp.papercnt }}</div></el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="3" class="grid-content bg-purple-light">机构:</el-col>
-                            <el-col :span="21"><div class="grid-content bg-purple-light">{{ exp.inst }}</div></el-col>
-                        </el-row>
                         
-                        </el-card>
-                        <el-divider></el-divider>
-                      </el-row>
+                        <el-col :span="20" class="grid-content bg-purple-light">  
+                          <el-row >
+                            <el-col :span="16" class="grid-content bg-purple-light">
+                              <el-link href="https://element.eleme.io" target="_blank"><h3>{{exp.name}}</h3></el-link>
+                            </el-col>
+                            <el-col :span="1" class="grid-content bg-purple-light" :offset="7">
+                                <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
+                            </el-col>
+                          </el-row>
+                        
+                          <el-row>
+                              <el-col :span="4" class="grid-content bg-purple-light"><i class="el-icon-s-cooperation"> 机构:</i></el-col>
+                              <el-col :span="20"><div class="grid-content bg-purple-light">{{ exp.inst }}</div></el-col>
+                          </el-row>
+
+                          <el-row>
+                              <el-col :span="4" class="grid-content bg-purple-light redfont">#h-index: </el-col>
+                              <el-col :span="3"><div class="grid-content bg-purple-light">{{ exp.hindex }} <el-divider direction="vertical"></el-divider></div></el-col>
+                              
+                              <el-col :span="4" class="grid-content bg-purple-light redfont">#g-index: </el-col>
+                              <el-col :span="3"><div class="grid-content bg-purple-light">{{ exp.gindex }} <el-divider direction="vertical"></el-divider></div></el-col>
+                              
+                              <el-col :span="4" class="grid-content bg-purple-light redfont">论文数: </el-col>
+                              <el-col :span="3"><div class="grid-content bg-purple-light">{{ exp.papercnt }}</div></el-col>
+                          </el-row>
+                          
+                        </el-col>  
+                      </el-row>  
+                      </el-card>
+                    <el-divider></el-divider>
+                  </el-row>
 
                       <el-pagination
                         background
@@ -171,6 +180,7 @@ export default {
         { index:'2',text: 'tag2' },
         { index:'3',text: 'tag3' },
       ],
+        pubyear:1999,
         refcnt:99,
         readcnt:999,
       },
@@ -188,6 +198,7 @@ export default {
         { index:'2',text: 'tag2' },
         { index:'3',text: 'tag3' },
       ],
+        pubyear:2000,
         refcnt:66,
         readcnt:666,
       }
@@ -202,7 +213,7 @@ export default {
           gindex:99,
         },
         {
-          index:'1',
+          index:'2',
           name:"aaa",
           papercnt:66,
           inst:"bbb",
@@ -218,9 +229,11 @@ export default {
       }
       
     },
+
     components:{
         'v-header':Header
     },
+
     methods: {
       //切换tab
       handleClick(tab, event) {
@@ -247,7 +260,12 @@ export default {
       //高级检索（待定）
       advsearch() {
         console.log("高级检索:"+this.input2);
-      }
+      },
+
+      //标题跳转
+      topv() {
+        this.$router.push({ path:'/pv'  }); //跳转至pv
+      },
     }
 }
 </script>
@@ -317,13 +335,18 @@ export default {
     line-height:30px;
     
   }
-
+  .bg-purple {
+    background: #6C6C6C	 ;
+  }
   .bg-purple-light {
     background: #FCFCFC;
   }
   .grid-content {
     border-radius: 4px;
-    min-height: 36px;
+    min-height: 30px;
+  }
+  .grid-content2 {
+    min-height: 20px;
   }
   .row-bg {
     padding: 10px 0;
@@ -332,7 +355,7 @@ export default {
 
 
   .aulink {
-    color:#0080FF;
+    color:#409EFF;
   }
   .tagg {
     margin-right: 20px;
