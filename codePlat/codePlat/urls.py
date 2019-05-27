@@ -6,20 +6,21 @@ from . import view
 from learn import views as learn_views
 from User import views as user_views
 from TechResource import views as Tech_views
-from Comment import views as Comment_views
+from UserComment import views as Comment_views
 from  django.contrib.auth import views as auth_views
 from  django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
 from Like import views as like_views
 from Report import views as report_views
-from Comment import views as comment_views
+from UserComment import views as comment_views
 urlpatterns = [
     url(r'^$',view.hello),
     path('admin/', admin.site.urls),
     path(r'index/', user_views.index),
     path(r'resource/',Tech_views.list_all),
     re_path(r'resource/(?P<resource_id>\d{1,2})/',Tech_views.list_one),
-     url(r'^comment/(?P<resource_id>[0-9]+)/$',Comment_views.create_comment,name='paper_comment'),
+    re_path(r'^comment/(?P<resource_id>[0-9]+)/$',Comment_views.create_comment,name='paper_comment'),
+    path(r'^comment/',Comment_views.comment_success),
     path(r'test/', TemplateView.as_view(template_name="index.html")),
 
     #用户主页展示
@@ -36,7 +37,7 @@ urlpatterns = [
 
     #举报某个资源
     #前端往后端传表单，POST；以及一个参数：当前资源的resource_id
-    url(r'^report/(?P<expert_id>[0-9]+)/$', report_views.create_report),
+   url(r'^report/(?P<expert_id>[0-9]+)/$', report_views.create_report),
 
     #评论某个资源
     #前端往后端传表单。POST；以及一个参数：当前资源的resource_id

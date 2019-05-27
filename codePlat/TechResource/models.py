@@ -32,11 +32,6 @@ class SciAchi(models.Model):
         max_length=256,
         null=True,
     )
-    #价格
-    sciAchiPrice=models.FloatField(
-        default=0.0,
-        null=True,
-    )
    # authorNumSeq=models.OneToManyField(expert,blank=True,on_delete=models.CASCADE,)
     #引用数
     refCount=models.IntegerField(
@@ -44,7 +39,8 @@ class SciAchi(models.Model):
         null=True,
     )
     #发表年份
-    publishYear=models.IntegerField(
+    publishYear=models.CharField(
+        max_length=10,
         null=True,
     )
 
@@ -55,7 +51,7 @@ class SciAchi(models.Model):
 
     #作者
     author=models.CharField(
-        max_length=50,
+        max_length=100,
         null=True,
     )
 

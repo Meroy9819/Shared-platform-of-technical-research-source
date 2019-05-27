@@ -2,7 +2,7 @@ from django.db import models
 from User.models import NormalUser
 from TechResource.models import SciAchi
 # Create your models here.
-class report:
+class report(models.Model):
 	report_id=models.AutoField(
 		primary_key=True,
 	)

@@ -21,17 +21,13 @@ class NormalUser(models.Model):
 		)
 	#用户密码
 	passwd = models.CharField(
-		max_length = 32,
-		)
-	#用户积分
-	point = models.FloatField(
-		null = True,
+		max_length = 1024,
 		)
 	#用户类型
 	#1 普通用户
 	#2 该用户有专家主页
 	#3 管理员
-	type = models.IntegerField(max_length=3,default=1)
+	user_type = models.IntegerField(default=1)
 	#用户头像
 	image = models.ImageField(
 		null = True,
@@ -57,10 +53,10 @@ class NormalUser(models.Model):
 		default='00000000',
 	)
 	corresponding_expert_id=models.IntegerField(
-		default=-1
+		default=0
 	)
 	corrsponding_admin_id=models.IntegerField(
-		default=-1
+		default=0
 	)
 	has_confirmed = models.BooleanField(default=False)
 	def __str__(self):
@@ -107,7 +103,8 @@ class ExpertUser(models.Model):
 		null=True,
 	)
 	#领域
-	field=models.IntegerField(
+	field=models.CharField(
+		max_length=50,
 		null=True,
 	)
 	class Meta:
