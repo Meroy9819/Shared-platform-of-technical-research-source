@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import Login from '@/components/Login'
-import Register from '@/components/Register'
 import Paperview from '@/components/Paperview'
 import Header from '@/components/Header'
 import SearchResult from '@/components/SearchResult'
@@ -16,8 +14,6 @@ import test from '@/components/test'
 export default {
   name: 'App',
   components:{
-    Login,
-    Register,
     Paperview,
     Header,
     SearchResult,
