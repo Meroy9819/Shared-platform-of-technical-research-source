@@ -22,6 +22,11 @@ class SciAchi(models.Model):
         max_length=512,
         null=True,
     )
+    #论文作者
+    author=models.CharField(
+        max_length=64,
+        null=True,
+    )
     #摘要
     abstract = models.CharField(
         max_length=1024,

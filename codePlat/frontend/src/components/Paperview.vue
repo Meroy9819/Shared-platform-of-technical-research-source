@@ -35,8 +35,8 @@
                     <el-col :span="3">作者：</el-col>
                     <el-col :span="21">
                       <div class="grid-content bg-purple-light">
-                              <el-link href="https://element.eleme.io" target="_blank"  v-for="au in aulist" key="au" class="aulink">
-                                {{ au.name }}
+                              <el-link href="https://element.eleme.io" target="_blank"  v-for="au in sciachi.author" key="au" class="aulink">
+                                {{ au }}
                                  <el-divider direction="vertical"></el-divider>
                               </el-link>
                       </div>
@@ -96,14 +96,9 @@ export default {
     data() {
       return {
         // name: "",
-        aulist: [
-          {name: 'author1'},
-        ],
-        // abs: "",
-        // taglist: [
-        //   {text: 'tag1'},
+        // aulist: [
+        //   {name: 'author1'},
         // ],
-        // refcnt: "99",
         sciachi : {}
       }
     },
@@ -131,9 +126,9 @@ export default {
       init:function(){
         let _this = this;
         this.$http.request({
-          url:_this.$url + 'paperview',
+          url:_this.$url + 'paperview/',
           method:'get',
-          params: {resource_id: 2}
+          // params: {resource_id: 2}
         }).then(function (response) {
           _this.sciachi = response.data[0];
           console.log('heihei');

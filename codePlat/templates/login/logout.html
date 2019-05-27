@@ -1,0 +1,13 @@
+{% block content %}
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+              {% if message %}
+                  <div class="alert alert-warning">{{ message }}</div>
+              {% endif %}
+              {% csrf_token %}
+              <h2 class="text-center">欢迎登出</h2>
+            <button>登出</button>
+
+        </div>
+    </div> <!-- /container -->
+{% endblock %}

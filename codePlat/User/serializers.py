@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from User.models import NormalUser, ExpertUser, Administrator,BuyResources,LikeResources
+from User.models import NormalUser, ExpertUser, Administrator
 
 class NormalUserSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -16,7 +16,3 @@ class AdministratorSerializer(serializers.ModelSerializer):
 		model = Administrator
 		fields = '__all__'
 
-class ModelBuyResourcesSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = BuyResources
-		fields = '__all__'

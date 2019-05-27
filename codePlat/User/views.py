@@ -1,11 +1,4 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import status
 from User.models import NormalUser, ExpertUser, Administrator, ConfirmString
-from TechResource.models import SciAchi
-from User.serializers import NormalUserSerializer, ExpertSerializer, AdministratorSerializer
 from django.shortcuts import render, redirect,get_object_or_404,HttpResponse
 from . import models
 from .forms import UserForm, RegisterForm
@@ -14,45 +7,81 @@ import json
 import codePlat
 import datetime
 from django.core.mail import EmailMultiAlternatives
-
+from django.http import HttpResponseRedirect
+from Like.models import LikeResources
+from Report.models import report
+from User.models import NormalUser
+from rest_framework import status
+from django.http import HttpResponse
+from django.forms.models import model_to_dict
+from Like.models import LikeResources
+from BuyResource.models import BuyResources
+from Report.models import report
+#加密密码
 def hash_code(s, salt='codeplat_login'):
     h = hashlib.sha256()
     s += salt
     h.update(s.encode())  # update方法只接收bytes类型
     return h.hexdigest()
 
+#主页
 def index(request):
     pass
     return render(request, 'login/index.html')
 
+#用户登录
 def login(request):
+    request.session.flush()
+    ret={'message':"test",'form':"test"}
+    username="hahaha"
+    print("hello")
+    # 如果已经登录，此处跳转到主页
     if request.session.get('is_login', None):
-        return redirect("/index/")
+        #return redirect("/index/")
+        ret['message']="已经登录"
+        return HttpResponse(json.dumps(ret),content_type='application/json')
     if request.method == "POST":
         login_form = UserForm(request.POST)
-        message = "请检查填写的内容！"
+        ret.pop('message')
+        ret['message']  = "请检查填写的内容！"
         if login_form.is_valid():
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
+            print(username)
             try:
-                user = models.User.objects.get(name=username)
+                user = models.NormalUser.objects.get(name=username)
                 if not user.has_confirmed:
-                    message = "该用户还未通过邮件确认！"
-                    return render(request, 'login/login.html', locals())
-                if user.password == hash_code(password):  # 哈希值和数据库内的值进行比对
+                    ret.pop('message')
+                    ret['message'] = "该用户还未通过邮件确认！"
+                    #此处如果用户还未通过邮件认证，那么就再次刷新login界面
+                    #return render(request, 'login/login.html', locals())
+                    return HttpResponse(json.dumps(ret), content_type='application/json')
+                if user.passwd == hash_code(password):  # 哈希值和数据库内的值进行比对
                     request.session['is_login'] = True
-                    request.session['user_id'] = user.id
+                    request.session['user_id'] = user.user_id
                     request.session['user_name'] = user.name
-                    return redirect('/index/')
+                    #如果用户已经登录成功，那么直接跳转到主页
+                    ret.pop('message')
+                    ret.pop('form')
+                    ret['message']="登录成功"
+                    #return redirect('/index/')
                 else:
-                    message = "密码不正确！"
+                    ret.pop('message')
+                    ret['message'] = "密码不正确！"
             except:
-                message = "用户不存在！"
-        return render(request, 'login/login.html', locals())
-
+                ret.pop('message')
+                ret['er']=username
+                ret['message'] ="用户不存在！"
+            return HttpResponse(json.dumps(ret), content_type='application/json')
+        ret.pop('message')
+        ret['message'] ="test here"
     login_form = UserForm
-    return render(request, 'login/login.html', locals())
+    ret.pop('form')
+    ret['form']=login_form
+    #在一切开始之前，先刷新页面，得到表单
+    return HttpResponse(json.dumps(ret),content_type='application/json')
 
+#用户注册
 def register(request):
     if request.session.get('is_login', None):
         # 登录状态不允许注册。你可以修改这条原则！
@@ -66,7 +95,7 @@ def register(request):
             password2 = register_form.cleaned_data['password2']
             email = register_form.cleaned_data['email']
             sex = register_form.cleaned_data['sex']
-            phonenumber=register_form.changed_data['phonenumber']
+            phonenumber=register_form.cleaned_data['phonenumber']
             if password1 != password2:  # 判断两次密码是否相同
                 message = "两次输入的密码不同！"
                 return render(request, 'login/register.html', locals())
@@ -80,14 +109,16 @@ def register(request):
                     message = '该邮箱地址已被注册，请使用别的邮箱！'
                     return render(request, 'login/register.html', locals())
 
-                    # 当一切都OK的情况下，创建新用户
-
                 new_user = models.NormalUser()
                 new_user.name = username
-                new_user.password = hash_code(password1)  # 使用加密密码
+                new_user.passwd = hash_code(password1)  # 使用加密密码
                 new_user.email = email
                 new_user.sex = sex
                 new_user.phonenumber=phonenumber
+                new_user.point=0
+                new_user.introduction="No yet"
+                new_user.corresponding_expert_id=0
+                new_user.corrsponding_admin_id=0
                 new_user.save()
 
                 code = make_confirm_string(new_user)
@@ -98,6 +129,7 @@ def register(request):
     register_form = RegisterForm
     return render(request, 'login/register.html', locals())
 
+#用户注册验证
 def make_confirm_string(NormalUser):
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     code = hash_code(NormalUser.name, now)
@@ -105,6 +137,7 @@ def make_confirm_string(NormalUser):
     return code
 
 
+#发送验证邮件
 def send_email(email, code):
     subject = '来自最棒的妙妙的测试邮件'
     from_email='miaoran9819@163.com'
@@ -118,6 +151,7 @@ def send_email(email, code):
     msg.send()
     return HttpResponse("<h1>邮件发送成功!</h1>")
 
+#用户注册条件判断
 def user_confirm(request):
     code = request.GET.get('code', None)
     message = ''
@@ -139,13 +173,114 @@ def user_confirm(request):
         message = '感谢确认，请使用账户登录！'
         return render(request, 'login/confirm.html', locals())
 
+#用户登出
 def logout(request):
     if not request.session.get('is_login', None):
         return redirect('/index/')
     request.session.flush()
-
     return redirect('/index/')
 
+#显示主页，用于测试
 def base(request):
     pass
     return render(request,'login/base.html')
+
+#用户收藏资源
+def like_resource(request,resource_id):
+    #判断用户是否登录
+    username = request.session.get('username', '')
+    if not username:
+        return HttpResponseRedirect('/login/')
+    #判断是否收藏
+    try:
+        now_user=NormalUser.objects.get(name=username)
+    except:
+        message = '不存在当前用户'
+        return render(request, 'shoucang.html', locals())
+    try:
+        queryset=LikeResources.objects.get(liker_user=now_user,like_resource_id=resource_id)
+        message = '你已经收藏过该资源'
+        return render(request, 'shoucang.html', locals())
+    except:
+        #往数据库存储收藏信息
+        thislikeinfor = LikeResources(
+            liker_user=now_user,
+            like_resource_id=resource_id
+        )
+        thislikeinfor.save()
+        message = '收藏成功'
+        return render(request, 'shoucang.html', locals())
+
+#用户举报信息
+def report_resource(request,resource_id):
+    #判断用户是否登录
+    username = request.session.get('username', '')
+    if not username:
+        return HttpResponseRedirect('/login/')
+    try:
+        now_user=NormalUser.objects.get(name=username)
+    except:
+        message = '不存在当前用户'
+        return render(request, 'shoucang.html', locals())
+    try:
+        queryset=LikeResources.objects.get(liker_user=now_user,like_resource_id=resource_id)
+        message = '你已经举报过该资源'
+        return render(request, 'shoucang.html', locals())
+    except:
+        #往数据库存储收藏信息
+        thisreportinfor = report(
+            report_user=now_user,
+            report_resource_id=resource_id
+        )
+        thisreportinfor.save()
+        message = '举报成功'
+        return render(request, 'shoucang.html', locals())
+
+#普通用户主页展示信息
+def show_user(request):
+    #如果尚未登录，则跳转到登录页
+    if request.session.get('is_login', None)!=True:
+        return redirect("/login/login.html")
+    #取出当前用户对象
+    #json化所有用户信息
+    json_list = []
+    user_name=request.session.get['username','']
+    data=get_object_or_404(NormalUser,name=user_name)
+    json_dict = model_to_dict(data)
+    json_list.append(json_dict)
+    #用户对应的评论信息
+    comment_user=get_object_or_404(NormalUser,name=user_name)
+    all_comment=comment_user.Comment_set().all()
+    for item in all_comment:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    #用户的收藏列表
+    liker_user=get_object_or_404(NormalUser,name=user_name)
+    all_likes=liker_user.LikeResource_set().all()
+    for item in all_likes:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    #用户的购买列表
+    buy_user=get_object_or_404(NormalUser,name=user_name)
+    all_buy=buy_user.BuyResource_set().all()
+    for item in all_buy:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    #用户的举报列表
+    report_user=get_object_or_404(NormalUser,name=user_name)
+    all_report=report_user.report_set().all()
+    for item in all_report:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    return HttpResponse(json.dumps(json_list), content_type='application/json')
+
+
+#专家主页展示
+def show_expert(request,expert_id):
+    json_list=[]
+    #专家的所有个人信息
+    expert=get_object_or_404(ExpertUser,expert_id=expert_id)
+    json_dict = model_to_dict(expert)
+    json_list.append(json_dict)
+    return HttpResponse(json.dumps(json_list), content_type='application/json')
+

@@ -12,6 +12,7 @@ import test from '@/components/test'
 Vue.use(Router);
 
 export default new Router({
+  // mode: 'history',
   routes: [
     {
       path: '/login',
@@ -33,8 +34,10 @@ export default new Router({
     {
       path: '/test',
       name: 'test',
-      component: () => import('@/components/test.vue'),
-    }
+      component: test
+    },
+
 
   ]
+
 })

@@ -6,6 +6,4 @@ from . import models
 admin.site.register(models.NormalUser)
 admin.site.register(models.ExpertUser)
 admin.site.register(models.Administrator)
-admin.site.register(models.BuyResources)
-admin.site.register(models.LikeResources)
 admin.site.register(models.ConfirmString)
