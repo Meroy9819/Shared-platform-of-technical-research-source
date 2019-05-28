@@ -31,6 +31,7 @@ class NormalUser(models.Model):
 	#用户头像
 	image = models.ImageField(
 		null = True,
+		
 		)
 	#用户简介
 	introduction = models.CharField(
