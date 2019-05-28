@@ -23,18 +23,15 @@ class NormalUser(models.Model):
 	passwd = models.CharField(
 		max_length = 1024,
 		)
-	#用户积分
-	point = models.FloatField(
-		null = True,
-		)
 	#用户类型
 	#1 普通用户
 	#2 该用户有专家主页
 	#3 管理员
-	type = models.IntegerField(max_length=3,default=1)
+	user_type = models.IntegerField(default=1)
 	#用户头像
 	image = models.ImageField(
 		null = True,
+		blank=True,
 		)
 	#用户简介
 	introduction = models.CharField(
@@ -107,7 +104,8 @@ class ExpertUser(models.Model):
 		null=True,
 	)
 	#领域
-	field=models.IntegerField(
+	field=models.CharField(
+		max_length=50,
 		null=True,
 	)
 	class Meta:
@@ -119,7 +117,6 @@ class Administrator(models.Model):
 	#管理员编号
 	admin_id=models.AutoField(
 		primary_key=True,
-		default=0
 	)
 	#管理员名字
 	admin_name=models.CharField(
@@ -129,7 +126,6 @@ class Administrator(models.Model):
 	#管理员密码
 	admin_password=models.CharField(
 		max_length=100,
-		default=""
 	)
 
 	class Meta:

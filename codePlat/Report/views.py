@@ -15,7 +15,6 @@ from rest_framework import status
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
 from Like.models import LikeResources
-from BuyResource.models import BuyResources
 from Report.models import report
 from .forms import ReportForm
 from TechResource.models import SciAchi

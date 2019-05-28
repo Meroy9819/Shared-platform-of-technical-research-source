@@ -9,14 +9,13 @@ import datetime
 from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
 from Like.models import LikeResources
-from Report.models import report
+#from Report.models import report
 from User.models import NormalUser
 from rest_framework import status
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
 from Like.models import LikeResources
-from BuyResource.models import BuyResources
-from Report.models import report
+#from Report.models import report
 #加密密码
 def hash_code(s, salt='codeplat_login'):
     h = hashlib.sha256()
@@ -33,8 +32,6 @@ def index(request):
 def login(request):
     request.session.flush()
     ret={'message':"test",'form':"test"}
-    username="hahaha"
-    print("hello")
     # 如果已经登录，此处跳转到主页
     if request.session.get('is_login', None):
         #return redirect("/index/")
@@ -43,7 +40,7 @@ def login(request):
     if request.method == "POST":
         login_form = UserForm(request.POST)
         ret.pop('message')
-        ret['message']  = "请检查填写的内容！"
+        ret['message']  = "请检查填写的内容"
         if login_form.is_valid():
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
@@ -52,7 +49,7 @@ def login(request):
                 user = models.NormalUser.objects.get(name=username)
                 if not user.has_confirmed:
                     ret.pop('message')
-                    ret['message'] = "该用户还未通过邮件确认！"
+                    ret['message'] = "该用户还未通过邮件确认"
                     #此处如果用户还未通过邮件认证，那么就再次刷新login界面
                     #return render(request, 'login/login.html', locals())
                     return HttpResponse(json.dumps(ret), content_type='application/json')
@@ -67,11 +64,11 @@ def login(request):
                     #return redirect('/index/')
                 else:
                     ret.pop('message')
-                    ret['message'] = "密码不正确！"
+                    ret['message'] = "密码不正确"
             except:
                 ret.pop('message')
                 ret['er']=username
-                ret['message'] ="用户不存在！"
+                ret['message'] ="用户不存在"
             return HttpResponse(json.dumps(ret), content_type='application/json')
         ret.pop('message')
         ret['message'] ="test here"
@@ -115,10 +112,10 @@ def register(request):
                 new_user.email = email
                 new_user.sex = sex
                 new_user.phonenumber=phonenumber
-                new_user.point=0
-                new_user.introduction="No yet"
                 new_user.corresponding_expert_id=0
                 new_user.corrsponding_admin_id=0
+                new_user.introduction="No yet"
+                new_user.image=None
                 new_user.save()
 
                 code = make_confirm_string(new_user)
@@ -178,6 +175,7 @@ def logout(request):
     if not request.session.get('is_login', None):
         return redirect('/index/')
     request.session.flush()
+
     return redirect('/index/')
 
 #显示主页，用于测试
@@ -186,55 +184,55 @@ def base(request):
     return render(request,'login/base.html')
 
 #用户收藏资源
-def like_resource(request,resource_id):
-    #判断用户是否登录
-    username = request.session.get('username', '')
-    if not username:
-        return HttpResponseRedirect('/login/')
-    #判断是否收藏
-    try:
-        now_user=NormalUser.objects.get(name=username)
-    except:
-        message = '不存在当前用户'
-        return render(request, 'shoucang.html', locals())
-    try:
-        queryset=LikeResources.objects.get(liker_user=now_user,like_resource_id=resource_id)
-        message = '你已经收藏过该资源'
-        return render(request, 'shoucang.html', locals())
-    except:
-        #往数据库存储收藏信息
-        thislikeinfor = LikeResources(
-            liker_user=now_user,
-            like_resource_id=resource_id
-        )
-        thislikeinfor.save()
-        message = '收藏成功'
-        return render(request, 'shoucang.html', locals())
+# def like_resource(request,resource_id):
+#     #判断用户是否登录
+#     username = request.session.get('username', '')
+#     if not username:
+#         return HttpResponseRedirect('/login/')
+#     #判断是否收藏
+#     try:
+#         now_user=NormalUser.objects.get(name=username)
+#     except:
+#         message = '不存在当前用户'
+#         return render(request, 'shoucang.html', locals())
+#     try:
+#         queryset=LikeResources.objects.get(liker_user=now_user,like_resource_id=resource_id)
+#         message = '你已经收藏过该资源'
+#         return render(request, 'shoucang.html', locals())
+#     except:
+#         #往数据库存储收藏信息
+#         thislikeinfor = LikeResources(
+#             liker_user=now_user,
+#             like_resource_id=resource_id
+#         )
+#         thislikeinfor.save()
+#         message = '收藏成功'
+#         return render(request, 'shoucang.html', locals())
 
 #用户举报信息
-def report_resource(request,resource_id):
-    #判断用户是否登录
-    username = request.session.get('username', '')
-    if not username:
-        return HttpResponseRedirect('/login/')
-    try:
-        now_user=NormalUser.objects.get(name=username)
-    except:
-        message = '不存在当前用户'
-        return render(request, 'shoucang.html', locals())
-    try:
-        queryset=LikeResources.objects.get(liker_user=now_user,like_resource_id=resource_id)
-        message = '你已经举报过该资源'
-        return render(request, 'shoucang.html', locals())
-    except:
-        #往数据库存储收藏信息
-        thisreportinfor = report(
-            report_user=now_user,
-            report_resource_id=resource_id
-        )
-        thisreportinfor.save()
-        message = '举报成功'
-        return render(request, 'shoucang.html', locals())
+# def report_resource(request,resource_id):
+#     #判断用户是否登录
+#     username = request.session.get('username', '')
+#     if not username:
+#         return HttpResponseRedirect('/login/')
+#     try:
+#         now_user=NormalUser.objects.get(name=username)
+#     except:
+#         message = '不存在当前用户'
+#         return render(request, 'shoucang.html', locals())
+#     try:
+#         queryset=LikeResources.objects.get(liker_user=now_user,like_resource_id=resource_id)
+#         message = '你已经举报过该资源'
+#         return render(request, 'shoucang.html', locals())
+#     except:
+#         #往数据库存储收藏信息
+#         thisreportinfor = report(
+#             report_user=now_user,
+#             report_resource_id=resource_id
+#         )
+#         thisreportinfor.save()
+#         message = '举报成功'
+#         return render(request, 'shoucang.html', locals())
 
 #普通用户主页展示信息
 def show_user(request):

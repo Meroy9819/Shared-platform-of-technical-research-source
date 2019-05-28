@@ -41,21 +41,22 @@ INSTALLED_APPS = [
     'User',
     'learn',
     'captcha',
-    'Comment',
+    'UserComment',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
     'Like',
-    'BuyResource',
+    # 'BuyResource',
     'Report',
 ]
+CORS_ORIGIN_ALLOW_ALL=True
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-#    'django.middleware.csrf.CsrfViewMiddleware',
+ #   'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -66,7 +67,7 @@ ROOT_URLCONF = 'codePlat.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR+"/frontend/dist/",BASE_DIR+"/templates",],
+        'DIRS': [BASE_DIR+"/templates",BASE_DIR+"/frontend/dist/"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,16 +89,16 @@ WSGI_APPLICATION = 'codePlat.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'expt',
+        'NAME': 'expt_merge',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
-        # 'HOST' :'140.143.30.64',
+        # 'HOST': '140.143.30.64',
         'PORT': '3306',
     }
 }
 
-APPEND_SLASH=False
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -137,8 +138,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "frontend/dist/static"),
+os.path.join(BASE_DIR, "frontend/dist/static"),
 ]
+
 EMAIL_USE_SSL = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.163.com'

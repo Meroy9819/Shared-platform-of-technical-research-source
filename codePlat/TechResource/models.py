@@ -22,11 +22,6 @@ class SciAchi(models.Model):
         max_length=512,
         null=True,
     )
-    #论文作者
-    author=models.CharField(
-        max_length=64,
-        null=True,
-    )
     #摘要
     abstract = models.CharField(
         max_length=1024,
@@ -37,11 +32,6 @@ class SciAchi(models.Model):
         max_length=256,
         null=True,
     )
-    #价格
-    sciAchiPrice=models.FloatField(
-        default=0.0,
-        null=True,
-    )
    # authorNumSeq=models.OneToManyField(expert,blank=True,on_delete=models.CASCADE,)
     #引用数
     refCount=models.IntegerField(
@@ -49,13 +39,20 @@ class SciAchi(models.Model):
         null=True,
     )
     #发表年份
-    publishYear=models.IntegerField(
+    publishYear=models.CharField(
+        max_length=10,
         null=True,
     )
 
     #被收藏数
     like_number=models.IntegerField(
         default=0,
+    )
+
+    #作者
+    author=models.CharField(
+        max_length=100,
+        null=True,
     )
 
     class Meta:

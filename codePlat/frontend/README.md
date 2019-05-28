@@ -1,4 +1,4 @@
-# vue-try
+﻿# vue-try
 
 > A Vue.js project
 
@@ -19,3 +19,9 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+# Pages
+indexx 首页  
+Paperview 资源主页  
+SearchResult 检索结果页  
+test 上传资源模块

@@ -13,7 +13,7 @@
                       <router-link class="navbar-item" to="/ExpertSearch">学术圈</router-link>
 
                           <router-link v-if="user.status>=3" class="navbar-item" to="/ExpertInfo">我的门户</router-link>
-                       
+
                         <router-link v-if="user.status>=0" class="navbar-item" to="/info">我的资料</router-link>
                         <router-link v-if="user.status>=4" class="navbar-item" to="/admin">管理</router-link>
 
@@ -156,7 +156,7 @@
 export default {
     data() {
       return {
-        
+
       }
     }
 }
