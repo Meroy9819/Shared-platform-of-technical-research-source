@@ -49,6 +49,11 @@ class SciAchi(models.Model):
         default=0,
     )
 
+    #访问数
+    visit_number=models.IntegerField(
+        default=0
+    )
+
     #作者
     author=models.CharField(
         max_length=100,

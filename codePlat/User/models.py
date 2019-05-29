@@ -14,11 +14,12 @@ class NormalUser(models.Model):
 	user_id = models.AutoField(
 		primary_key = True,
 		)
-	#用户姓名
-	name = models.CharField(
+	#用户名
+	username = models.CharField(
 		max_length = 64,
 		unique = True,
-		)
+		default='用户名',
+	)
 	#用户密码
 	passwd = models.CharField(
 		max_length = 1024,
@@ -61,12 +62,11 @@ class NormalUser(models.Model):
 	)
 	has_confirmed = models.BooleanField(default=False)
 	def __str__(self):
-		return self.name
-
-	class Meta:
-		ordering = ['c_time']
-		verbose_name = '用户'
-		verbose_name_plural = '用户'
+		return self.username
+	# class Meta:
+	# 	ordering = ['c_time']
+	# 	verbose_name = '用户'
+	# 	verbose_name_plural = '用户'
 
 #	buyresources = models.ManyToManyField(Tech.Resource,
 #		through='model_buyresources',
@@ -81,6 +81,11 @@ class ExpertUser(models.Model):
 	#如有，对应的用户编号
 	corresponding_user_id=models.IntegerField(
 		default=-1
+	)
+	#专家姓名
+	name = models.CharField(
+		max_length = 64,
+		default="专家姓名",
 	)
 	#所在机构
 	institution=models.CharField(
@@ -108,6 +113,16 @@ class ExpertUser(models.Model):
 		max_length=50,
 		null=True,
 	)
+	#收藏数
+	like_number=models.IntegerField(
+		default=0,
+	)
+	#访问数
+	visit_number=models.IntegerField(
+		default=0
+	)
+
+
 	class Meta:
 		ordering = ["expert_id"]
 		verbose_name = "专家"
@@ -142,8 +157,8 @@ class ConfirmString(models.Model):
     def __str__(self):
         return self.user.name + ":   " + self.code
 
-    class Meta:
-        ordering = ["-c_time"]
-        verbose_name = "确认码"
-        verbose_name_plural = "确认码"
+    # class Meta:
+    #     ordering = ["-c_time"]
+    #     verbose_name = "确认码"
+    #     verbose_name_plural = "确认码"
 

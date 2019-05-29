@@ -1,10 +1,13 @@
 <template>
     <div id="header" class="container" style="background:#66CDAA;color:#fff">
-        <span><h2>科技专家资源共享平台</h2></span>
+        <!-- <span><h2>科技专家资源共享平台</h2></span> -->
+        <router-link class="navbar-item" to="/">
+            <!-- <img src="../../assets/logo.png" width="60%" style="max-height:70%!important"> -->
+            <img src="../../assets/logo-1_W.png" width="120px" height="50px" style="margin-top:5px;vertical-align: middle;">
+        </router-link>
+
         <div id="card" class="container" >
           <el-card class="box-card" >
-
-
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
               <el-form-item>
                 <span>用户名：</span>
@@ -12,7 +15,7 @@
               </el-form-item>
               <el-form-item>
                 <span>密码：</span>
-                <el-input v-model="user.password" style="float:right;margin-right:80px;width:160px" placeholder="请输入密码" show-password="false"></el-input>
+                <el-input v-model="user.password" style="float:right;margin-right:80px;width:160px" placeholder="请输入密码"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" round style="float:left;margin-left:60px;text-align:center" @click="signIn">登录</el-button>
@@ -28,19 +31,24 @@
 
     </div>
 </template>
+
 <script>
-  import Axios from 'axios'
+import Axios from 'axios'
 export default {
+    components:{},
+    inject:['reload'],
     data() {
       return {
         user:{
           username:'',
           password:'',
         }
-
       }
     },
-    methods :{
+    methods: {
+      gotoregister() {
+        this.$router.replace('/Register')
+      },
       signIn:function() {
         if (!this.user.username) {
           this.$message.error('请输入用户名');
@@ -65,9 +73,10 @@ export default {
           console.log('get response');
           switch (response.data.message){
             case '登录成功':
-              _this.$message.success('登录成功，即将跳转到登录前页面');
+              _this.$message.success('登录成功，即将跳转到主页');
               setTimeout(function () {
-                  _this.$router.push({path:'../paperview/'});
+                  _this.$router.replace('../');
+                  _this.$router.go(0);
               }, 2500);
               break;
             case '该用户还未通过邮件确认':
@@ -98,7 +107,6 @@ export default {
 #header {
     margin-top:0px;
     height: 60px;
-    text-align: center;
     vertical-align: middle;
     line-height: 60px;
 }
@@ -106,6 +114,8 @@ export default {
     width: 480px;
     height:200px;
     margin:0 auto;
+    text-align: center;
+    margin-top:10px;
   }
 </style>
 

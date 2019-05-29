@@ -24,6 +24,10 @@ urlpatterns = [
 
     path(r'expt/', TemplateView.as_view(template_name="index.html")),
     path(r'user_login/', user_views.login),
+    path(r'register_temp/', user_views.register_temp),
+    path(r'paperview/', Tech_views.list_all),
+    re_path(r'paperview/(?P<resource_id>\d{1,2})/', Tech_views.list_one),
+    path(r'user_register/', user_views.register),
 
     #用户主页展示
     #此处我用了redirect方法提示登录，可能连接的时候需要修改路径

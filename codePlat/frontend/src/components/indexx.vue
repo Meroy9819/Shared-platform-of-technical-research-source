@@ -1,7 +1,7 @@
 <template>
     <el-container class="tot">
         
-        <v-header></v-header>
+        <v-header ref="child"></v-header>
          <el-container class="main-con1" >
             <el-main>
               <el-row><el-col :span="24"><div class="grid-content"></div></el-col></el-row>
@@ -23,12 +23,24 @@
          
         <el-container class="main-con2">
             <el-main>
-             <el-carousel type="card" :interval="400" class="flip" >
+              <div id="app" class="bg-purple-light" style="height: 30%">
+                  <wordcloud
+                  :data="defaultWords"
+                  nameKey="name"
+                  valueKey="value"
+                  :color="Accent"
+                  :showTooltip="false"
+                  :wordClick="wordClickHandler">
+                  </wordcloud>
+              </div>
+              <el-divider></el-divider>
+
+             <el-carousel type="card" :interval="2000" class="flip" style="height: auto">
                 <el-carousel-item v-for="paper in topPaperList" :key="paper.index">
                 <el-card class="box-card" shadow="always">
               <el-row >
                 <el-col :span="21" class="grid-content bg-purple-light">
-                   <el-link href="https://element.eleme.io" target="_blank"><h3>{{paper.title}}</h3></el-link>
+                   <el-link @click="topv" target="_blank"><h3>{{paper.title}}</h3></el-link>
                 </el-col>
                 <el-col :span="1" class="grid-content bg-purple-light" :offset="1">
                     <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
@@ -40,7 +52,7 @@
                     <el-col :span="6" class="grid-content bg-purple-light greyfont">作者：</el-col>
                     <el-col :span="18">
                       <div class="grid-content bg-purple-light">
-                              <el-link href="https://element.eleme.io" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
+                              <el-link @click="toexp" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
                                 {{ au.name }}
                                  <el-divider direction="vertical"></el-divider>
                               </el-link>
@@ -76,19 +88,19 @@
 
             <el-divider></el-divider>
 
-            <el-carousel type="card" :interval="400" class="flip" >
+            <el-carousel type="card" :interval="2000" class="flip" >
                 <el-carousel-item v-for="exp in topExpList" :key="exp.index">
                 <el-card class="box-card" shadow="always">
                     <el-row >
                       <el-col :span="6" class="grid-content bg-purple-light">
                         <img
-                        style="width: 80px; height: 80px; border-radius: 40px"
+                        style="width: 80px; height: 80px; border-radius: 50%"
                         src="../assets/exp.jpg"
-                        ></img>
+                        >
                       </el-col>
                       <el-col :span="15" class="grid-content bg-purple-light">
                         <el-row><el-col :span="24"><div class="grid-content3"></div></el-col></el-row>
-                        <el-link href="https://element.eleme.io" target="_blank"><h3>{{exp.name}}</h3></el-link>
+                        <el-link @click="toexp" target="_blank"><h3>{{exp.name}}</h3></el-link>
                       </el-col>
                       <el-col :span="1" class="grid-content bg-purple-light" :offset="1">
                           <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
@@ -131,9 +143,50 @@
 <script>
 
 import Header from '@/components/Header'
+import wordcloud from 'vue-wordcloud'
+
 export default {
     data() {
       return {
+        //词云
+        myColors: ['#1f77b4', '#629fc9', '#94bedb', '#c9e0ef'],
+        defaultWords: [{
+          "name": "Cat",
+          "value": 26
+        },
+        {
+          "name": "fish",
+          "value": 19
+        },
+        {
+          "name": "things",
+          "value": 18
+        },
+        {
+          "name": "look",
+          "value": 16
+        },
+        {
+          "name": "two",
+          "value": 15
+        },
+        {
+          "name": "fun",
+          "value": 9
+        },
+        {
+          "name": "know",
+          "value": 9
+        },
+        {
+          "name": "good",
+          "value": 9
+        },
+        {
+          "name": "play",
+          "value": 6
+        }
+      ],
 
         //
         topPaperList:[{
@@ -222,7 +275,8 @@ export default {
       
     },
     components:{
-        'v-header':Header
+        'v-header':Header,
+         wordcloud
     },
     methods: {
       //点击收藏按钮触发：
@@ -232,18 +286,45 @@ export default {
           message: '收藏成功',
           type: 'success'
         });
+        // console.log(this.$refs.child.searchVisible);
       },
-      
       //检索
       search() {
-        console.log("检索:"+this.input2);
-        this.$router.push({ path:'/sr'  }); //跳转至searchresult
+        console.log("index检索:"+this.input2);
+        this.$router.push({
+                name:'SearchResult',
+                params:{
+                    word:this.input2
+                }
+            })
       },
       //高级检索（待定）
       advsearch() {
         console.log("高级检索:"+this.input2);
+      },
+      //标题跳转
+      topv() {
+        this.$router.push({ path:'/pv' , query: {aaa: 1} }); //跳转至pv
+      },
+      toexp() {
+        this.$router.push({ path:'/ExpertInfo' , query: {aaa: 1} }); //跳转至pv
+      },
+      //点击word
+      wordClickHandler(name, value, vm) {
+        console.log('wordClickHandler', name, value, vm);
+        this.$router.push({
+                  name:'SearchResult',
+                  params:{
+                      word:name
+                  }
+              })
       }
-    }
+    },
+
+
+    mounted(){
+      this.$refs.child.searchVisible=false;
+    },
 }
 </script>
 
@@ -343,12 +424,7 @@ export default {
     
   }
   
-  .bg-purple {
-    background: #6C6C6C	 ;
-  }
-  .bg-purple-light {
-    background: #FCFCFC;
-  }
+  
   .grid-content {
     border-radius: 4px;
     min-height: 30px;

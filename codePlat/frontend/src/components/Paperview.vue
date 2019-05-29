@@ -6,7 +6,7 @@
             <el-main width="60%">
               <el-row :gutter="20">
                 <el-col :span="12">
-                   <el-link href="https://element.eleme.io" target="_blank"><h2>{{title}}</h2></el-link>
+                   <el-link href="https://element.eleme.io" target="_blank"><h2>{{sciachi.name}}</h2></el-link>
                 </el-col>
                 <el-col :span="3" class="bt">
                     <el-button type="warning" icon="el-icon-star-on" @click="star">收藏</el-button>
@@ -35,8 +35,8 @@
                     <el-col :span="3" class="grid-content bg-purple-light greyfont">作者：</el-col>
                     <el-col :span="21">
                       <div class="grid-content bg-purple-light">
-                              <el-link href="https://element.eleme.io" target="_blank"  v-for="au in aulist" :key="au.index" class="aulink">
-                                {{ au.name }}
+                              <el-link href="https://element.eleme.io" target="_blank"  v-for="au in sciachi.author" :key="au.index" class="aulink">
+                                {{ au }}
                                  <el-divider direction="vertical"></el-divider>
                               </el-link>
 
@@ -47,7 +47,7 @@
                     <el-col :span="3" class="grid-content bg-purple-light greyfont">摘要:</el-col>
                     <el-col :span="21">
                       <div class="grid-content bg-purple-light">
-                        {{abs}}
+                        {{sciachi.abstract}}
                       </div>
                     </el-col>
                 </el-row>
@@ -55,18 +55,18 @@
                     <el-col :span="3" class="grid-content bg-purple-light greyfont">关键词:</el-col>
                     <el-col :span="21">
                       <div class="grid-content bg-purple-light">
-                        <el-tag v-for="tag in taglist" :key="tag.index" class="tagg">
-                           {{ tag.text }}
+                        <el-tag v-for="tag in sciachi.keywordSeq" :key="tag.index" class="tagg">
+                           {{ tag }}
                         </el-tag>
                       </div>
                       </el-col>
                 </el-row>
                  <el-row>
                    <el-col :span="3" class="grid-content bg-purple-light greyfont">发表年份:</el-col>
-                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ pubyear }}</div></el-col>
+                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ sciachi.publishYear }}</div></el-col>
 
                     <el-col :span="3" :offset="1" class="grid-content bg-purple-light greyfont"><i class="el-icon-link"> 被引量:</i></el-col>
-                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ refcnt }}</div></el-col>
+                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ sciachi.refCount }}</div></el-col>
 
                     <el-tooltip placement="bottom">
                       <div slot="content">我们如何定义“阅读量”？<br/><br/>一次“阅读”行为是……</div>
@@ -85,13 +85,13 @@
                         <span>评论区</span>
                         <el-button style="float: right; padding: 3px 0" type="text" @click="addcomm" icon="el-icon-edit">添加评论</el-button>
                     </div>
-                    <div v-for="item in commlist" :key="item.index" class="text item">
+                    <div v-for="item in comment" :key="item.index" class="text item">
                       <el-row class="comm">
                         <el-col :span="8" class="grid-content bg-purple-light">
                         <img
-                        style="width: 50px; height: 50px; border-radius: 25px"
+                        style="width: 50px; height: 50px; border-radius: 50%"
                         src="../assets/timg.jpg"
-                        />
+                        ></img>
                         </el-col>
 
                         <el-col :span="16" class="grid-content bg-purple-light">
@@ -100,7 +100,7 @@
                         </el-col>
                       </el-row>
                       <el-row class="comm">
-                        <el-col :span="24" class="grid-content bg-purple-light "><div>{{ item.content }}</div></el-col>
+                        <el-col :span="24" class="grid-content bg-purple-light "><div>{{ item.CommentContent }}</div></el-col>
                       </el-row>
                       <el-row class="comm">
                         <el-col :span="24" class="grid-content bg-purple-light greyfont" align="right">{{ item.commdate }}</el-col>
@@ -120,31 +120,15 @@
 <script>
 
 import Header from '@/components/Header'
+import Axios from 'axios'
 export default {
     data() {
       return {
-        // 成果信息
-        title:"多层弹性半空间中的地震波(一)",
-        aulist: [
-        { index:'1',name: 'author1' },
-        { index:'2',name: 'author2' },
-        { index:'3',name: 'author3' },
-      ],
-        abs:"引言 地震面波的频散性质、地震波辐射的方向性等特性已经广泛地用于地壳和上地幔结构以及震源机制的研究中,并且取得了许多有用的成果.研究地震波如何从震源辐射出来、如何在实际介质中传播和衰减的这一问题,对于利用地震波确定地壳和上地幔结构以及震源的参数,是很有必要的.关于这一问题的研究,已经作过许多工作。已往的工作中,为了分析方便,往往采用简单的地壳—上地幔模型或简单的震源模型,或两者都相",
-        taglist: [
-        { index:'1',text: 'tag1' },
-        { index:'2',text: 'tag2' },
-        { index:'3',text: 'tag3' },
-      ],
-        pubyear:1999,
-        refcnt:99,
+        sciachi : {},
+        comment : {
+          username : "",
+        },
         readcnt:999,
-
-        // 评论列表A
-        commlist:[],
-
-        //用户名
-        uname:"uname1",
       }
 
     },
@@ -227,6 +211,42 @@ export default {
           });
         });
       },
+      init:function(){
+        let _this = this;
+        var resource_id = 2;
+        console.log("hello");
+        Axios.get(
+
+          _this.$url + 'resource/'+resource_id.toString())
+
+          // , {
+          //   params: {
+          //     resource_id: 1
+          //   }
+          // }
+
+        // this.$http.request({
+        //   url:_this.$url + 'paperview/',
+        //   method:'get',
+        //   params: {resource_id: 1}
+        // })
+          .then(function (response) {
+          _this.sciachi = response.data.sciachi[0];
+          var s = _this.sciachi.keywordSeq;
+          _this.sciachi.keywordSeq = s.split(" ");
+          s = _this.sciachi.author;
+          _this.sciachi.author = s.split(";");
+          _this.comment = response.data.comment;
+          console.log('heihei');
+          console.log(response)
+        }).catch(function (response) {
+          console.log('gg');
+          console.log(response)
+        })
+      },
+    },
+    mounted:function () {
+      this.init()
     }
 }
 </script>
@@ -296,9 +316,6 @@ export default {
 
   }
 
-  .bg-purple-light {
-    background: #FCFCFC;
-  }
   .grid-content {
     border-radius: 4px;
     min-height: 36px;

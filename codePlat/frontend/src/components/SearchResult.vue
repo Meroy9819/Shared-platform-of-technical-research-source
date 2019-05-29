@@ -1,8 +1,8 @@
 <template>
     <el-container>
-        
-        <v-header></v-header>
-         <el-container class="main-con1">
+
+        <v-header ref="child"></v-header>
+         <!-- <el-container class="main-con1">
             <el-main width="60%">
               <el-row :gutter="20">
                 <el-col :span="10">
@@ -17,8 +17,8 @@
               </el-row>
               <el-divider></el-divider>
             </el-main>
-         </el-container>
-         
+         </el-container> -->
+
         <el-container class="main-con2">
             <el-main width="60%">
               <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
@@ -33,17 +33,17 @@
                             <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
                         </el-col>
                       </el-row>
-                      
+
 
                         <el-row>
                             <el-col :span="3" class="grid-content bg-purple-light greyfont">作者：</el-col>
                             <el-col :span="21">
                               <div class="grid-content bg-purple-light">
-                                      <el-link href="https://element.eleme.io" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
+                                      <el-link @click="toexp" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
                                         {{ au.name }}
                                         <el-divider direction="vertical"></el-divider>
                                       </el-link>
-                                      
+
                               </div>
                             </el-col>
                         </el-row>
@@ -63,12 +63,12 @@
 
                             <el-col :span="3" class="grid-content bg-purple-light greyfont"><i class="el-icon-link"> 被引量:</i></el-col>
                             <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.refcnt }}</div></el-col>
-                            
+
                             <el-tooltip placement="bottom">
                               <div slot="content">我们如何定义“阅读量”？<br/><br/>一次“阅读”行为是……</div>
                               <el-col :span="3" :offset="1" class="grid-content bg-purple-light greyfont"><i class="el-icon-view"> 阅读量:</i></el-col>
                             </el-tooltip>
-                            
+
                             <el-col :span="3"><div class="grid-content bg-purple-light">{{ paper.readcnt }}</div></el-col>
                         </el-row>
                         </el-card>
@@ -92,21 +92,21 @@
                         <el-col :span="4" class="grid-content bg-purple-light">
                           <el-row><el-col :span="24"><div class="grid-content2"></div></el-col></el-row>
                           <img
-                          style="width: 100px; height: 100px; border-radius: 50px"
+                          style="width: 100px; height: 100px; border-radius: 50%"
                           src="../assets/exp.jpg"
-                          ></img>
+                          >
                         </el-col>
-                        
-                        <el-col :span="20" class="grid-content bg-purple-light">  
+
+                        <el-col :span="20" class="grid-content bg-purple-light">
                           <el-row >
                             <el-col :span="16" class="grid-content bg-purple-light">
-                              <el-link href="https://element.eleme.io" target="_blank"><h3>{{exp.name}}</h3></el-link>
+                              <el-link @click="toexp" target="_blank"><h3>{{exp.name}}</h3></el-link>
                             </el-col>
                             <el-col :span="1" class="grid-content bg-purple-light" :offset="7">
                                 <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
                             </el-col>
                           </el-row>
-                        
+
                           <el-row>
                               <el-col :span="4" class="grid-content bg-purple-light"><i class="el-icon-s-cooperation"> 机构:</i></el-col>
                               <el-col :span="20"><div class="grid-content bg-purple-light">{{ exp.inst }}</div></el-col>
@@ -115,16 +115,16 @@
                           <el-row>
                               <el-col :span="4" class="grid-content bg-purple-light redfont">#h-index: </el-col>
                               <el-col :span="3"><div class="grid-content bg-purple-light">{{ exp.hindex }} <el-divider direction="vertical"></el-divider></div></el-col>
-                              
+
                               <el-col :span="4" class="grid-content bg-purple-light redfont">#g-index: </el-col>
                               <el-col :span="3"><div class="grid-content bg-purple-light">{{ exp.gindex }} <el-divider direction="vertical"></el-divider></div></el-col>
-                              
+
                               <el-col :span="4" class="grid-content bg-purple-light redfont">论文数: </el-col>
                               <el-col :span="3"><div class="grid-content bg-purple-light">{{ exp.papercnt }}</div></el-col>
                           </el-row>
-                          
-                        </el-col>  
-                      </el-row>  
+
+                        </el-col>
+                      </el-row>
                       </el-card>
                     <el-divider></el-divider>
                   </el-row>
@@ -140,11 +140,11 @@
                 </el-tab-pane>
               </el-tabs>
 
-              
+
             </el-main>
 
             <el-aside width="25%">
-                
+
             </el-aside>
         </el-container>
 
@@ -227,7 +227,7 @@ export default {
         //检索内容
         input2: '',
       }
-      
+
     },
 
     components:{
@@ -252,21 +252,18 @@ export default {
           type: 'success'
         });
       },
-      
-      //检索
-      search() {
-        console.log("检索:"+this.input2);
-      },
-      //高级检索（待定）
-      advsearch() {
-        console.log("高级检索:"+this.input2);
-      },
-
       //标题跳转
       topv() {
-        this.$router.push({ path:'/pv'  }); //跳转至pv
+        this.$router.push({ path:'/Paperview' , query: {aaa: 1} }); //跳转至pv
       },
-    }
+      toexp() {
+        this.$router.push({ path:'/ExpertInfo' , query: {aaa: 1} }); //跳转至pv
+      }
+    },
+    mounted(){
+      console.log("跳转"+this.$route.params.word);
+      this.$refs.child.input2=this.$route.params.word;
+    },
 }
 </script>
 
@@ -291,7 +288,7 @@ export default {
     line-height: 60px;
     /* vertical-align: middle;  */
   }
-  
+
   .el-aside {
     /* background-color: #D3DCE6; */
     color: #333;
@@ -300,7 +297,7 @@ export default {
     margin-left: 30px;
     margin-right: 30px;
   }
-  
+
   .el-main {
     /* background-color: #E9EEF3; */
     color: #333;
@@ -308,16 +305,16 @@ export default {
     line-height: auto;
     margin-left: 20px;
   }
-  
+
   body > .el-container {
     margin-bottom: 40px;
   }
-  
+
   .el-container:nth-child(5) .el-aside,
   .el-container:nth-child(6) .el-aside {
     line-height: 260px;
   }
-  
+
   .el-container:nth-child(7) .el-aside {
     line-height: 320px;
   }
@@ -333,14 +330,9 @@ export default {
   .el-col {
     border-radius: 4px;
     line-height:30px;
-    
+
   }
-  .bg-purple {
-    background: #6C6C6C	 ;
-  }
-  .bg-purple-light {
-    background: #FCFCFC;
-  }
+
   .grid-content {
     border-radius: 4px;
     min-height: 30px;

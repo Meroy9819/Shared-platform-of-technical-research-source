@@ -2,17 +2,14 @@ from django.shortcuts import render
 from rest_framework import viewsets, response
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import action
-#from label.models import label
 from TechResource.models import SciAchi
 from TechResource.serializers import SciAchiSerializer
-from User.serializers import NormalUserSerializer
-from User.serializers import ExpertSerializer
-from collections import OrderedDict
 from django.shortcuts import render, get_object_or_404,render_to_response,HttpResponse
 import json
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
+from UserComment.models import Comment
+from User.models import NormalUser
 from .forms import SciAchiForm
 def ajax_submit(request):
     ret = {'status': True, 'error': ""}
@@ -35,20 +32,28 @@ def list_all(request):
 
 #展示一个指定了resource_id的论文
 #包括论文数据和评论数据
-def list_one(self,request,resource_id):
+def list_one(request,resource_id):
     #科技资源数据
+    ret={}
     json_list = []
-    data=get_object_or_404(SciAchi,resource_id=resource_id)
+    #data=get_object_or_404(SciAchi,resource_id=resource_id)
+    data=SciAchi.objects.filter(resource_id=resource_id)
     for item in data:
         json_dict=model_to_dict(item)
         json_list.append(json_dict)
+    ret['sciachi'] = json_list
     #评论数据
-    paper = SciAchi.objects.get(resource_id=resource_id)
-    all_comment=paper.Comment_set().all()
+    paper = SciAchi.objects.filter(resource_id=resource_id)
+    all_comment=Comment.objects.filter(CommentResourceid=paper[0])
+    json_list_comment = []
     for item in all_comment:
         json_dict = model_to_dict(item)
-        json_list.append(json_dict)
-    return HttpResponse(json.dumps(json_list), content_type='application/json')
+        json_list_comment.append(json_dict)
+        message=item.CommentUSerid.username
+        json.dumps(message)
+        json_list_comment.append(message)
+    ret['comment'] = json_list_comment
+    return HttpResponse(json.dumps(ret), content_type='application/json')
 
 def test(request):
     return render(request, 'ajax.html')

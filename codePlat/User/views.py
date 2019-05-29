@@ -46,7 +46,7 @@ def login(request):
             password = login_form.cleaned_data['password']
             print(username)
             try:
-                user = models.NormalUser.objects.get(name=username)
+                user = models.NormalUser.objects.get(username=username)
                 if not user.has_confirmed:
                     ret.pop('message')
                     ret['message'] = "该用户还未通过邮件确认"
@@ -56,7 +56,7 @@ def login(request):
                 if user.passwd == hash_code(password):  # 哈希值和数据库内的值进行比对
                     request.session['is_login'] = True
                     request.session['user_id'] = user.user_id
-                    request.session['user_name'] = user.name
+                    request.session['user_name'] = user.username
                     #如果用户已经登录成功，那么直接跳转到主页
                     ret.pop('message')
                     ret.pop('form')
@@ -80,6 +80,62 @@ def login(request):
 
 #用户注册
 def register(request):
+    request.session.flush()
+    ret = {'message': "test", 'form': "test"}
+    if request.session.get('is_login', None):
+        # 登录状态不允许注册。你可以修改这条原则！
+        ret.pop('message')
+        ret['message'] = "请先登出"
+        return HttpResponse(json.dumps(ret), content_type='application/json')
+    if request.method == "POST":
+        register_form =RegisterForm(request.POST)
+        message = "请检查填写的内容！"
+        if register_form.is_valid():  # 获取数据
+            username = register_form.cleaned_data['username']
+            print(username)
+            password1 = register_form.cleaned_data['password1']
+            password2 = register_form.cleaned_data['password2']
+            email = register_form.cleaned_data['email']
+            sex = register_form.cleaned_data['sex']
+            phonenumber=register_form.cleaned_data['phonenumber']
+            if password1 != password2:  # 判断两次密码是否相同
+                ret.pop('message')
+                ret['message'] = "两次输入的密码不同"
+                return HttpResponse(json.dumps(ret), content_type='application/json')
+            else:
+                same_name_user = models.NormalUser.objects.filter(username=username)
+                if same_name_user:  # 用户名唯一
+                    ret.pop('message')
+                    ret['message'] = "用户已经存在，请重新选择用户名"
+                    return HttpResponse(json.dumps(ret), content_type='application/json')
+                same_email_user = models.NormalUser.objects.filter(email=email)
+                if same_email_user:  # 邮箱地址唯一
+                    ret.pop('message')
+                    ret['message'] = "该邮箱地址已被注册，请使用别的邮箱"
+                    return HttpResponse(json.dumps(ret), content_type='application/json')
+
+                new_user = models.NormalUser()
+                new_user.username = username
+                new_user.passwd = hash_code(password1)  # 使用加密密码
+                new_user.email = email
+                new_user.sex = sex
+                new_user.phonenumber=phonenumber
+                new_user.corresponding_expert_id=0
+                new_user.corrsponding_admin_id=0
+                new_user.introduction="No yet"
+                new_user.save()
+                code = make_confirm_string(new_user)
+                send_email(email, code)
+                ret.pop('message')
+                ret['message'] = "请前往注册邮箱，进行邮件确认"
+                ret.pop('form')
+                return HttpResponse(json.dumps(ret), content_type='application/json')  # 跳转到等待邮件确认页面。
+    register_form = RegisterForm
+    ret.pop('form')
+    ret['form'] = register_form
+    return HttpResponse(json.dumps(ret), content_type='application/json')
+
+def register_temp(request):
     if request.session.get('is_login', None):
         # 登录状态不允许注册。你可以修改这条原则！
         return redirect("/index/")
@@ -112,10 +168,10 @@ def register(request):
                 new_user.email = email
                 new_user.sex = sex
                 new_user.phonenumber=phonenumber
+                new_user.point=0
+                new_user.introduction="No yet"
                 new_user.corresponding_expert_id=0
                 new_user.corrsponding_admin_id=0
-                new_user.introduction="No yet"
-                new_user.image=None
                 new_user.save()
 
                 code = make_confirm_string(new_user)
@@ -129,7 +185,7 @@ def register(request):
 #用户注册验证
 def make_confirm_string(NormalUser):
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    code = hash_code(NormalUser.name, now)
+    code = hash_code(NormalUser.username, now)
     ConfirmString.objects.create(code=code, user=NormalUser)
     return code
 
