@@ -89,7 +89,7 @@
                       <el-row class="comm">
                         <el-col :span="8" class="grid-content bg-purple-light">
                         <img
-                        style="width: 50px; height: 50px; border-radius: 25px"
+                        style="width: 50px; height: 50px; border-radius: 50%"
                         src="../assets/timg.jpg"
                         ></img>
                         </el-col>
@@ -296,9 +296,6 @@ export default {
 
   }
 
-  .bg-purple-light {
-    background: #FCFCFC;
-  }
   .grid-content {
     border-radius: 4px;
     min-height: 36px;

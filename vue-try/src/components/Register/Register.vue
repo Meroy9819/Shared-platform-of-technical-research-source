@@ -1,6 +1,12 @@
 <template>
     <div id="header" class="container" style="background:#66CDAA;color:#fff">
-        <span><h2>科技专家资源共享平台</h2></span>
+        <!-- <span><h2>科技专家资源共享平台</h2></span> -->
+
+        <router-link class="navbar-item" to="/">
+            <!-- <img src="../../assets/logo.png" width="60%" style="max-height:70%!important"> -->
+            <img src="../../assets/logo-1_W.png" width="120px" height="50px" style="margin-top:5px;vertical-align: middle;">
+        </router-link>
+
         <div id="card" class="container" >
           <el-card class="box-card" >
 
@@ -157,7 +163,6 @@ export default {
 #header {
     margin-top:0px;
     height: 60px;
-    text-align: center;
     vertical-align: middle;
     line-height: 60px;
 }
@@ -165,6 +170,8 @@ export default {
     width: 480px;
     height:450px;
     margin:0 auto;
+    text-align: center;
+    margin-top:10px;
   }
 </style>
 

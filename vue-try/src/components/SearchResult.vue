@@ -1,8 +1,8 @@
 <template>
     <el-container>
         
-        <v-header></v-header>
-         <el-container class="main-con1">
+        <v-header ref="child"></v-header>
+         <!-- <el-container class="main-con1">
             <el-main width="60%">
               <el-row :gutter="20">
                 <el-col :span="10">
@@ -17,7 +17,7 @@
               </el-row>
               <el-divider></el-divider>
             </el-main>
-         </el-container>
+         </el-container> -->
          
         <el-container class="main-con2">
             <el-main width="60%">
@@ -39,7 +39,7 @@
                             <el-col :span="3" class="grid-content bg-purple-light greyfont">作者：</el-col>
                             <el-col :span="21">
                               <div class="grid-content bg-purple-light">
-                                      <el-link href="https://element.eleme.io" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
+                                      <el-link @click="toexp" target="_blank"  v-for="au in paper.aulist" :key="au.index" class="aulink">
                                         {{ au.name }}
                                         <el-divider direction="vertical"></el-divider>
                                       </el-link>
@@ -92,15 +92,15 @@
                         <el-col :span="4" class="grid-content bg-purple-light">
                           <el-row><el-col :span="24"><div class="grid-content2"></div></el-col></el-row>
                           <img
-                          style="width: 100px; height: 100px; border-radius: 50px"
+                          style="width: 100px; height: 100px; border-radius: 50%"
                           src="../assets/exp.jpg"
-                          ></img>
+                          >
                         </el-col>
                         
                         <el-col :span="20" class="grid-content bg-purple-light">  
                           <el-row >
                             <el-col :span="16" class="grid-content bg-purple-light">
-                              <el-link href="https://element.eleme.io" target="_blank"><h3>{{exp.name}}</h3></el-link>
+                              <el-link @click="toexp" target="_blank"><h3>{{exp.name}}</h3></el-link>
                             </el-col>
                             <el-col :span="1" class="grid-content bg-purple-light" :offset="7">
                                 <el-button type="warning" icon="el-icon-star-off" circle @click="star" size="small"></el-button>
@@ -252,21 +252,18 @@ export default {
           type: 'success'
         });
       },
-      
-      //检索
-      search() {
-        console.log("检索:"+this.input2);
-      },
-      //高级检索（待定）
-      advsearch() {
-        console.log("高级检索:"+this.input2);
-      },
-
       //标题跳转
       topv() {
-        this.$router.push({ path:'/pv'  }); //跳转至pv
+        this.$router.push({ path:'/pv' , query: {aaa: 1} }); //跳转至pv
       },
-    }
+      toexp() {
+        this.$router.push({ path:'/ExpertInfo' , query: {aaa: 1} }); //跳转至pv
+      }
+    },
+    mounted(){
+      console.log("跳转"+this.$route.params.word);
+      this.$refs.child.input2=this.$route.params.word;
+    },
 }
 </script>
 
@@ -335,12 +332,7 @@ export default {
     line-height:30px;
     
   }
-  .bg-purple {
-    background: #6C6C6C	 ;
-  }
-  .bg-purple-light {
-    background: #FCFCFC;
-  }
+
   .grid-content {
     border-radius: 4px;
     min-height: 30px;

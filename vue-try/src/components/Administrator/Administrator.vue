@@ -1,7 +1,8 @@
 <template>
     <div>
 
-        <HeaderNoLogin></HeaderNoLogin>
+        <!-- <HeaderNoLogin></HeaderNoLogin> -->
+        <HeaderForAdmin></HeaderForAdmin>
         
         <div style="margin-top:35px;width:80%;height:240px;margin:0 auto">
             <el-col :span="7">
@@ -16,7 +17,22 @@
             </el-col>
             <el-col :span="6" style="margin-top:30px">
                 <div style="margin-top:40px">
-                    <el-button @click="release" style="display:block;margin:0 auto" class="btn btn-success">发布通知</el-button><br>
+                    <el-button @click="release = true" style="display:block;margin:0 auto" class="btn btn-success">发布通知</el-button><br>
+                
+                    <div class="modal" v-bind:class="{'is-active':release}">
+                        <el-dialog title="发布通知" :visible.sync="release">
+                            <el-form >
+                                <el-form-item label="通知内容" :label-width="formLabelWidth">
+                                <el-input type="textarea" :rows="3" v-model="reason" placeholder="请输入通知内容" autocomplete="off" clearable></el-input>
+                                </el-form-item>
+                            </el-form>
+                            <div slot="footer" class="dialog-footer">
+                                <el-button @click="release = false">取 消</el-button>
+                                <el-button type="primary" @click="releaseinfo">确 定</el-button>
+                            </div>
+                        </el-dialog>
+                    </div>
+
                 </div>
             </el-col>
         </div>
@@ -80,20 +96,23 @@
 </template>
 
 <script>
-import HeaderNoLogin from '@/components/UserInfo/HeaderNoLogin'
-
+// import HeaderNoLogin from '@/components/UserInfo/HeaderNoLogin'
+import HeaderForAdmin from './HeaderForAdmin'
 
 export default {
-    components:{HeaderNoLogin},
+    components:{HeaderForAdmin},
     data() {
         return {
             adminID:"",
+            release:false
 
         }
     },
     methods: {
-        release() {
-            alert("i dont know how to release a info")
+        releaseinfo() {
+            // alert("i dont know how to release a info")
+            this.release = false;
+            alert('releaseinformation');
         }
     }
 

@@ -9,7 +9,7 @@ import Paperview from '@/components/Paperview'
 import Header from '@/components/Header'
 import SearchResult from '@/components/SearchResult'
 import indexx from '@/components/indexx'
-import test from '@/components/test'
+// import test from '@/components/test'
 
 export default {
   name: 'App',
@@ -18,7 +18,7 @@ export default {
     Header,
     SearchResult,
     indexx,
-    test
+    //test
   }
 }
 </script>

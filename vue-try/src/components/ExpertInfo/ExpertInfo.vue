@@ -22,24 +22,24 @@
             <el-col :span="6" style="margin-top:30px" v-if="isLogined">
                 <div>
                     <el-button @click="guanzhu" style="display:block;margin:0 auto" class="btn btn-success">收藏</el-button><br>
-                    <el-button @click="dialogFormVisible = true" style="display:block;margin:0 auto" class="btn btn-success">举报</el-button><br>
+                    <el-button @click="jubaomodel = true" style="display:block;margin:0 auto" class="btn btn-success">举报</el-button><br>
 
-                    <div class="modal" v-bind:class="{'is-active':dialogFormVisible}">
-                        <el-dialog title="举报信息" :visible.sync="dialogFormVisible">
+                    <div class="modal" v-bind:class="{'is-active':jubaomodel}">
+                        <el-dialog title="举报信息" :visible.sync="jubaomodel">
                             <el-form >
                                 <el-form-item label="举报理由" :label-width="formLabelWidth">
                                 <el-input type="textarea" :rows="3" v-model="reason" placeholder="请输入举报理由" autocomplete="off" clearable></el-input>
                                 </el-form-item>
                             </el-form>
                             <div slot="footer" class="dialog-footer">
-                                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                                <el-button @click="jubaomodel = false">取 消</el-button>
+                                <el-button type="primary" @click="submitjubao">确 定</el-button>
                             </div>
                         </el-dialog>
                     </div>
 
 
-                    <el-button @click="sendmess = true" style="display:block;margin:0 auto" class="btn btn-success">站内信</el-button>
+                    <!-- <el-button @click="sendmess = true" style="display:block;margin:0 auto" class="btn btn-success">站内信</el-button>
 
                     <div class="modal" v-bind:class="{'is-active':sendmess}">
                         <el-dialog title="站内信" :visible.sync="sendmess">
@@ -53,7 +53,7 @@
                                 <el-button type="primary" @click="sendmess = false">确 定</el-button>
                             </div>
                         </el-dialog>
-                    </div>
+                    </div> -->
 
 
                 </div>
@@ -77,29 +77,103 @@
                         <el-tabs :tab-position="left" >
                             <el-tab-pane label="论文">
                                 <div v-if="isexpert" > 
-                                    <el-button  @click="uploadpaper" type="primary" style="floating:right;margin:0 auto" class="btn btn-success">上传论文</el-button>
+
+                                    <el-button  @click="upload = true" type="primary" style="floating:right;margin:0 auto" class="btn btn-success">上传资源</el-button>
+                                    <!-- 标题 作者姓名（多个作者，字符串存储，逗号隔开），关键词，引用数，发表年份，摘要，附件 -->
+                                    <div class="modal" v-bind:class="{'is-active':upload}">
+                                        <el-dialog title="上传资源" :visible.sync="upload">
+                                            <el-form :model="form">
+                                                <el-form-item label="标题" :label-width="formLabelWidth" :rules="{
+                                                    required: true, message: '标题不能为空', trigger: 'blur'
+                                                    }">
+                                                <el-input v-model="form.title" autocomplete="off"></el-input>
+                                                </el-form-item>
+
+                                                <el-form-item
+                                                    v-for="(au, index) in form.aulist"
+                                                    :label="'作者' + (index+1)"
+                                                    :key="au.key"
+                                                    :prop="'aulist.' + index + '.auname'"
+                                                    :label-width="formLabelWidth"
+                                                >
+                                                <el-col :span="12">
+                                                    <el-input v-model="au.auname"></el-input>
+                                                </el-col>
+                                                <el-col :span="2" :offset="1">
+                                                    <el-button @click.prevent="removeAuthor(au)">删除</el-button>
+                                                </el-col>
+                                                </el-form-item>
+                                                <el-form-item :label-width="formLabelWidth">
+                                                    <el-button @click="addAuthor">添加作者</el-button>
+                                                </el-form-item>
+
+                                                <el-form-item
+                                                    v-for="(tag, index) in form.taglist"
+                                                    :label="'关键词' + (index+1)"
+                                                    :key="tag.key"
+                                                    :prop="'taglist.' + index + '.tagname'"
+                                                    :label-width="formLabelWidth"
+                                                >
+                                                <el-col :span="12">
+                                                    <el-input v-model="tag.tagname"></el-input>
+                                                </el-col>
+                                                <el-col :span="2" :offset="1">
+                                                    <el-button @click.prevent="removeTag(tag)">删除</el-button>
+                                                </el-col>
+                                                </el-form-item>
+                                                <el-form-item :label-width="formLabelWidth">
+                                                    <el-button @click="addTag">添加关键词</el-button>
+                                                </el-form-item>
+
+                                                <el-form-item label="发表年份" :label-width="formLabelWidth">
+                                                    <el-date-picker
+                                                        v-model="form.pubyear"
+                                                        type="year"
+                                                        placeholder="选择年"
+                                                        value-format="yyyy">
+                                                    </el-date-picker>
+                                                </el-form-item>
+
+                                                <el-form-item label="摘要" :label-width="formLabelWidth">
+                                                    <el-input
+                                                        type="textarea"
+                                                        :rows="6"
+                                                        v-model="form.abs">
+                                                    </el-input>
+                                                </el-form-item>
+
+                                                <el-form-item label="引用数" :label-width="formLabelWidth">
+                                                    <el-input  v-model="form.refcnt"></el-input>
+                                                </el-form-item>
+
+                                                <el-form-item label="上传附件" :label-width="formLabelWidth">
+                                                    <el-upload
+                                                        class="upload-demo"
+                                                        drag
+                                                        :multiple="false"
+                                                        :limit="1"
+                                                        :before-upload="precheck"
+                                                        action="https://jsonplaceholder.typicode.com/posts/"  >
+                                                        <i class="el-icon-upload"></i>
+                                                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                                                    </el-upload>
+                                                </el-form-item>
+
+                                            
+                                            </el-form>
+                                            <div slot="footer" class="dialog-footer">
+                                                <el-button @click="upload = false">取 消</el-button>
+                                                <el-button type="primary" @click="onSubmit">发 布</el-button>
+                                            </div>
+                                            </el-dialog>
+
+                                    </div>
+                                
                                 </div>
                                 <br>
                                 <div>
                                     <paper></paper><br>
                                     <paper></paper>
-                                </div>
-                                <div>
-                                    <div class="block">
-                                    <el-pagination
-                                        layout="prev, pager, next"
-                                        :total="40">
-                                    </el-pagination>
-                                    </div>
-                                </div>
-                            </el-tab-pane>
-                            <el-tab-pane label="专利">
-                                <div v-if="isexpert" >
-                                    <el-button   @click="uploadpatent" type="primary" style="floating:right" class="btn btn-success">上传专利</el-button>
-                                </div>
-                                <br>
-                                <div>
-                                    <patent></patent>
                                 </div>
                                 <div>
                                     <div class="block">
@@ -118,23 +192,18 @@
 
         </div>
 
-       
-
-
     </div>
 </template>
 
 <script>
-import Header from './Header.vue'
+import Header from '@/components/Header'
 import paper from './paper.vue'
-import patent from './patent.vue'
-
 export default {
     name:'ExpertInfo',
-    components:{Header,paper,patent},
+    components:{Header,paper},
     data() {
       return {
-        username:"",
+        username:this.$route.params.username,
         institution:"",
         beiyinshu:"",
         chengguoshu:"",
@@ -145,13 +214,34 @@ export default {
         gender:"",
         email:"",
         area:"",
-        dialogFormVisible:false,
+        jubaomodel:false,
         reason:"",
-        sendmess:"",
+        // sendmess:false,
 
         isLogined:true,
 
-        isexpert:true
+        isexpert:true,
+        upload:false,
+
+        //表单字段
+        form: {
+          title: '',
+          aulist: [{
+            auname: ''
+          }],
+          taglist: [{
+            tagname: ''
+          }],
+          pubyear:'',
+          abs:'',
+          refcnt:''
+        },
+
+        formLabelWidth: '120px',
+
+
+
+
       }
     },
     methods: {
@@ -161,13 +251,48 @@ export default {
             alert("guanzhu");
             //this.fensishu=this.fensishu+1;
         },
-        uploadpaper() {
-            alert("uploadpaper");
+        addAuthor() {
+            this.form.aulist.push({
+            auname: '',
+            key: Date.now()
+            });
         },
-        uploadpatent() {
-            alert("uploadpatent");
+        removeAuthor(item) {
+            var index = this.form.aulist.indexOf(item)
+            if (index !== -1) {
+            this.form.aulist.splice(index, 1)
+            }
         },
-        
+        addTag() {
+            this.form.taglist.push({
+            tagname: '',
+            key: Date.now()
+            });
+        },
+        removeTag(item) {
+        var index = this.form.taglist.indexOf(item)
+            if (index !== -1) {
+            this.form.taglist.splice(index, 1)
+            }
+        },
+        precheck(file){
+            const isPDF = file.type === 'pdf';
+            if (!isPDF) {
+                this.$message.error('请上传 PDF 格式的附件');
+            }
+            return isPDF;
+        },
+
+        //提交表单
+        onSubmit() {
+            this.upload = false;
+            // console.log(this.form);
+            console.log(Date.toLocaleDateString());
+        },
+        submitjubao() {
+            this.jubaomodel = false;
+            alert('提交举报了');
+        }
       
     }
 
