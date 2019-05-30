@@ -49,10 +49,12 @@ def create_comment(request,resource_id):
     message="no 2"
     return render(request, 'comment/comment.html', locals())
 
+#提示评论成功
 def comment_success(request):
     message="hahahahcommentsuccess"
     return render(request,"comment/commentsuccess.html",locals())
 
+#删除评论
 def delete_comment(request,Comment_id):
     comment=get_object_or_404(Comment,Comment_id=Comment_id)
     if comment:

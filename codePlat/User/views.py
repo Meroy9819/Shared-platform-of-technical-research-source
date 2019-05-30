@@ -7,15 +7,13 @@ import json
 import codePlat
 import datetime
 from django.core.mail import EmailMultiAlternatives
-from django.http import HttpResponseRedirect
-from Like.models import LikeResources
-#from Report.models import report
 from User.models import NormalUser
-from rest_framework import status
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
+from UserComment.models import Comment
 from Like.models import LikeResources
-#from Report.models import report
+from Report.models import report,report_comment,report_expert
+from VisitHistory.models import VisitExpertHistory,VisitResourceHistory
 #加密密码
 def hash_code(s, salt='codeplat_login'):
     h = hashlib.sha256()
@@ -293,40 +291,68 @@ def base(request):
 #普通用户主页展示信息
 def show_user(request):
     #如果尚未登录，则跳转到登录页
-    if request.session.get('is_login', None)!=True:
-        return redirect("/login/login.html")
+    if not request.session.get('is_login', None)!=True:
+        #return redirect("/login/login.html")
+        print (request.session.get('username',''))
+        return HttpResponse(json.dumps("ewt"),content_type='application/json')
     #取出当前用户对象
     #json化所有用户信息
+    ret={}
     json_list = []
-    user_name=request.session.get['username','']
-    data=get_object_or_404(NormalUser,name=user_name)
-    json_dict = model_to_dict(data)
-    json_list.append(json_dict)
+    user_name=request.GET.get('username','')
+    data=NormalUser.objects.filter(username=user_name)
+    for item in data:
+        json_list.append({"id": item.user_id,
+                          "img": str(item.image),
+                          "name": item.username,
+                          "user_type":item.user_type,
+                          "introduction":item.introduction ,
+                          "sex":item.sex,
+                          "email":item.email,
+                          "注册时间":str(item.c_time),
+                          "手机号":item.phonenumber,
+
+                          })
     #用户对应的评论信息
-    comment_user=get_object_or_404(NormalUser,name=user_name)
-    all_comment=comment_user.Comment_set().all()
+    comment_user=get_object_or_404(NormalUser,username=user_name)
+    all_comment=Comment.objects.filter(CommentUSerid=comment_user)
     for item in all_comment:
         json_dict = model_to_dict(item)
         json_list.append(json_dict)
     #用户的收藏列表
-    liker_user=get_object_or_404(NormalUser,name=user_name)
-    all_likes=liker_user.LikeResource_set().all()
+    liker_user=get_object_or_404(NormalUser,username=user_name)
+    all_likes=LikeResources.objects.filter(liker_user=liker_user)
     for item in all_likes:
         json_dict = model_to_dict(item)
         json_list.append(json_dict)
-    #用户的购买列表
-    buy_user=get_object_or_404(NormalUser,name=user_name)
-    all_buy=buy_user.BuyResource_set().all()
-    for item in all_buy:
-        json_dict = model_to_dict(item)
-        json_list.append(json_dict)
-    #用户的举报列表
-    report_user=get_object_or_404(NormalUser,name=user_name)
-    all_report=report_user.report_set().all()
+    #用户的举报成果列表
+    report_user=get_object_or_404(NormalUser,username=user_name)
+    all_report=report.objects.filter(report_user=report_user)
     for item in all_report:
         json_dict = model_to_dict(item)
         json_list.append(json_dict)
-    return HttpResponse(json.dumps(json_list), content_type='application/json')
+    #用户的举报专家列表
+    all_report=report_expert.objects.filter(report_user=report_user)
+    for item in all_report:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    #用户的举报评论列表
+    all_report=report_comment.objects.filter(report_user=report_user)
+    for item in all_report:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    #用户的访问成果记录
+    all_history=VisitResourceHistory.objects.filter(visit_user=report_user)
+    for item in all_history:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    #用户的访问专家记录
+    all_history=VisitExpertHistory.objects.filter(visit_user=report_user)
+    for item in all_history:
+        json_dict = model_to_dict(item)
+        json_list.append(json_dict)
+    ret['data']=json_list
+    return HttpResponse(json.dumps(ret), content_type='application/json')
 
 
 #专家主页展示

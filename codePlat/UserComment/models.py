@@ -10,7 +10,7 @@ class Comment(models.Model):
     CommentResourceid=models.ForeignKey(SciAchi,on_delete=models.CASCADE)
     CommentUSerid=models.ForeignKey(NormalUser,on_delete=models.CASCADE)
     CommentTime=models.DateTimeField(auto_now_add=True)
-    CommentTitle=models.CharField(max_length=100,default="No yet")
+  #  CommentTitle=models.CharField(max_length=100,default="No yet")
     CommentContent=models.CharField(
         max_length=5000,
         null=True,

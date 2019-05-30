@@ -15,7 +15,7 @@
               </el-form-item>
               <el-form-item>
                 <span>密码：</span>
-                <el-input v-model="user.password" style="float:right;margin-right:80px;width:160px" placeholder="请输入密码"></el-input>
+                <el-input v-model="user.password" style="float:right;margin-right:80px;width:160px" placeholder="请输入密码" show-password="false"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" round style="float:left;margin-left:60px;text-align:center" @click="signIn">登录</el-button>

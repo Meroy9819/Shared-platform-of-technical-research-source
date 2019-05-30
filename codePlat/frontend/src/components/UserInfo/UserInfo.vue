@@ -22,10 +22,10 @@
                     <!-- <el-button @click="editinfo" style="display:block;margin:0 auto">修改个人信息</el-button><br> -->
 
 
-                    <el-button v-if="!isexpert" @click="renzheng = true" style="display:block;margin:0 auto" class="btn btn-success">申请认证专家</el-button><br>
-                    
-                    <div class="modal" v-bind:class="{'is-active':renzheng}" >
-                        <el-dialog title="认证专家信息" :visible.sync="renzheng">
+                    <el-button v-if="!isexpert" @click="certificate = true" style="display:block;margin:0 auto" class="btn btn-success">申请认证专家</el-button><br>
+
+                    <div class="modal" v-bind:class="{'is-active':certificate}" >
+                        <el-dialog title="认证专家信息" :visible.sync="certificate">
                             <el-form :model="form" style="text-align:center">
                                 <el-form-item>
                                     <span>真实姓名：</span>
@@ -48,15 +48,15 @@
                                     <el-input v-model="area" style="float:right;margin-right:80px;width:160px" placeholder="请输入所属研究领域"></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary" round style="float:left;margin-left:130px;text-align:center" @click="submitrenzheng">提交</el-button>
-                                    <el-button type="primary" round style="float:right;margin-right:80px;text-align:center" @click="renzheng = false">取消</el-button>
+                                    <el-button type="primary" round style="float:left;margin-left:130px;text-align:center" @click="submitcertificate">提交</el-button>
+                                    <el-button type="primary" round style="float:right;margin-right:80px;text-align:center" @click="certificate = false">取消</el-button>
                                 </el-form-item>
                                 </el-form>
                         </el-dialog>
                     </div>
-                    
-                    <el-button v-if="isexpert" @click="manageexpert" style="display:block;margin:0 auto" class="btn btn-success">管理专家页面</el-button><br>
-                    
+
+                    <el-button v-if="isexpert" @click="manageAchi" style="display:block;margin:0 auto" class="btn btn-success">管理专家页面</el-button><br>
+
                 </div>
             </el-col>
         </div>
@@ -68,8 +68,10 @@
                 <el-tab-pane label="个人信息">
                     <div style="width:90%;margin:0 auto">
                         <h4>ID：{{userID}}</h4>
-                        <h4>性别：{{gender}}</h4>
+                        <h4>性别：{{sex}}</h4>
                         <h4>邮箱：{{email}}</h4>
+                        <h4>个人简介：{{introduction}}</h4>
+                        <button @click="certificateChange">认证状态</button>
                     </div>
                 </el-tab-pane>
 
@@ -211,7 +213,7 @@
 <script>
 import Header from '@/components/Header'
 import SystemMess from './SystemMess.vue'
-
+import Axios from 'axios'
 export default {
     components:{Header,SystemMess},
     data() {
@@ -220,12 +222,13 @@ export default {
             status:"",
             isexpert:true,
             userID:"",
-            gender:"",
+            sex:"",
             email:"",
-            renzheng:false,
+            introduction:"",
+            certificate:true,
 
 
-            // for renzheng
+            // for certificate
             realname:"",
             institution:"",
             papertitle:"",
@@ -240,11 +243,12 @@ export default {
         }
     },
     methods: {
-        // renzheng() {
-        //     this.$router.replace('/Certificate')
-        // },
-        manageexpert() {
-            
+      certificateChange(){
+        this.certificate = ~this.certificate;
+        _this.$router.go(0);
+      },
+
+        manageAchi() {
             //this.$router.replace('/ExpertInfo')
             this.$router.push({
                 name:'ExpertInfo',
@@ -252,10 +256,54 @@ export default {
                     username:this.username
                 }
             })
-            
         },
-        submitrenzheng() {
-            this.renzheng = false;
+
+        init:function () {
+          let _this = this;
+          var username = "hhx2";
+          // Axios.get(_this.$url + 'user_index/',{
+          //   params:{
+          //     username:username
+          //   }
+          // })
+            this.$http.request({
+          url:_this.$url + 'user_index/',
+          method:'get',
+          params: {username:username}
+        })
+            .then(function (response) {
+             var data =  response.data.data[0];
+             _this.username = data.name;
+             // _this.status = data.user_type;
+             switch(data.user_type){
+               case 1:
+                 _this.status = "普通用户";
+                 break;
+               case 2:
+                 _this.status = "专家用户";
+                 break;
+               case 3:
+                 _this.status = "管理员用户";
+             }
+             _this.userID = data.id;
+             data.sex === "male" ? _this.sex = "男":"女";
+             _this.email = data.email;
+             _this.introduction = data.introduction;
+
+
+
+
+
+
+
+          console.log(response)
+        }).catch(function (response) {
+          console.log('gg');
+          console.log(response)
+        })
+        },
+        submitcertificate() {
+            this.certificate = false;
             alert('todo提交认证了');
         },
         submitchangepass() {
@@ -267,7 +315,10 @@ export default {
         submitchangeimg() {
             alert('todo要同步头像了');
         }
-        
+
+    },
+    mounted:function () {
+      this.init()
     }
 
 }

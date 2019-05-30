@@ -32,7 +32,8 @@ class NormalUser(models.Model):
 	#用户头像
 	image = models.ImageField(
 		null = True,
-		blank=True,
+		blank= True,
+		default='timg.jpg'
 		)
 	#用户简介
 	introduction = models.CharField(
@@ -80,12 +81,12 @@ class ExpertUser(models.Model):
 	)
 	#如有，对应的用户编号
 	corresponding_user_id=models.IntegerField(
-		default=-1
+		default=0
 	)
 	#专家姓名
 	name = models.CharField(
 		max_length = 64,
-		default="专家姓名",
+		default="尚无姓名",
 	)
 	#所在机构
 	institution=models.CharField(
@@ -110,7 +111,7 @@ class ExpertUser(models.Model):
 	)
 	#领域
 	field=models.CharField(
-		max_length=50,
+		max_length=128,
 		null=True,
 	)
 	#收藏数
@@ -140,7 +141,7 @@ class Administrator(models.Model):
 	)
 	#管理员密码
 	admin_password=models.CharField(
-		max_length=100,
+		max_length=1024,
 	)
 
 	class Meta:

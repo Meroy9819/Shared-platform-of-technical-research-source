@@ -22,16 +22,16 @@ urlpatterns = [
     re_path(r'^comment/(?P<resource_id>[0-9]+)/$',Comment_views.create_comment,name='paper_comment'),
     path(r'^comment/',Comment_views.comment_success),
 
+    path(r'user_index/', user_views.show_user),
+    path(r'expt_index/', user_views.show_expert),
     path(r'expt/', TemplateView.as_view(template_name="index.html")),
     path(r'user_login/', user_views.login),
     path(r'register_temp/', user_views.register_temp),
     path(r'paperview/', Tech_views.list_all),
     re_path(r'paperview/(?P<resource_id>\d{1,2})/', Tech_views.list_one),
     path(r'user_register/', user_views.register),
-
     #用户主页展示
     #此处我用了redirect方法提示登录，可能连接的时候需要修改路径
-    path(r'userindex/',user_views.show_user),
 
     #专家主页展示
     #此处需要前端往后端传数据：当前专家主页的expert_id

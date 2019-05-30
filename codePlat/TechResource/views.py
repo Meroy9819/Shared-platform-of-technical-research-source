@@ -70,19 +70,19 @@ def ajax(request):
             "name": name
         }))
 
-def create(request):
-    sciAchi_serializer = SciAchiSerializer(data=request.data)
-    if sciAchi_serializer.is_valid():
-        thissciAchi = SciAchi(
-            name=request.data.get("name"),
-            sciAchiUrl=request.data.get("path"),
-            abstract=request.data.get("abstract"),
-            keywordSeq=request.data.get("keyword"),
-            price=request.data.get("value"),
-         )
-        thissciAchi.save()
-        return Response(thissciAchi.resource_id, status=status.HTTP_201_CREATED)
-    return Response(sciAchi_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# def create(request):
+    # sciAchi_serializer = SciAchiSerializer(data=request.data)
+    # if sciAchi_serializer.is_valid():
+    #     thissciAchi = SciAchi(
+    #         name=request.data.get("name"),
+    #         sciAchiUrl=request.data.get("path"),
+    #         abstract=request.data.get("abstract"),
+    #         keywordSeq=request.data.get("keyword"),
+    #         price=request.data.get("value"),
+    #      )
+    #     thissciAchi.save()
+    #     return Response(thissciAchi.resource_id, status=status.HTTP_201_CREATED)
+    # return Response(sciAchi_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # def create_SciAchi(request):
 #     #如果没有登录
