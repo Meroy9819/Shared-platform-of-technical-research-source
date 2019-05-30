@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'Like',
-    'BuyResource',
+    'Notification',
+    'VisitHistory',
     'Report',
 ]
 CORS_ORIGIN_ALLOW_ALL=True

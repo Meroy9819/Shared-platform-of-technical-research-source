@@ -13,6 +13,7 @@ from django.shortcuts import render, get_object_or_404,render_to_response,HttpRe
 import json
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
+from VisitHistory.views import add_visit_resource_history,add_visit_expert_history
 from .forms import SciAchiForm
 def ajax_submit(request):
     ret = {'status': True, 'error': ""}
@@ -37,6 +38,7 @@ def list_all(request):
 #包括论文数据和评论数据
 def list_one(self,request,resource_id):
     #科技资源数据
+    add_visit_resource_history(request,resource_id)
     json_list = []
     data=get_object_or_404(SciAchi,resource_id=resource_id)
     for item in data:
@@ -65,6 +67,7 @@ def ajax(request):
             "name": name
         }))
 
+#上传一个科技成果
 def create(request):
     sciAchi_serializer = SciAchiSerializer(data=request.data)
     if sciAchi_serializer.is_valid():

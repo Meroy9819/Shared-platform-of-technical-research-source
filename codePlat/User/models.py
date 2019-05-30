@@ -80,7 +80,7 @@ class ExpertUser(models.Model):
 	)
 	#如有，对应的用户编号
 	corresponding_user_id=models.IntegerField(
-		default=-1
+		default=0
 	)
 	#所在机构
 	institution=models.CharField(

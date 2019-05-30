@@ -15,7 +15,8 @@ from rest_framework import status
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
 from Like.models import LikeResources
-from BuyResource.models import BuyResources
+from VisitHistory.views import add_visit_resource_history,add_visit_expert_history
+from UserComment.models import Comment
 #from Report.models import report
 #加密密码
 def hash_code(s, salt='codeplat_login'):
@@ -223,21 +224,22 @@ def show_user(request):
     #json化所有用户信息
     json_list = []
     user_name=request.session.get['username','']
-    data=get_object_or_404(NormalUser,name=user_name)
-    json_dict = model_to_dict(data)
+    #当前用户对象
+    data=get_object_or_404(NormalUser,username=user_name)
+    json_dict = model_to_dict(data[0])
     json_list.append(json_dict)
     #用户对应的评论信息
-    comment_user=get_object_or_404(NormalUser,name=user_name)
-    all_comment=comment_user.Comment_set().all()
+    all_comment=Comment.objects.filter(CommentUSerid=data)
     for item in all_comment:
         json_dict = model_to_dict(item)
         json_list.append(json_dict)
-    #用户的收藏列表
-    liker_user=get_object_or_404(NormalUser,name=user_name)
-    all_likes=liker_user.LikeResource_set().all()
+    #用户的收藏资源列表
+    all_likes=LikeResources.objects.filter(liker_user=data)
     for item in all_likes:
         json_dict = model_to_dict(item)
         json_list.append(json_dict)
+    #用户的收藏专家列表
+    all_likes_expert=Li
     #用户的购买列表
     buy_user=get_object_or_404(NormalUser,name=user_name)
     all_buy=buy_user.BuyResource_set().all()
@@ -255,6 +257,7 @@ def show_user(request):
 
 #专家主页展示
 def show_expert(request,expert_id):
+    add_visit_expert_history(request,expert_id)
     json_list=[]
     #专家的所有个人信息
     expert=get_object_or_404(ExpertUser,expert_id=expert_id)
