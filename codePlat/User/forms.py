@@ -19,3 +19,12 @@ class RegisterForm(forms.Form):
     sex = forms.ChoiceField(label='性别', choices=gender)
     phonenumber=forms.CharField(label='手机号',max_length=11,widget=forms.TextInput(attrs={'class': 'form-control'}))
  #   captcha = CaptchaField(label='验证码')
+
+
+class ChangePwForm(forms.Form):
+    pw1 = forms.CharField(label="原始密码", max_length=1024, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    pw2 = forms.CharField(label="重置密码", max_length=1024, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    pw3= forms.CharField(label="重复密码", max_length=1024, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+class ChangeIntro(forms.Form):
+    intro = forms.CharField(label="用户简介", max_length=1024, widget=forms.TextInput(attrs={'class': 'form-control'}))

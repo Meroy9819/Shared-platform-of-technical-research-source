@@ -15,7 +15,7 @@ class NormalUser(models.Model):
 		primary_key = True,
 		)
 	#用户姓名
-	name = models.CharField(
+	username = models.CharField(
 		max_length = 64,
 		unique = True,
 		)
@@ -31,11 +31,12 @@ class NormalUser(models.Model):
 	#用户头像
 	image = models.ImageField(
 		null = True,
+		blank=True,
 		
 		)
 	#用户简介
 	introduction = models.CharField(
-		max_length = 100, 
+		max_length = 1024,
 		null = True,
 		)
 	#用户邮箱
@@ -78,6 +79,13 @@ class ExpertUser(models.Model):
 	expert_id = models.AutoField(
 		primary_key=True,
 	)
+	name=models.CharField(
+		max_length=64,
+		default="尚无姓名"
+	)
+	scholar_id=models.CharField(
+		max_length=32,
+	)
 	#如有，对应的用户编号
 	corresponding_user_id=models.IntegerField(
 		default=0
@@ -105,9 +113,18 @@ class ExpertUser(models.Model):
 	)
 	#领域
 	field=models.CharField(
-		max_length=50,
+		max_length=128,
 		null=True,
 	)
+	#收藏数
+	like_number=models.IntegerField(
+		default=0,
+	)
+	#访问数
+	visit_number=models.IntegerField(
+		default=0
+	)
+
 	class Meta:
 		ordering = ["expert_id"]
 		verbose_name = "专家"
@@ -125,7 +142,7 @@ class Administrator(models.Model):
 	)
 	#管理员密码
 	admin_password=models.CharField(
-		max_length=100,
+		max_length=1024,
 	)
 
 	class Meta:

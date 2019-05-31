@@ -8,7 +8,7 @@ from Report.models import report
 from User.models import NormalUser
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
-from Report.models import report,report_comment
+from Report.models import report,report_comment,report_expert
 from .forms import ReportForm
 from TechResource.models import SciAchi
 from Report.forms import ReportFormExpert
@@ -24,7 +24,7 @@ def create_report(request,resource_id):
         user_temp=get_object_or_404(NormalUser,name=report_user_name)
         resource_temp=get_object_or_404(SciAchi,resource_id=resource_id)
         if report_form.is_valid():  # 获取数据
-            new_report=models.report()
+            new_report=report()
             new_report.report_error=report_form.cleaned_data['Reporttype']
             new_report.report_context=report_form.cleaned_data['ReportContent']
             new_report.report_user=user_temp
@@ -47,7 +47,7 @@ def create_report_expert(request,expert_id):
         user_temp=get_object_or_404(NormalUser,name=report_user_name)
         expert_temp=get_object_or_404(ExpertUser,expert_id=expert_id)
         if report_form.is_valid():  # 获取数据
-            new_report=models.report_expert()
+            new_report=report_expert()
             new_report.report_error=report_form.cleaned_data['Reporttype']
             new_report.report_context=report_form.cleaned_data['ReportContent']
             new_report.report_user=user_temp
@@ -73,8 +73,8 @@ def show_resource_report_not(request):
 def show_resource_report_ok(request):
     ret={}
     json_list=[]
-    data=models.report.objects.filter(report_status=2)
-    data1=models.report.objects.filter(report_status=3)
+    data=report.objects.filter(report_status=2)
+    data1=report.objects.filter(report_status=3)
     for item in data:
         json_dict=model_to_dict(item)
         json_list.append(json_dict)
@@ -135,6 +135,13 @@ def show_comment_report_not(request):
         json_list.append(json_dict)
     ret['data']=json_list
     return HttpResponse(json.dumps(ret),content_type='application/json')
-#处理成果类举报
-#处理专家类举报
-#处理评论类举报
+#处理成果类举报通过
+def agree_resource_report(request,report_id):
+    report=report.objects.filter(report_id=report_id)
+
+
+#处理成果类举报不通过
+#处理专家类举报通过
+#处理专家类举报不通过
+#处理评论类举报通过
+#处理评论类举报不通过

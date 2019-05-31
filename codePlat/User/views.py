@@ -1,7 +1,7 @@
 from User.models import NormalUser, ExpertUser, Administrator, ConfirmString
 from django.shortcuts import render, redirect,get_object_or_404,HttpResponse
 from . import models
-from .forms import UserForm, RegisterForm
+from .forms import UserForm, RegisterForm,ChangePwForm,ChangeIntro
 import hashlib
 import json
 import codePlat
@@ -218,7 +218,7 @@ def base(request):
 #普通用户主页展示信息
 def show_user(request):
     #如果尚未登录，则跳转到登录页
-    if request.session.get('is_login', None)!=True:
+    if not request.session.get('is_login', None):
         return redirect("/login/login.html")
     #取出当前用户对象
     #json化所有用户信息
@@ -265,3 +265,55 @@ def show_expert(request,expert_id):
     json_list.append(json_dict)
     return HttpResponse(json.dumps(json_list), content_type='application/json')
 
+#用户修改密码
+def change_password(request):
+    #如果用户没有登录
+    if not request.session.get('is_login', None):
+        return HttpResponse(json.dumps('请先登录'),content_type='application/type')
+    if request.method == "POST":
+        username=request.session.get('username','')
+        changepw_form = ChangePwForm(request.POST)
+        message = "请检查填写的内容！"
+        if changepw_form.is_valid():
+            pw1 = changepw_form.cleaned_data['pw1']
+            pw2 = changepw_form.cleaned_data['pw2']
+            pw3=changepw_form.cleaned_data['pw3']
+            try:
+                user = models.NormalUser.objects.get(username=username)
+                pw_origin=user.passwd
+                if hash_code(pw1)==pw_origin:
+                    if hash_code(pw2)==hash_code(pw3):
+                        user.passwd=hash_code(pw2)
+                        user.save()
+                        request.session['is_login'] = False
+                        return HttpResponse(json.dumps("修改密码成功"),content_type='application/json')
+                    else:
+                        return HttpResponse(json.dumps("两次输入的密码不相同"),content_type='application/json')
+                else:
+                    return HttpResponse(json.dumps("原密码输入错误"), content_type='application/json')
+            except:
+                return HttpResponse(json.dumps("用户不存在"), content_type='application/json')
+        return HttpResponse(json.dumps("表格错误"), content_type='application/json')
+        changepw_form = ChangePwForm
+    return HttpResponse(json.dumps("欢迎修改密码。。"), content_type='application/json')
+
+#用户修改简介
+def change_introduction(request):
+    #如果用户没有登录
+    if not request.session.get('is_login', None):
+        return HttpResponse(json.dumps('请先登录'),content_type='application/type')
+    if request.method == "POST":
+        username=request.session.get('username','')
+        changeintro_form = ChangeIntro(request.POST)
+        message = "请检查填写的内容！"
+        if changeintro_form.is_valid():
+            intro=changeintro_form.cleaned_data['intro']
+            try:
+                user = models.NormalUser.objects.get(username=username)
+                user.introduction=intro
+                user.save()
+            except:
+                return HttpResponse(json.dumps("用户不存在"), content_type='application/json')
+        return HttpResponse(json.dumps("表格错误"), content_type='application/json')
+        changeintro_form = ChangeIntro
+    return HttpResponse(json.dumps("欢迎修改个人简介"), content_type='application/json')
