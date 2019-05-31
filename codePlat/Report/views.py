@@ -8,10 +8,12 @@ from Report.models import report
 from User.models import NormalUser
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
-from Report.models import report,report_comment,report_expert
 from .forms import ReportForm
 from TechResource.models import SciAchi
 from Report.forms import ReportFormExpert
+from Report.models import report,report_expert,report_comment
+from UserComment.models import Comment
+import Notification.views as Notification_views
 #举报某成果
 def create_report(request,resource_id):
     #如果用户没有登录
@@ -135,13 +137,33 @@ def show_comment_report_not(request):
         json_list.append(json_dict)
     ret['data']=json_list
     return HttpResponse(json.dumps(ret),content_type='application/json')
+
+
+
 #处理成果类举报通过
 def agree_resource_report(request,report_id):
-    report=report.objects.filter(report_id=report_id)
+    #被处理的举报
+    report=models.report.objects.filter(report_id=report_id)
+
+
 
 
 #处理成果类举报不通过
 #处理专家类举报通过
 #处理专家类举报不通过
+
 #处理评论类举报通过
+def agree_comment_report(request,Comment_id):
+    comment=Comment.objects.filter(Comment_id=Comment_id)
+    user_id=comment.report_user.user_id
+    comment.delete()
+    Notification_views.reported_comment_delete(request,Comment_id,user_id)
+    return HttpResponse(json.dumps("删除评论成功"),content_type='application/json')
+
+
 #处理评论类举报不通过
+def not_agree_comment_report(request,Comment_id):
+    comment = Comment.objects.filter(Comment_id=Comment_id)
+    user_id = comment.report_user.user_id
+    Notification_views.reported_comment_delete(request,Comment_id,user_id)
+    return HttpResponse(json.dumps("评论举报驳回成功"),content_type='application/json')

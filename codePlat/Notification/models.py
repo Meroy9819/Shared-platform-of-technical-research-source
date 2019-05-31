@@ -5,7 +5,9 @@ from UserComment.models import Comment
 class Notification_report_comment(models.Model):
     notification_comment_id=models.AutoField(primary_key=True,)
     notification_message=models.CharField(max_length=100)
+    #谁收到这个通知
     notification_receiver=models.ForeignKey(NormalUser,on_delete=True)
+    #被举报评论来源
     notification_comment_from=models.ForeignKey(Comment,on_delete=True)
     #表示通知的状态
     #1 表示未读

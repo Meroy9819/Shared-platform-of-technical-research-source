@@ -48,6 +48,7 @@ class report_expert(models.Model):
 	reportexpert_id=models.AutoField(
 		primary_key=True,
 	)
+	#举报人是谁
 	report_user=models.ForeignKey(NormalUser,on_delete=True)
 	report_expert_id=models.ForeignKey(ExpertUser,on_delete=True)
 	report_context=models.CharField(max_length=6000,default="Nothing has been written here")
