@@ -30,6 +30,8 @@ urlpatterns = [
     path(r'paperview/', Tech_views.list_all),
     re_path(r'paperview/(?P<resource_id>\d{1,2})/', Tech_views.list_one),
     path(r'user_register/', user_views.register),
+    path(r'like/',like_views.create_like),
+    path(r'delete_like/',like_views.delete_like),
     #用户主页展示
     #此处我用了redirect方法提示登录，可能连接的时候需要修改路径
 

@@ -35,7 +35,7 @@ def apply_to_expert(request):
 #创建专家认领申请
 def verification_to_expert(request,expert_id):
     username=request.session.get('username','')
-    user=NormalUser.objects.filter(usernmae=username)
+    user=NormalUser.objects.filter(username=username)
     expert=ExpertUser.objects.filter(expert_id=expert_id)
     if not request.session.get('is_login', None):
         return HttpResponse(json.dumps('请先登录'),content_type='application/json')

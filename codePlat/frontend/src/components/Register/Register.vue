@@ -10,31 +10,31 @@
         <div id="card" class="container" >
           <el-card class="box-card" >
 
-            <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
-              <el-form-item>
+            <el-form :model="RegisterForm" status-icon :rules="rules" ref="RegisterForm" class="demo-ruleForm">
+              <el-form-item prop="username">
                 <span>用户名：</span>
-                <el-input v-model="user.username" style="float:right;margin-right:80px;width:160px" placeholder="请输入用户名"></el-input>
+                <el-input v-model="RegisterForm.username" style="float:right;width:350px" placeholder="请输入用户名"></el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item  prop="password1">
                 <span>密码：</span>
-                <el-input v-model="user.password1" type="password" style="float:right;margin-right:80px;width:160px" placeholder="请输入密码"></el-input>
+                <el-input v-model="RegisterForm.password1" type="password" style="float:right;width:350px" placeholder="请输入密码"></el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item prop="password2">
                 <span>重复密码：</span>
-                <el-input v-model="user.password2" type="password" style="float:right;margin-right:80px;width:160px" placeholder="请重复密码"></el-input>
+                <el-input v-model="RegisterForm.password2" type="password" style="float:right;width:350px" placeholder="请确认密码"></el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item prop="email">
                 <span>邮箱：</span>
-                <el-input v-model="user.email" style="float:right;margin-right:80px;width:160px" placeholder="请输入邮箱"></el-input>
+                <el-input v-model="RegisterForm.email" style="float:right;width:350px" placeholder="请输入邮箱"></el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item prop="phone">
                 <span>手机号：</span>
-                <el-input v-model="user.phone" style="float:right;margin-right:80px;width:160px" placeholder="请输入手机号"></el-input>
+                <el-input v-model="RegisterForm.phone" style="float:right;width:350px" placeholder="请输入手机号"></el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item >
                 <span>性别：</span>
 
-                  <el-radio-group v-model="user.sex" style="float:right;margin-right:80px;width:160px;margin-top: 12px;">
+                  <el-radio-group v-model="RegisterForm.sex" style="float:right;width:350px;margin-top: 12px;align-content: center">
                     <el-radio :label="0">男</el-radio>
                     <el-radio :label="1">女</el-radio>
                   </el-radio-group>
@@ -68,10 +68,24 @@ export default {
     components:{},
 
     data() {
+      var validateUsername = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入用户名'));
+        }  else {
+          callback();
+        }
+      };
+      var validatePass1 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        }  else {
+          callback();
+        }
+      };
         var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
-        } else if (value !== this.user.password1) {
+        } else if (value !== this.RegisterForm.password1) {
           callback(new Error('两次输入密码不一致!'));
         } else {
           callback();
@@ -87,8 +101,17 @@ export default {
           callback();
         }
       };
+        var validateEmail = (rule, value, callback) =>{
+          var regEmail= new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //正则表达式
+        if (value === '') {
+          callback(new Error('请输入邮箱!'));
+        }else if(!regEmail.test(value)) {
+          callback(new Error('请输入正确的邮箱地址!'));
+        }
+        else callback();
+        };
       return {
-        user: {
+        RegisterForm:{
           username:"",
           password1:"",
           password2:"",
@@ -96,31 +119,31 @@ export default {
           email:"",
           sex: 0,
         },
-        // rules:{
-        //   username:[{
-        //     required:true,
-        //     message:'用户名不能为空',
-        //     trigger:'blur'
-        //   }],
-        //   password1:[{
-        //     required:true,
-        //     message:'密码不能为空',
-        //     trigger:'blur'
-        //   }],
-        //   password2:[{
-        //     validator: validatePass,
-        //     trigger:'blur'
-        //   }],
-        //   email:[{
-        //     required:true,
-        //     message:'邮箱不能为空',
-        //     trigger:'blur'
-        //   }],
-        //   phone:[{
-        //     validator:validatePhone,
-        //     trigger:'blur'
-        //   }]
+        // user: {
+        //
         // },
+        rules:{
+          username:[{
+            validator: validateUsername,
+            trigger:'blur'
+          }],
+          password1:[{
+            validator: validatePass1,
+            trigger:'blur'
+          }],
+          password2:[{
+            validator: validatePass,
+            trigger:'blur'
+          }],
+          email:[{
+            validator: validateEmail,
+            trigger:'blur'
+          }],
+          phone:[{
+            validator:validatePhone,
+            trigger:'blur'
+          }]
+        },
       }
     },
     methods: {
@@ -128,25 +151,25 @@ export default {
         this.$router.replace('/Login')
       },
       signUp() {
-        console.log(this.user.sex);
+        console.log(this.RegisterForm.sex);
         var count = 0;
         // if(this.validatePassword(this.user.password1, this.user.password2)) count++;
         // if(this.validatePhone(this.user.phone)) count++;
         // if(this.validateEmail(this.user.email)) count++;
-        if(this.validatePassword(this.user.password1, this.user.password2) && this.validatePhone(this.user.phone) && this.validateEmail(this.user.email))
+        if(this.validatePassword(this.RegisterForm.password1, this.RegisterForm.password2) && this.validatePhone(this.RegisterForm.phone) && this.validateEmail(this.RegisterForm.email))
         {count = 1}
         else this.$message.error('请检查输入的内容');
         if(count === 1)
         {//已经输入了全部所需信息
           let _this = this;
           var register_form = new FormData();
-          register_form.append('username', this.user.username);
-          register_form.append('password1', this.user.password1);
-          register_form.append('password2', this.user.password2);
-          register_form.append('email', this.user.email);
-          if(this.user.sex === 0) register_form.append('sex', "男");
-          else register_form.append('sex', "女");
-          register_form.append('phonenumber', this.user.phone);
+          register_form.append('username', this.RegisterForm.username);
+          register_form.append('password1', this.RegisterForm.password1);
+          register_form.append('password2', this.RegisterForm.password2);
+          register_form.append('email', this.RegisterForm.email);
+          if(this.RegisterForm.sex === 0) register_form.append('sex', '男');
+          else register_form.append('sex', '女');
+          register_form.append('phonenumber', this.RegisterForm.phone);
           let config = {
             headers: {
               'Content-Type': 'multipart/form-data'
@@ -164,6 +187,7 @@ export default {
                 _this.$message.success('注册成功，请前往邮箱确认');
                 setTimeout(function () {
                     _this.$router.push({path:'../'});
+                    _this.$router.go(0);
                 }, 2500);
                 break;
               case '两次输入的密码不同':
@@ -227,7 +251,7 @@ export default {
 }
 .box-card {
     width: 480px;
-    height:450px;
+    height:auto;
     margin:0 auto;
     text-align: center;
     margin-top:10px;

@@ -46,8 +46,10 @@
                         <el-tabs :tab-position="left" >
                             <el-tab-pane label="申请信息">
                                 <div>
-                                    <SystemMess></SystemMess><br>
-                                    <SystemMess></SystemMess>
+                                    <el-collapse v-model="activeNames1" @change="handleChange">
+                                        <ApplyInfo></ApplyInfo>
+                                        <ApplyInfo></ApplyInfo>
+                                    </el-collapse>
                                 </div>
                                 <div>
                                     <div class="block">
@@ -60,7 +62,31 @@
                             </el-tab-pane>
                             <el-tab-pane label="举报信息">
                                 <div>
-                                    <patent></patent>
+                                    
+                                    <el-tabs :tab-position="left" >
+                                        <el-tab-pane label="论文">
+                                            <!-- 成果页添加仅管理员可见的编辑按钮 -->
+                                            <el-collapse v-model="activeNames2" @change="handleChange">
+                                                <ReportInfo></ReportInfo>
+                                                <ReportInfo></ReportInfo>
+                                                <ReportInfo></ReportInfo>
+                                            </el-collapse>
+                                        </el-tab-pane>
+                                        <el-tab-pane label="专家">
+                                            <!-- 给专家发系统通知 -->
+                                            <el-collapse v-model="activeNames3" @change="handleChange">
+                                                <ReportInfo></ReportInfo>
+                                            </el-collapse>
+                                        </el-tab-pane>
+                                        <el-tab-pane label="评论">
+                                            <!-- 删除评论 -->
+                                            <el-collapse v-model="activeNames4" @change="handleChange">
+                                                <ReportInfo></ReportInfo>
+                                                <ReportInfo></ReportInfo>
+                                            </el-collapse>
+                                        </el-tab-pane>
+                                    </el-tabs>
+
                                 </div>
                                 <div>
                                     <div class="block">
@@ -75,9 +101,12 @@
                     </div>
                 </el-tab-pane>
 
-                <el-tab-pane label="已处理信息？？">
+                <el-tab-pane label="已处理信息">
                     <div style="width:90%;margin:0 auto">
-                        暂无
+                        <el-collapse v-model="activeNames5" @change="handleChange">
+                            <ReadyHandle></ReadyHandle>
+                            <ReadyHandle></ReadyHandle>
+                        </el-collapse>
                     </div>
                 </el-tab-pane>
                 
@@ -96,21 +125,23 @@
 </template>
 
 <script>
-// import HeaderNoLogin from '@/components/UserInfo/HeaderNoLogin'
 import HeaderForAdmin from './HeaderForAdmin'
+import ReportInfo from './ReportInfo'
+import ApplyInfo from './ApplyInfo'
+import ReadyHandle from './ReadyHandle'
 
 export default {
-    components:{HeaderForAdmin},
+    components:{HeaderForAdmin,ReportInfo,ApplyInfo,ReadyHandle},
     data() {
         return {
             adminID:"",
-            release:false
+            release:false,
 
         }
     },
     methods: {
         releaseinfo() {
-            // alert("i dont know how to release a info")
+            
             this.release = false;
             alert('releaseinformation');
         }

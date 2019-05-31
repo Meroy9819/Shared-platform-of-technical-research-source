@@ -6,10 +6,6 @@ from django import forms
 from TechResource.models import SciAchi
 
 class NormalUser(models.Model):
-	gender = (
-		('male', '男'),
-		('female', '女'),
-	)
 	#用户编号
 	user_id = models.AutoField(
 		primary_key = True,
@@ -33,7 +29,7 @@ class NormalUser(models.Model):
 	image = models.ImageField(
 		null = True,
 		blank= True,
-		default='timg.jpg'
+		default='timg.jpg',
 		)
 	#用户简介
 	introduction = models.CharField(
@@ -47,7 +43,7 @@ class NormalUser(models.Model):
 	)
 	#用户性别
 	sex=models.CharField(
-		max_length=32, choices=gender, default='女'
+		max_length=32, default='男'
 	)
 	c_time = models.DateTimeField(auto_now_add=True)
 	#用户手机号

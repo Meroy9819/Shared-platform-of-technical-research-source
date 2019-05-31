@@ -2,6 +2,7 @@ from User.models import NormalUser, ExpertUser, Administrator, ConfirmString
 from django.shortcuts import render, redirect,get_object_or_404,HttpResponse
 from . import models
 from .forms import UserForm, RegisterForm
+from TechResource.models import SciAchi
 import hashlib
 import json
 import codePlat
@@ -11,7 +12,7 @@ from User.models import NormalUser
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
 from UserComment.models import Comment
-from Like.models import LikeResources
+from Like.models import LikeResources, LikeExpert
 from Report.models import report,report_comment,report_expert
 from VisitHistory.models import VisitExpertHistory,VisitResourceHistory
 #加密密码
@@ -87,7 +88,8 @@ def register(request):
         return HttpResponse(json.dumps(ret), content_type='application/json')
     if request.method == "POST":
         register_form =RegisterForm(request.POST)
-        message = "请检查填写的内容！"
+        ret.pop('message')
+        ret['message'] = "请检查填写的内容"
         if register_form.is_valid():  # 获取数据
             username = register_form.cleaned_data['username']
             print(username)
@@ -289,6 +291,73 @@ def base(request):
 #         return render(request, 'shoucang.html', locals())
 
 #普通用户主页展示信息
+# def show_user(request):
+#     #如果尚未登录，则跳转到登录页
+#     if not request.session.get('is_login', None)!=True:
+#         #return redirect("/login/login.html")
+#         print (request.session.get('username',''))
+#         return HttpResponse(json.dumps("ewt"),content_type='application/json')
+#     #取出当前用户对象
+#     #json化所有用户信息
+#     ret={}
+#     json_list = []
+#     user_name=request.GET.get('username','')
+#     data=NormalUser.objects.filter(username=user_name)
+#     import base64
+#     for item in data:
+#         json_list.append({"id": item.user_id,
+#                           "img": str(item.image),
+#                           "name": item.username,
+#                           "user_type":item.user_type,
+#                           "introduction":item.introduction ,
+#                           "sex":item.sex,
+#                           "email":item.email,
+#                           "注册时间":str(item.c_time),
+#                           "手机号":item.phonenumber,
+#
+#                           })
+#     #用户对应的评论信息
+#     comment_user=get_object_or_404(NormalUser,username=user_name)
+#     all_comment=Comment.objects.filter(CommentUSerid=comment_user)
+#     for item in all_comment:
+#         json_dict = model_to_dict(item)
+#         json_list.append(json_dict)
+#     #用户的收藏列表
+#     liker_user=get_object_or_404(NormalUser,username=user_name)
+#     all_likes=LikeResources.objects.filter(liker_user=liker_user)
+#     for item in all_likes:
+#         json_dict = model_to_dict(item)
+#         json_list.append(json_dict)
+#     #用户的举报成果列表
+#     report_user=get_object_or_404(NormalUser,username=user_name)
+#     all_report=report.objects.filter(report_user=report_user)
+#     for item in all_report:
+#         json_dict = model_to_dict(item)
+#         json_list.append(json_dict)
+#     #用户的举报专家列表
+#     all_report=report_expert.objects.filter(report_user=report_user)
+#     for item in all_report:
+#         json_dict = model_to_dict(item)
+#         json_list.append(json_dict)
+#     #用户的举报评论列表
+#     all_report=report_comment.objects.filter(report_user=report_user)
+#     for item in all_report:
+#         json_dict = model_to_dict(item)
+#         json_list.append(json_dict)
+#     #用户的访问成果记录
+#     all_history=VisitResourceHistory.objects.filter(visit_user=report_user)
+#     for item in all_history:
+#         json_dict = model_to_dict(item)
+#         json_list.append(json_dict)
+#     #用户的访问专家记录
+#     all_history=VisitExpertHistory.objects.filter(visit_user=report_user)
+#     for item in all_history:
+#         json_dict = model_to_dict(item)
+#         json_list.append(json_dict)
+#     ret['data']=json_list
+#     return HttpResponse(json.dumps(ret), content_type='application/json')
+#普通用户主页展示信息
+
 def show_user(request):
     #如果尚未登录，则跳转到登录页
     if not request.session.get('is_login', None)!=True:
@@ -301,6 +370,7 @@ def show_user(request):
     json_list = []
     user_name=request.GET.get('username','')
     data=NormalUser.objects.filter(username=user_name)
+    import base64
     for item in data:
         json_list.append({"id": item.user_id,
                           "img": str(item.image),
@@ -319,12 +389,30 @@ def show_user(request):
     for item in all_comment:
         json_dict = model_to_dict(item)
         json_list.append(json_dict)
-    #用户的收藏列表
+    #用户的收藏成果列表
     liker_user=get_object_or_404(NormalUser,username=user_name)
     all_likes=LikeResources.objects.filter(liker_user=liker_user)
     for item in all_likes:
-        json_dict = model_to_dict(item)
+        item_temp=model_to_dict(item)
+        json_dict = item_temp
         json_list.append(json_dict)
+        resource_id=item.like_resource_id.resource_id
+        resource=SciAchi.objects.filter(resource_id=resource_id)
+        for item in resource:
+            json_dict = model_to_dict(item)
+            json_list.append(json_dict)
+    #用户的收藏专家列表
+    liker_user=get_object_or_404(NormalUser,username=user_name)
+    all_likes=LikeExpert.objects.filter(liker_user=liker_user)
+    for item in all_likes:
+        item_temp=model_to_dict(item)
+        json_dict =item_temp
+        json_list.append(json_dict)
+        expert_id=item.like_expert_id.expert_id
+        expert=ExpertUser.objects.filter(expert_id=expert_id)
+        for item in expert:
+            json_dict = model_to_dict(item)
+            json_list.append(json_dict)
     #用户的举报成果列表
     report_user=get_object_or_404(NormalUser,username=user_name)
     all_report=report.objects.filter(report_user=report_user)
@@ -353,6 +441,15 @@ def show_user(request):
         json_list.append(json_dict)
     ret['data']=json_list
     return HttpResponse(json.dumps(ret), content_type='application/json')
+#专家主页展示
+def show_expert(request,expert_id):
+    add_visit_expert_history(request,expert_id)
+    json_list=[]
+    #专家的所有个人信息
+    expert=get_object_or_404(ExpertUser,expert_id=expert_id)
+    json_dict = model_to_dict(expert)
+    json_list.append(json_dict)
+    return HttpResponse(json.dumps(json_list), content_type='application/json')
 
 
 #专家主页展示

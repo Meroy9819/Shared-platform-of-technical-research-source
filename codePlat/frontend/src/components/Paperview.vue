@@ -73,7 +73,7 @@
                       <el-col :span="3" :offset="1" class="grid-content bg-purple-light greyfont"><i class="el-icon-view"> 阅读量:</i></el-col>
                     </el-tooltip>
 
-                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ readcnt }}</div></el-col>
+                    <el-col :span="3"><div class="grid-content bg-purple-light">{{ sciachi.visit_number }}</div></el-col>
                 </el-row>
 
                 </el-card>
@@ -128,9 +128,8 @@ export default {
         comment : {
           username : "",
         },
-        readcnt:999,
+        user_name:"",
       }
-
     },
     components:{
         'v-header':Header
@@ -139,9 +138,47 @@ export default {
       //点击收藏按钮触发：
       star(){
         console.log("点击收藏");
-        this.$message({
-          message: '收藏成功',
-          type: 'success'
+        let _this = this;
+        this.user_name = "hhx2";
+        this.$http.request({
+          url:_this.$url + 'like/',
+          method:'get',
+          params: {username:_this.user_name, resource_id:_this.sciachi.resource_id}
+        }).then(function (response) {
+          console.log(response)
+          switch (response.data){
+            case "收藏成功" :
+              _this.$message.success('收藏成功');
+              break;
+            case "你已经收藏过该资源":
+              // _this.$message.error('您已收藏过该文献');
+              let __this = _this;
+              _this.$http.request({
+              url:_this.$url + 'delete_like/',
+              method:'get',
+              params: {username:_this.user_name, resource_id:_this.sciachi.resource_id}
+            }).then(function (response) {
+                switch (response.data){
+                  case "删除成功":
+                    _this.$message.error('已取消收藏');
+                    break;
+                  case "取消收藏失败":
+                    _this.$message.error('取消收藏失败');
+                    break;
+                  default :
+                    _this.$message.error('您已收藏过该文献');
+                    break;
+                }
+              }).catch(function (response) {
+                _this.$message.error('取消收藏失败，请稍后重试');
+              });
+              break;
+            default:
+              _this.$message.error('收藏失败，请稍后重试');
+              break;
+          }
+        }).catch(function (response) {
+          console.log("fail to like")
         });
       },
       //获取当前日期
@@ -213,11 +250,11 @@ export default {
       },
       init:function(){
         let _this = this;
-        var resource_id = 2;
+        this.resource_id = 1;
         console.log("hello");
         Axios.get(
 
-          _this.$url + 'resource/'+resource_id.toString())
+          _this.$url + 'resource/'+this.resource_id.toString())
 
           // , {
           //   params: {

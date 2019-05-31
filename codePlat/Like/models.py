@@ -13,7 +13,7 @@ class LikeResources(models.Model):
 	objects = models.Manager()
 
 	def __str__(self):
-		return self.liker_user.name + ":   " + self.like_resource_id.name
+		return self.liker_user.username + ":   " + self.like_resource_id.name
 
 	class Meta:
 		verbose_name = "收藏成果"

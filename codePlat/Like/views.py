@@ -10,29 +10,34 @@ from TechResource.models import SciAchi
 
 # Create your views here.
 #接受收藏
-def create_like(request,resource_id):
+def create_like(request):
+    resource_id = request.GET.get('resource_id', 0)
     #如果用户没有登录
-    if not request.session.get('is_login', None):
-        return redirect("/login/login.html")
+    # if not request.session.get('is_login', None):
+    #     return redirect("/login/login.html")
     #取当前用户名
-    username=request.session.get('username','')
-    liker_user=get_object_or_404(NormalUser,name=username)
+    username=request.GET.get('username','')
+    print(username)
+    liker_user=get_object_or_404(NormalUser,username=username)
     like_resource=get_object_or_404(SciAchi,resource_id=resource_id)
+    print (like_resource)
     #查询是否数据库中已经有收藏信息
-    query_like=LikeResources.objects.get(liker_user=liker_user,like_resource_id=like_resource)
+    query_like=LikeResources.objects.filter(liker_user=liker_user,like_resource_id=like_resource)
     if query_like:
         message="你已经收藏过该资源"
         return HttpResponse(json.dumps(message),content_type='application/json')
-    new_like=LikeResources()
-    new_like.liker_user=liker_user
-    new_like.like_resource_id=like_resource
-    new_like.save()
-    return HttpResponse("收藏成功", content_type='application/json')
+    else:
+        new_like=LikeResources()
+        new_like.liker_user=liker_user
+        new_like.like_resource_id=like_resource
+        new_like.save()
+        return HttpResponse(json.dumps("收藏成功"),content_type='application/json')
 
 #取消收藏
-def delete_like(request,resource_id):
-    user=request.session.get('username','')
-    user=get_object_or_404(NormalUser,name=user)
+def delete_like(request):
+    resource_id=request.GET.get('resource_id', 0)
+    user=request.GET.get('username','')
+    user=get_object_or_404(NormalUser,username=user)
     resource=get_object_or_404(SciAchi,resource_id=resource_id)
     ok=models.LikeResources.objects.filter(liker_user=user,like_resource_id=resource).delete()
     if ok:
@@ -47,7 +52,7 @@ def create_like_expert(request,expert_id):
         return redirect("/login/login.html")
     #取当前用户名
     username=request.session.get('username','')
-    liker_user=get_object_or_404(NormalUser,name=username)
+    liker_user=get_object_or_404(NormalUser,username=username)
     like_expert=get_object_or_404(ExpertUser,expert_id=expert_id)
     #查询是否数据库中已经有收藏信息
     query_like=LikeExpert.objects.get(liker_user=liker_user,like_expert_id=like_expert)
@@ -63,7 +68,7 @@ def create_like_expert(request,expert_id):
 #取消收藏
 def delete_like_expert(request,expert_id):
     user=request.session.get('username','')
-    user=get_object_or_404(NormalUser,name=user)
+    user=get_object_or_404(NormalUser,username=user)
     expert=get_object_or_404(ExpertUser,expert_id=expert_id)
     ok=models.LikeExpert.objects.filter(liker_user=user,like_expert_id=expert).delete()
     if ok:
