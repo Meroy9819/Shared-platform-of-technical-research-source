@@ -19,15 +19,15 @@
     <session id="781994081">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="9" />
+          <entry key="project.closed" value="10" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="4" />
           <entry key="project.open.time.25" value="1" />
           <entry key="project.open.time.27" value="1" />
-          <entry key="project.open.time.28" value="1" />
+          <entry key="project.open.time.28" value="2" />
           <entry key="project.open.time.8" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="10" />
+          <entry key="project.opened" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -36,7 +36,7 @@
           <entry key="js" value="4" />
           <entry key="map" value="1" />
           <entry key="pstat" value="1" />
-          <entry key="py" value="405" />
+          <entry key="py" value="415" />
           <entry key="vue" value="16" />
           <entry key="xml" value="2" />
         </counts>
@@ -47,7 +47,7 @@
           <entry key="JavaScript" value="4" />
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="Profiler Session" value="1" />
-          <entry key="Python" value="405" />
+          <entry key="Python" value="415" />
           <entry key="SourceMap" value="1" />
           <entry key="Vue.js" value="15" />
           <entry key="XML" value="2" />
@@ -57,7 +57,7 @@
         <counts>
           <entry key="html" value="438" />
           <entry key="js" value="9" />
-          <entry key="py" value="21326" />
+          <entry key="py" value="23673" />
           <entry key="vue" value="59" />
         </counts>
       </usages-collector>
@@ -65,7 +65,7 @@
         <counts>
           <entry key="HTML" value="438" />
           <entry key="JavaScript" value="9" />
-          <entry key="Python" value="21326" />
+          <entry key="Python" value="23673" />
           <entry key="Vue.js" value="59" />
         </counts>
       </usages-collector>
@@ -77,27 +77,26 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/codePlat/User/views.py">
+        <entry file="file://$PROJECT_DIR$/codePlat/Report/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="224" column="50" lean-forward="true" selection-start-line="224" selection-start-column="50" selection-end-line="224" selection-end-column="50" />
+            <state relative-caret-position="208">
+              <caret line="284" column="26" selection-start-line="284" selection-start-column="26" selection-end-line="284" selection-end-column="26" />
               <folding>
-                <element signature="e#0#76#0" expanded="true" />
-                <marker date="1559315183018" expanded="true" signature="11609:11614" ph="..." />
+                <element signature="e#0#35#0" expanded="true" />
+                <marker date="1559400077782" expanded="true" signature="6736:7241" ph="..." />
+                <marker date="1559400077782" expanded="true" signature="7301:7665" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/codePlat/Report/views.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/codePlat/User/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="428">
-              <caret line="168" column="44" selection-start-line="168" selection-start-column="44" selection-end-line="168" selection-end-column="44" />
+            <state relative-caret-position="110">
+              <caret line="14" selection-start-line="14" selection-end-line="14" selection-end-column="45" />
               <folding>
-                <element signature="e#0#35#0" expanded="true" />
-                <marker date="1559316354725" expanded="true" signature="5213:5279" ph="..." />
-                <marker date="1559316354725" expanded="true" signature="5371:5646" ph="..." />
+                <marker date="1559400740807" expanded="true" signature="11532:11537" ph="..." />
               </folding>
             </state>
           </provider>
@@ -106,11 +105,38 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/codePlat/Notification/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="428">
-              <caret line="86" column="43" lean-forward="true" selection-start-line="86" selection-start-column="43" selection-end-line="86" selection-end-column="43" />
+            <state relative-caret-position="54">
+              <caret line="205" column="30" lean-forward="true" selection-start-line="205" selection-start-column="30" selection-end-line="205" selection-end-column="30" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
-                <marker date="1559316266983" expanded="true" signature="1894:3698" ph="..." />
+                <marker date="1559399985820" expanded="true" signature="5614:6795" ph="..." />
+                <marker date="1559399985820" expanded="true" signature="6872:6873" ph="..." />
+                <marker date="1559399985820" expanded="true" signature="8576:8577" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/codePlat/Apply/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="154">
+              <caret line="7" column="4" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/codePlat/Apply/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-166">
+              <caret line="26" column="89" selection-start-line="26" selection-start-column="89" selection-end-line="26" selection-end-column="89" />
+              <folding>
+                <element signature="e#0#48#0" expanded="true" />
+                <marker date="1559402184295" expanded="true" signature="2983:3537" ph="..." />
               </folding>
             </state>
           </provider>
@@ -119,8 +145,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/codePlat/Notification/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="23" />
+            <state relative-caret-position="538">
+              <caret line="65" column="33" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="33" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -129,12 +155,24 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/codePlat/Like/models.py">
+        <entry file="file://$PROJECT_DIR$/codePlat/Report/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="26" column="4" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="18" />
+            <state relative-caret-position="186">
+              <caret line="52" column="19" lean-forward="true" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="23" />
               <folding>
-                <element signature="e#0#28#0" expanded="true" />
+                <marker date="1559397185272" expanded="true" signature="1071:1072" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/codePlat/User/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="154">
+              <caret line="29" column="4" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="14" />
+              <folding>
+                <element signature="e#15#43#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -143,8 +181,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/codePlat/Report/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="76" column="4" lean-forward="true" selection-start-line="76" selection-start-column="4" selection-end-line="76" selection-end-column="15" />
+            <state relative-caret-position="-1144">
+              <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="22" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -153,43 +191,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/codePlat/Like/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="29" column="48" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
-              <folding>
-                <element signature="e#0#76#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/codePlat/TechResource/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="11" column="4" lean-forward="true" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/codePlat/UserComment/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/codePlat/User/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1298">
-              <caret line="13" column="4" lean-forward="true" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="11" />
-              <folding>
-                <element signature="e#15#43#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-188">
+              <caret line="41" column="4" lean-forward="true" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -264,24 +269,24 @@
         <option value="$PROJECT_DIR$/Notification/models.py" />
         <option value="$PROJECT_DIR$/Notification/views.py" />
         <option value="$PROJECT_DIR$/Notification/admin.py" />
-        <option value="$PROJECT_DIR$/codePlat/Report/forms.py" />
         <option value="$PROJECT_DIR$/codePlat/codePlat/settings.py" />
         <option value="$PROJECT_DIR$/codePlat/Notification/admin.py" />
         <option value="$PROJECT_DIR$/codePlat/VisitHistory/admin.py" />
         <option value="$PROJECT_DIR$/codePlat/Like/views.py" />
         <option value="$PROJECT_DIR$/codePlat/TechResource/views.py" />
         <option value="$PROJECT_DIR$/codePlat/UserComment/views.py" />
-        <option value="$PROJECT_DIR$/codePlat/Apply/models.py" />
         <option value="$PROJECT_DIR$/codePlat/Apply/forms.py" />
-        <option value="$PROJECT_DIR$/codePlat/Apply/views.py" />
         <option value="$PROJECT_DIR$/codePlat/UserComment/forms.py" />
         <option value="$PROJECT_DIR$/codePlat/User/models.py" />
         <option value="$PROJECT_DIR$/codePlat/User/forms.py" />
-        <option value="$PROJECT_DIR$/codePlat/Notification/models.py" />
         <option value="$PROJECT_DIR$/codePlat/Report/models.py" />
-        <option value="$PROJECT_DIR$/codePlat/User/views.py" />
+        <option value="$PROJECT_DIR$/codePlat/Notification/models.py" />
+        <option value="$PROJECT_DIR$/codePlat/Report/forms.py" />
         <option value="$PROJECT_DIR$/codePlat/Notification/views.py" />
         <option value="$PROJECT_DIR$/codePlat/Report/views.py" />
+        <option value="$PROJECT_DIR$/codePlat/Apply/models.py" />
+        <option value="$PROJECT_DIR$/codePlat/User/views.py" />
+        <option value="$PROJECT_DIR$/codePlat/Apply/views.py" />
       </list>
     </option>
   </component>
@@ -329,6 +334,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -345,13 +351,7 @@
               <item name="Shared-platform-of-technical-reserach-source" type="b2602c69:ProjectViewProjectNode" />
               <item name="Shared-platform-of-technical-reserach-source" type="462c0819:PsiDirectoryNode" />
               <item name="codePlat" type="462c0819:PsiDirectoryNode" />
-              <item name="Report" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Shared-platform-of-technical-reserach-source" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Shared-platform-of-technical-reserach-source" type="462c0819:PsiDirectoryNode" />
-              <item name="codePlat" type="462c0819:PsiDirectoryNode" />
-              <item name="TechResource" type="462c0819:PsiDirectoryNode" />
+              <item name="Apply" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Shared-platform-of-technical-reserach-source" type="b2602c69:ProjectViewProjectNode" />
@@ -363,7 +363,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -551,7 +550,7 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.67175573" visible="true" weight="0.20726173" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.67175573" visible="true" weight="0.21028744" />
       <window_info id="Structure" order="1" sideWeight="0.32824427" side_tool="true" weight="0.12859304" />
       <window_info id="Favorites" order="2" sideWeight="0.5012225" side_tool="true" weight="0.12708019" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -729,46 +728,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/VisitHistory/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/VisitHistory/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Notification/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="4" lean-forward="true" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/VisitHistory/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="43" column="12" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/VisitHistory/admin.py" />
+    <entry file="file://$PROJECT_DIR$/VisitHistory/models.py" />
+    <entry file="file://$PROJECT_DIR$/Notification/models.py" />
+    <entry file="file://$PROJECT_DIR$/VisitHistory/views.py" />
     <entry file="file://$PROJECT_DIR$/codePlat/TechResource/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
@@ -776,42 +739,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/Report/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="17" column="6" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Notification/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Notification/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="48" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Notification/apps.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Notification/tests.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Notification/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="33" column="12" selection-start-line="33" selection-start-column="12" selection-end-line="33" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Notification/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/Notification/admin.py" />
+    <entry file="file://$PROJECT_DIR$/Notification/apps.py" />
+    <entry file="file://$PROJECT_DIR$/Notification/tests.py" />
+    <entry file="file://$PROJECT_DIR$/Notification/views.py" />
     <entry file="file://$PROJECT_DIR$/codePlat/codePlat/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="188">
@@ -823,9 +755,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -843,9 +772,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
           <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -853,9 +779,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
           <caret line="73" column="17" selection-start-line="73" selection-start-column="17" selection-end-line="73" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -865,28 +788,6 @@
           <caret line="25" selection-start-line="25" selection-end-line="26" selection-end-column="48" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/Apply/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="26" column="4" lean-forward="true" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-            <marker date="1559211178863" expanded="true" signature="101:1171" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/Apply/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="23" lean-forward="true" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#48#0" expanded="true" />
-            <marker date="1559214727523" expanded="true" signature="1677:2590" ph="..." />
           </folding>
         </state>
       </provider>
@@ -902,9 +803,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
           <caret line="64" column="13" lean-forward="true" selection-end-line="72" />
-          <folding>
-            <element signature="e#0#75#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -929,43 +827,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/UserComment/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/Like/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="29" column="48" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#76#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/TechResource/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="4" lean-forward="true" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/Report/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="76" column="4" lean-forward="true" selection-start-line="76" selection-start-column="4" selection-end-line="76" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/codePlat/Like/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
+        <state relative-caret-position="506">
           <caret line="26" column="4" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="18" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
@@ -973,56 +837,122 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/User/models.py">
+    <entry file="file://$PROJECT_DIR$/codePlat/Like/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1298">
-          <caret line="13" column="4" lean-forward="true" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="11" />
+        <state relative-caret-position="462">
+          <caret line="29" column="48" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
           <folding>
-            <element signature="e#15#43#0" expanded="true" />
+            <element signature="e#0#76#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/Notification/models.py">
+    <entry file="file://$PROJECT_DIR$/codePlat/UserComment/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="23" />
+        <state relative-caret-position="66">
+          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/codePlat/TechResource/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-188">
+          <caret line="41" column="4" lean-forward="true" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/codePlat/Report/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="52" column="19" lean-forward="true" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="23" />
+          <folding>
+            <marker date="1559397185272" expanded="true" signature="1071:1072" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/codePlat/Report/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1144">
+          <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="22" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/User/views.py">
+    <entry file="file://$PROJECT_DIR$/codePlat/Notification/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="224" column="50" lean-forward="true" selection-start-line="224" selection-start-column="50" selection-end-line="224" selection-end-column="50" />
+        <state relative-caret-position="538">
+          <caret line="65" column="33" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="33" />
           <folding>
-            <element signature="e#0#76#0" expanded="true" />
-            <marker date="1559315183018" expanded="true" signature="11609:11614" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/codePlat/Notification/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
-          <caret line="86" column="43" lean-forward="true" selection-start-line="86" selection-start-column="43" selection-end-line="86" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-            <marker date="1559316266983" expanded="true" signature="1894:3698" ph="..." />
+            <element signature="e#0#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/codePlat/Report/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
-          <caret line="168" column="44" selection-start-line="168" selection-start-column="44" selection-end-line="168" selection-end-column="44" />
+        <state relative-caret-position="208">
+          <caret line="284" column="26" selection-start-line="284" selection-start-column="26" selection-end-line="284" selection-end-column="26" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <marker date="1559316354725" expanded="true" signature="5213:5279" ph="..." />
-            <marker date="1559316354725" expanded="true" signature="5371:5646" ph="..." />
+            <marker date="1559400077782" expanded="true" signature="6736:7241" ph="..." />
+            <marker date="1559400077782" expanded="true" signature="7301:7665" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/codePlat/User/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="29" column="4" lean-forward="true" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="14" />
+          <folding>
+            <element signature="e#15#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/codePlat/User/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="14" selection-start-line="14" selection-end-line="14" selection-end-column="45" />
+          <folding>
+            <marker date="1559400740807" expanded="true" signature="11532:11537" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/codePlat/Notification/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="205" column="30" lean-forward="true" selection-start-line="205" selection-start-column="30" selection-end-line="205" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+            <marker date="1559399985820" expanded="true" signature="5614:6795" ph="..." />
+            <marker date="1559399985820" expanded="true" signature="6872:6873" ph="..." />
+            <marker date="1559399985820" expanded="true" signature="8576:8577" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/codePlat/Apply/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="7" column="4" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/codePlat/Apply/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-166">
+          <caret line="26" column="89" selection-start-line="26" selection-start-column="89" selection-end-line="26" selection-end-column="89" />
+          <folding>
+            <element signature="e#0#48#0" expanded="true" />
+            <marker date="1559402184295" expanded="true" signature="2983:3537" ph="..." />
           </folding>
         </state>
       </provider>

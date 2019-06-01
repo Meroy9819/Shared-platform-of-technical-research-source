@@ -3,6 +3,7 @@ from .models import Apply,Verification
 from .forms import ApplyForm,VerificationForm
 from User.models import NormalUser,ExpertUser
 import json
+from django.forms.models import model_to_dict
 
 #创建新的成为专家申请
 def apply_to_expert(request):
@@ -20,8 +21,13 @@ def apply_to_expert(request):
             apply_photo = ApplyForm.cleaned_data['apply_photo']
             username=request.session.get('username','')
             user=NormalUser.objects.filter(username=username)
+            if user.user_type==2:
+                return HttpResponse(json.dumps("您已经是专家了"),content_type='application/json')
+            if user.user_type==3:
+                return HttpResponse(json.dumps("喂你是管理员呀！"),content_type='application/json')
             new_apply=Apply()
             new_apply.apply_user=user
+            new_apply.apply_name=apply_name
             new_apply.apply_institution =apply_institution
             new_apply.apply_resource = apply_resource
             new_apply.apply_resourceyear = apply_resourceyear
@@ -50,7 +56,27 @@ def verification_to_expert(request,expert_id):
             new_veri.verification_image=verification_image
             new_veri.save()
             return HttpResponse(json.dumps('提交认领申请成功'),content_type='application/json')
-        veri_form = VerificationForm
+    veri_form = VerificationForm
     return render(request, 'login/login.html', locals())
 
 
+#列出所有的未处理的创建成为专家的申请
+def not_done_applytoexpert(request):
+    ret={}
+    json_list=[]
+    result=Apply.objects.filter(apply_status=1)
+    for item in result:
+        json_dict=model_to_dict(item)
+        json_list.append(json_dict)
+    return HttpResponse(json.dumps(ret),content_type='application/json')
+
+
+#列出所有的已处理的创建成为专家的申请
+def not_done_applytoexpert(request):
+    ret={}
+    json_list=[]
+    result=Apply.objects.filter(apply_status=2)
+    for item in result:
+        json_dict=model_to_dict(item)
+        json_list.append(json_dict)
+    return HttpResponse(json.dumps(ret),content_type='application/json')

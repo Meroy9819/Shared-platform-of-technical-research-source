@@ -11,6 +11,10 @@ class Apply(models.Model):
     apply_resourceyear=models.CharField(max_length=8)
     apply_field=models.CharField(max_length=256)
     apply_photo=models.ImageField()
+    #1:未处理
+    #2：已处理，通过
+    #3：处理，不通过
+    apply_status=models.IntegerField(default=1)
     def __str__(self):
         return self.apply_user.username
     class Meta:

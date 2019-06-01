@@ -7,7 +7,6 @@ import json
 import codePlat
 import datetime
 from django.core.mail import EmailMultiAlternatives
-from django.http import HttpResponseRedirect
 from Like.models import LikeResources
 #from Report.models import report
 from User.models import NormalUser
@@ -56,9 +55,8 @@ def login(request):
             except:
                 message = "用户不存在！"
         return render(request, 'login/login.html', locals())
-
     login_form = UserForm
-    return render(request, 'login/login.html', locals())
+    return HttpResponse()
 
 #用户注册
 def register(request):
