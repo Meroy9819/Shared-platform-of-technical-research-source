@@ -359,3 +359,13 @@ def change_introduction(request):
         return HttpResponse(json.dumps("表格错误"), content_type='application/json')
         changeintro_form = ChangeIntro
     return HttpResponse(json.dumps("欢迎修改个人简介"), content_type='application/json')
+
+def upload(request):
+    img=request.files.get('img')
+    basedir=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path=basedir+"/static/photo"
+    file_name=str(datetime.time())+'_'+img.filename
+    file_path=path+file_name
+    img.save(file_path)
+    request.session['url']="127.0.0.1:8000/cmr.test/static/photo"+file_name
+    return HttpResponse(json.dumps("hhh"),content_type='application/json')

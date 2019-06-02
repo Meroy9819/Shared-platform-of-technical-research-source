@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from .models import Notification_report_comment,Notification_report_SciAchi,Notification_report_expert
+from .models import Notification_report_comment,Notification_report_SciAchi,Notification_report_expert,Notification_apply_expert,Notification_verification_expert
 from User.models import NormalUser,ExpertUser
 from UserComment.models import Comment
 from django.shortcuts import HttpResponse,get_object_or_404
 from TechResource.models import SciAchi
 import json
+from Apply.models import Apply,Verification
 
 #创建评论被举报的通知
 #通知用户，他的评论被人举报
@@ -211,3 +212,58 @@ def notagree_SciAchi_report(request,expert_id,user_id):
     new_notification.notification_status=1
     new_notification.save()
     return HttpResponse(json.dumps("通知发送成功"),content_type='application/json')
+
+
+#通知申请用户，他成为专家的申请已经被许可
+#userid是申请人id
+def agree_applytoexpert(request,apply_id,userid):
+    user=NormalUser.objects.filter(userid=userid)
+    apply=Apply.objecets.filter(apply_id=apply_id)
+    new_notification=Notification_apply_expert()
+    new_notification.notification_receiver=user
+    new_notification.notification_message="您的申请成为专家请求已经通过"
+    new_notification.notification_apply_from=apply
+    new_notification.notification_status=1
+    new_notification.save()
+    return HttpResponse(json.dumps("通知已经发送"),content_type='application/json')
+
+#通知申请用户，他成为专家的申请已经被驳回
+#userid是申请人id
+def notagree_applytoexpert(request,apply_id,userid):
+    user = NormalUser.objects.filter(userid=userid)
+    apply = Apply.objecets.filter(apply_id=apply_id)
+    new_notification = Notification_apply_expert()
+    new_notification.notification_receiver = user
+    new_notification.notification_message = "您的申请成为专家请求已经被驳回"
+    new_notification.notification_apply_from = apply
+    new_notification.notification_status = 1
+    new_notification.save()
+    return HttpResponse(json.dumps("通知已经发送"), content_type='application/json')
+
+
+#通知申请人，认领专家成功
+def agree_verify_toexpert(request,verification_id,user_id):
+    verification=Verification.objects.filter(verification_id=verification_id)
+    user=NormalUser.objects.filter(user_id=user_id)
+    new_notification=Notification_verification_expert()
+    new_notification.notification_message="您申请的认领专家请求已经通过"
+    new_notification.notification_receiver=user
+    new_notification.notification_verification_from=verification
+    new_notification.notification_status=2
+    new_notification.save()
+    return HttpResponse(json.dumps("认领通知发送成功"),content_type='application/json')
+
+#通知申请用户，他认领专家的申请已经被驳回
+#userid是申请人id
+def notagree_verificationtoexpert(request,verification_id,userid):
+    user = NormalUser.objects.filter(userid=userid)
+    verification = Verification.objecets.filter(verification_id=verification_id)
+    new_notification = Notification_verification_expert()
+    new_notification.notification_receiver = user
+    new_notification.notification_message = "您的申请认领专家请求已经被驳回"
+    new_notification.notification_apply_from = verification
+    new_notification.notification_status = 1
+    new_notification.save()
+    return HttpResponse(json.dumps("通知已经发送"), content_type='application/json')
+
+

@@ -29,6 +29,10 @@ class Verification(models.Model):
     verification_expert=models.ForeignKey(ExpertUser,on_delete=True)
     verification_user=models.ForeignKey(NormalUser,on_delete=True)
     verification_image=models.ImageField()
+    #1:未处理
+    #2：已处理，通过
+    #3：处理，不通过
+    verification_status=models.IntegerField(default=1)
     def __str__(self):
         return self.verification_user.username + ":   " + self.verification_expert.name
     class Meta:
