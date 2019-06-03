@@ -17,6 +17,8 @@ from Like.models import LikeResources,LikeExpert
 from VisitHistory.views import add_visit_resource_history,add_visit_expert_history
 from UserComment.models import Comment
 from TechResource.models import SciAchi
+import codePlat.settings as settings
+from User.models import PicTest
 #from Report.models import report
 #加密密码
 def hash_code(s, salt='codeplat_login'):
@@ -360,12 +362,35 @@ def change_introduction(request):
         changeintro_form = ChangeIntro
     return HttpResponse(json.dumps("欢迎修改个人简介"), content_type='application/json')
 
-def upload(request):
-    img=request.files.get('img')
-    basedir=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path=basedir+"/static/photo"
-    file_name=str(datetime.time())+'_'+img.filename
-    file_path=path+file_name
-    img.save(file_path)
-    request.session['url']="127.0.0.1:8000/cmr.test/static/photo"+file_name
-    return HttpResponse(json.dumps("hhh"),content_type='application/json')
+def show_upload(request):
+    return render(request, 'test/upload.html')
+
+
+
+def upload_handle(request):
+    pic = request.FILES['pic']
+    save_path = '{}/media/{}'.format(settings.MEDIA_ROOT, pic.name)
+    with open(save_path, 'wb') as f:
+        for content in pic.chunks():
+            f.write(content)
+    # 数据库中保存上传记录
+    PicTest.objects.create(goods_pic='media/{}'.format(pic.name))
+    return redirect('/show_imgs')
+
+
+def show_imgs(request):
+    pics = PicTest.objects.all()
+    return render(request,'test/show_imgs.html', {'pics': pics})
+
+
+import qrcode
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.utils.six import BytesIO
+#显示二维码
+def generate_qrcode(request, data):
+    img = qrcode.make(data)
+    buf = BytesIO()
+    img.save(buf)
+    image_stream = buf.getvalue()
+    return HttpResponse(image_stream, content_type="image/png")

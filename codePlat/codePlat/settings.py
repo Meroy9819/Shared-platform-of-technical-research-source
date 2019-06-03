@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'Notification',
     'VisitHistory',
     'Report',
+    'Apply'
 ]
 CORS_ORIGIN_ALLOW_ALL=True
 
@@ -131,7 +132,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+APPEND_SLASH=False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -140,6 +141,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 os.path.join(BASE_DIR, "frontend/dist/static"),
 ]
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 EMAIL_USE_SSL = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -13,6 +13,10 @@ from django.views.generic.base import TemplateView
 from Like import views as like_views
 from Report import views as report_views
 from UserComment import views as comment_views
+from User import views as userviews
+import codePlat.settings as settings
+from django.views.static import serve
+from User.views import generate_qrcode
 urlpatterns = [
     url(r'^$',view.hello),
     path('admin/', admin.site.urls),
@@ -42,6 +46,17 @@ urlpatterns = [
     #评论某个资源
     #前端往后端传表单。POST；以及一个参数：当前资源的resource_id
     url(r'^comment/(?P<expert_id>[0-9]+)/$', comment_views.create_comment),
+
+
+
+    path(r'show_upload', userviews.show_upload),
+    path(r'upload_handle', userviews.upload_handle),
+    path(r'show_imgs', userviews.show_imgs),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+
+url(r'^qrcode/(.+)$',generate_qrcode,name='qrcode'),
+
+
 
 
    path(r'login/', user_views.login),

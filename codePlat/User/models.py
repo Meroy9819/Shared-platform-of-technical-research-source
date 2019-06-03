@@ -164,3 +164,5 @@ class ConfirmString(models.Model):
         verbose_name = "确认码"
         verbose_name_plural = "确认码"
 
+class PicTest(models.Model):
+    goods_pic = models.ImageField(upload_to='media/')

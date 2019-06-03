@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片</title>
+</head>
+<ul>
+{% for pic in pics %}
+    <li style="list-style-type:none; margin-left: 10px; float: left; ">
+        <img src="{{ pic.goods_pic.url }}" width="100px"/>
+    </li>
+{% endfor %}
+</ul>
+</body>
+</html>
